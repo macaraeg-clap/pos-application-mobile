@@ -1,2 +1,2 @@
 # pos-application-mobile
-POS Application Mobile Layout for Ziapay
+POS Application Mobile Layout for Ziapay (Android Project)
