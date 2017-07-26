@@ -1,0 +1,114 @@
+<resources>
+    <string name="app_name">POS Application Mobile</string>
+    <string name="login_label">Login</string>
+    <string name="login_error_title">LOGIN ERROR</string>
+    <string name="login_field_empty">Required field/s empty!</string>
+    <string name="login_not_matched">Incorrect credentials!</string>
+    <string name="action_ok">OK</string>
+    <string name="menu_label">Menu</string>
+    <string name="send_label">Send</string>
+    <string name="print_label">Print</string>
+    <string name="action_print_label">Print</string>
+    <string name="action_cancel_label">Cancel</string>
+    <string name="about_label">About</string>
+    <string name="action_about_label">ABOUT</string>
+    <string name="action_logout_label">LOGOUT</string>
+    <string name="logout_title">LOGOUT USER</string>
+    <string name="logout_message">Are you sure you want to Logout?</string>
+    <string name="action_yes">YES</string>
+    <string name="action_no">NO</string>
+    <string name="amount_sign">PHP</string>
+    <string name="from_label">From:</string>
+    <string name="to_label">To:</string>
+    <string name="action_continue_label">CONTINUE</string>
+    <string name="connect_label">Connecting to</string>
+    <string name="swipe_card_label">Please ask customer to insert or swipe card now.</string>
+    <string name="select_account_label">Select the Account</string>
+    <string name="select_device_title">SELECT BLUETOOTH DEVICE</string>
+    <string name="preferred_device_label">Set as preferred device</string>
+    <string name="action_proceed_payment_label">Proceed with Payment</string>
+    <string-array name="date_range_array">
+        <item>Last Month</item>
+        <item>Last Week</item>
+        <item>Today</item>
+    </string-array>
+    <string-array name="mode_array">
+        <item>All</item>
+        <item>Balance</item>
+        <item>Cash Advance</item>
+        <item>Payment</item>
+        <item>Withdrawal</item>
+    </string-array>
+    <string-array name="account_array">
+        <item>Savings Account</item>
+        <item>Current Account</item>
+    </string-array>
+    <!-- Home Labels -->
+    <string name="action_transaction">Transaction</string>
+    <string name="action_balance">Balance Inquiry</string>
+    <string name="action_withdrawal">Withdrawal/ Cash Advance</string>
+    <string name="action_payment">Government Payment</string>
+    <string name="action_connection">Connection</string>
+    <string name="action_operator">Operator Information</string>
+    <!-- Transactions labels -->
+    <string name="transaction_label">Transactions</string>
+    <string name="trans_last_label">Last Transaction</string>
+    <string name="trans_daily_label">Daily</string>
+    <string name="trans_daily_title">PRINT DAILY TRANSACTIONS</string>
+    <string name="trans_amount_label">AMOUNT</string>
+    <string name="trans_card_holder_label">Card Holder</string>
+    <string name="trans_expiry_label">EXPIRY</string>
+    <string name="trans_date_time_label">Date/Time:</string>
+    <string name="trans_method_label">Method:</string>
+    <string name="trans_mode_label">Mode:</string>
+    <string name="trans_type_label">Transaction Type:</string>
+    <string name="trans_reference_label">Transaction Reference:</string>
+    <string name="trans_pay_for_label">Payment For:</string>
+    <string name="trans_operator_name_label">Operator Name:</string>
+    <string name="trans_operator_number_label">Operator Number:</string>
+    <string name="trans_validation_label">Offline Validation</string>
+    <string name="trans_daily_message">Are you sure you want to print your daily transaction?</string>
+    <string name="trans_history_label">History</string>
+    <string name="trans_history_title">PRINT HISTORY</string>
+    <string name="trans_history_message">Are you sure you want to print the selected transaction history?</string>
+    <string name="trans_transmitted_label">Transmitted</string>
+    <string name="trans_untransmitted_label">Untransmitted</string>
+    <string name="trans_statistics_label">Statistics</string>
+    <string name="trans_statistics_balance">Balance Inquiry</string>
+    <string name="trans_statistics_withdrawal">Withdrawal</string>
+    <string name="trans_statistics_cash_advance">Cash Advance</string>
+    <string name="trans_statistics_payment">Payment</string>
+    <!-- Balance Inquiry labels -->
+    <string name="balance_label">Balance Inquiry</string>
+    <!-- Withdrawal / Cash Advance labels -->
+    <string name="withdrawal_label">Withdrawal</string>
+    <!-- Government Payment labels -->
+    <string name="payment_label">Payment</string>
+    <string name="payment_please_scan">Please Scan QR Code or Bar Code of Customer</string>
+    <string name="payment_serial_label">Serial Number</string>
+    <string name="payment_mode_label">Select Mode of Payment</string>
+    <string name="payment_hi_label">Hi</string>
+    <string name="payment_verify_label">Kindly verify first all the details if correct before making any payment. Thank you.</string>
+    <string name="payment_payor_label">Payor:</string>
+    <string name="payment_trans_number_label">Transaction Number:</string>
+    <string name="payment_pay_for_label">Payment For:</string>
+    <string name="payment_trans_amount_label">Transaction Amount:</string>
+    <string name="payment_trans_fee_label">Transaction Fee:</string>
+    <string name="payment_total_amount_label">Total Amount:</string>
+    <!-- Connections labels -->
+    <string name="connections_label">Connections</string>
+    <string name="name_label">Name:</string>
+    <string name="last_used_label">Last Used:</string>
+    <!-- Operator Info labels -->
+    <string name="operator_info_label">Operator Info</string>
+    <string name="operator_information_label">Operator Information</string>
+    <string name="operator_print_trans">Print Transaction</string>
+    <string name="operator_info_title">Operator Info</string>
+    <string name="operator_name_label">Operator Name:</string>
+    <string name="operator_code_label">Operator Code:</string>
+    <string name="merchant_info_title">Merchant Info</string>
+    <string name="merchant_name_label">Operator Name:</string>
+    <string name="merchant_code_label">Operator Code:</string>
+    <string name="merchant_currency_label">Currency:</string>
+    <string name="merchant_email_label">Email:</string>
+</resources>
