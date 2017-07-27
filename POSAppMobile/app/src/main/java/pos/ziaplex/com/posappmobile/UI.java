@@ -34,32 +34,17 @@ public class UI {
 
     interface DatePickerCallbackListener {
 
-        void onDateSelected(int tag, DatePicker view, int year, int month, int day);
+        void onDateSelected(int tag, Util.Date date);
     }
 
-    public static class CustomDatePicker extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+    public static class CustomDatePicker extends DialogFragment implements
+            DatePickerDialog.OnDateSetListener {
 
-        public static int DATE_FROM = 0;
-        public static int DATE_TO = 1;
+        public final static int DATE_FROM = 0, DATE_TO = 1;
         DatePickerCallbackListener mListener;
         Util.Date mDate = null;
-        long mMinDate = -1;
-        long mMaxDate = -1;
+        long mMinDate = -1, mMaxDate = -1;
         int mTag = -1;
-
-        public static CustomDatePicker forMaxDate(Util.Date date, long max_date) {
-            CustomDatePicker v = new CustomDatePicker();
-            v.mDate = date;
-            v.mMaxDate = max_date;
-            return v;
-        }
-
-        public static CustomDatePicker forMinDate(Util.Date date, long min_date) {
-            CustomDatePicker v = new CustomDatePicker();
-            v.mDate = date;
-            v.mMinDate = min_date;
-            return v;
-        }
 
         public static CustomDatePicker instance(Util.Date date, long min_date, long max_date) {
             CustomDatePicker v = new CustomDatePicker();
@@ -69,18 +54,32 @@ public class UI {
             return v;
         }
 
+        public static CustomDatePicker forMinDate(Util.Date date, long min_date) {
+            CustomDatePicker v = new CustomDatePicker();
+            v.mDate = date;
+            v.mMinDate = min_date;
+            v.mMaxDate = -1;
+            return v;
+        }
+
+        public static CustomDatePicker forMaxDate(Util.Date date, long max_date) {
+            CustomDatePicker v = new CustomDatePicker();
+            v.mDate = date;
+            v.mMinDate = -1;
+            v.mMaxDate = max_date;
+            return v;
+        }
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            DatePickerDialog v = new DatePickerDialog(getActivity(), this,
-                    Integer.valueOf(mDate.getYear()), Integer.valueOf(mDate.getMonth()),
+            DatePickerDialog v = new DatePickerDialog(getContext(), this,
+                    Integer.valueOf(mDate.getYear()), Integer.valueOf(mDate.getMonth()) - 1,
                     Integer.valueOf(mDate.getDay()));
             DatePicker dp = v.getDatePicker();
             if (dp != null) {
-                dp.updateDate(Integer.valueOf(mDate.getYear()), Integer.valueOf(mDate.getMonth()),
-                        Integer.valueOf(mDate.getDay()));
-                if (mMinDate > 0)
+                if (mMinDate > -1)
                     dp.setMinDate(mMinDate);
-                if (mMaxDate > 0)
+                if (mMaxDate > -1)
                     dp.setMaxDate(mMaxDate);
             }
             return v;
@@ -90,9 +89,11 @@ public class UI {
             mListener = listener;
         }
 
-        public void onDateSet(DatePicker v, int y, int m, int d) {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             if (mListener != null)
-                mListener.onDateSelected(mTag, v, y, m, d);
+                mListener.onDateSelected(mTag, Util.Date.instance(String.valueOf(dayOfMonth),
+                        String.valueOf(month + 1), String.valueOf(year)));
         }
 
         public void show(FragmentManager manager, int tag) {
@@ -105,7 +106,7 @@ public class UI {
 
     public static class CustomTextEditWithIcon extends LinearLayout {
 
-        public static int ALPHA_NUMERIC = 0;
+        public final static int ALPHA_NUMERIC = 0;
 
         public CustomTextEditWithIcon(Context context) {
             super(context);
@@ -167,12 +168,8 @@ public class UI {
 
         ImageView mIcon;
         TextView mLabel;
-        int icon_id_normal;
-        int icon_id_pressed;
-        int bg_color_normal;
-        int bg_color_pressed;
-        int text_color_normal;
-        int text_color_pressed;
+        int icon_id_normal, icon_id_pressed, bg_color_normal, bg_color_pressed, text_color_normal,
+                text_color_pressed;
 
         public void onCreate(int icon_id_normal, int icon_id_pressed, int bg_color_normal,
                              int bg_color_pressed, int text_color_normal, int text_color_pressed,
@@ -302,17 +299,23 @@ public class UI {
     }
 
     public static CustomTextEditWithIcon createCustomTextEditWithIcon(Context context, int icon_id,
-                                                                      String placeholder, int input_type,
-                                                                      int data_type, int max_length) {
+                                                                      String placeholder,
+                                                                      int input_type,
+                                                                      int data_type,
+                                                                      int max_length) {
         CustomTextEditWithIcon v = new CustomTextEditWithIcon(context);
         v.onCreate(icon_id, placeholder, input_type, data_type, max_length);
         return v;
     }
 
-    public static CustomHomeItemWithIcon createCustomHomeItemWithIcon(Context context, int icon_id_normal,
-                                                                      int icon_id_pressed, int bg_color_normal,
-                                                                      int bg_color_pressed, int text_color_normal,
-                                                                      int text_color_pressed, String label,
+    public static CustomHomeItemWithIcon createCustomHomeItemWithIcon(Context context,
+                                                                      int icon_id_normal,
+                                                                      int icon_id_pressed,
+                                                                      int bg_color_normal,
+                                                                      int bg_color_pressed,
+                                                                      int text_color_normal,
+                                                                      int text_color_pressed,
+                                                                      String label,
                                                                       ButtonCallbackListener listener) {
         CustomHomeItemWithIcon v = new CustomHomeItemWithIcon(context);
         v.onCreate(icon_id_normal, icon_id_pressed, bg_color_normal, bg_color_pressed,
@@ -324,15 +327,19 @@ public class UI {
         return new CustomDatePicker();
     }
 
-    public static CustomDatePicker createCustomDatePickerWithMinMaxDate(Util.Date date, long min_date, long max_date) {
+    public static CustomDatePicker createCustomDatePickerWithMinMaxDate(Util.Date date,
+                                                                        long min_date,
+                                                                        long max_date) {
         return CustomDatePicker.instance(date, min_date, max_date);
     }
 
-    public static CustomDatePicker createCustomDatePickerWithMinDate(Util.Date date, long min_date) {
+    public static CustomDatePicker createCustomDatePickerWithMinDate(Util.Date date,
+                                                                     long min_date) {
         return CustomDatePicker.forMinDate(date, min_date);
     }
 
-    public static CustomDatePicker createCustomDatePickerWithMaxDate(Util.Date date, long max_date) {
+    public static CustomDatePicker createCustomDatePickerWithMaxDate(Util.Date date,
+                                                                     long max_date) {
         return CustomDatePicker.forMaxDate(date, max_date);
     }
 
@@ -390,7 +397,8 @@ public class UI {
     }
 
     public static CustomImageButton createCustomImageButton(Context context, String label,
-                                                            int background_id, ButtonCallbackListener listener) {
+                                                            int background_id,
+                                                            ButtonCallbackListener listener) {
         CustomImageButton v = new CustomImageButton(context);
         v.onCreate(label, background_id, listener);
         return v;

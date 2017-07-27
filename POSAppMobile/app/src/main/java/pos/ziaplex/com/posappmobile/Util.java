@@ -79,10 +79,11 @@ public class Util {
                     String.valueOf(Integer.valueOf(date.getYear()) - n));
         }
 
-        static String mDay;
-        static String mMonth;
-        static String mYear;
-        static String mTime;
+        String mDay, mMonth, mYear, mTime;
+
+        public Date duplicate() {
+            return Date.instance(getDay(), getMonth(), getYear(), getTime());
+        }
 
         public String getDay() {
             return mDay;
@@ -145,7 +146,7 @@ public class Util {
     public static HashMap getDateLastMonth() {
         if (mDate == null)
             mDate = new java.util.Date();
-        HashMap hm = new HashMap();
+        HashMap<String, Date> hm = new HashMap();
         GregorianCalendar gc = new GregorianCalendar(Integer.valueOf(getDateYear().getYear()),
                 Integer.valueOf(getDateMonth().getMonth()) - 2, 1);
         java.util.Date date = gc.getTime();
@@ -162,12 +163,12 @@ public class Util {
         GregorianCalendar v;
         if (date == null) {
             v = new GregorianCalendar(Integer.valueOf(getDateYear().getYear()),
-                    Integer.valueOf(getDateMonth().getMonth()),
+                    Integer.valueOf(getDateMonth().getMonth()) - 1,
                     Integer.valueOf(getDateDay().getDay()));
         }
         else {
             v = new GregorianCalendar(Integer.valueOf(date.getYear()),
-                    Integer.valueOf(date.getMonth()),
+                    Integer.valueOf(date.getMonth()) - 1,
                     Integer.valueOf(date.getDay()));
         }
         return v.getTimeInMillis();
@@ -176,14 +177,14 @@ public class Util {
     public static HashMap getDateLastWeek() {
         if (mDate == null)
             mDate = new java.util.Date();
-        HashMap hm = new HashMap();
+        HashMap<String, Date> hm = new HashMap();
         java.util.Date fDate = new java.util.Date(mDate.getTime() - (getDayDOWStamp(mDate) +
                 ((24 * 60 * 60 * 1000) * 6)));
-        hm.put("from", Date.instance(DateFormat.format("dd", fDate).toString(),
+        hm.put("from", Util.Date.instance(DateFormat.format("dd", fDate).toString(),
                 DateFormat.format("MM", fDate).toString(),
                 DateFormat.format("yyyy", fDate).toString()));
         java.util.Date tDate = new java.util.Date(mDate.getTime() - getDayDOWStamp(mDate));
-        hm.put("to", Date.instance(DateFormat.format("dd", tDate).toString(),
+        hm.put("to", Util.Date.instance(DateFormat.format("dd", tDate).toString(),
                 DateFormat.format("MM", tDate).toString(),
                 DateFormat.format("yyyy", tDate).toString()));
         return hm;
@@ -193,27 +194,26 @@ public class Util {
         if (date != null) {
             String dow = DateFormat.format("EEE", date).toString();
             if ("Mon".equalsIgnoreCase(dow)) {
-                return ((24 * 60 * 60 * 1000) * 2);
+                return (24 * 60 * 60 * 1000);
             }
             else if ("Tue".equalsIgnoreCase(dow)) {
-                return ((24 * 60 * 60 * 1000) * 3);
+                return ((24 * 60 * 60 * 1000) * 2);
             }
             else if ("Wed".equalsIgnoreCase(dow)) {
-                return ((24 * 60 * 60 * 1000) * 4);
+                return ((24 * 60 * 60 * 1000) * 3);
             }
             else if ("Thu".equalsIgnoreCase(dow)) {
-                return ((24 * 60 * 60 * 1000) * 5);
+                return ((24 * 60 * 60 * 1000) * 4);
             }
             else if ("Fri".equalsIgnoreCase(dow)) {
-                return ((24 * 60 * 60 * 1000) * 6);
+                return ((24 * 60 * 60 * 1000) * 5);
             }
             else if ("Sat".equalsIgnoreCase(dow)) {
+                return ((24 * 60 * 60 * 1000) * 6);
+            }
+            else {
                 return ((24 * 60 * 60 * 1000) * 7);
             }
-            else if ("Sun".equalsIgnoreCase(dow)) {
-                return ((24 * 60 * 60 * 1000) * 8);
-            }
-            return (24 * 60 * 60 * 1000);
         }
         return 0;
     }

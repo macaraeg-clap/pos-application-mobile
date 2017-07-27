@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,9 +20,9 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -73,20 +72,16 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 ImageButton link = (ImageButton) v;
                 if (link != null) {
                     if (link.getId() == R.id.img_btn_balance) {
-                        Toast.makeText(getBaseContext(), "R.id.img_btn_balance",
-                                Toast.LENGTH_SHORT).show();
+                        // TODO
                     }
                     else if (link.getId() == R.id.img_btn_withdrawal) {
-                        Toast.makeText(getBaseContext(), "R.id.img_btn_withdrawal",
-                                Toast.LENGTH_SHORT).show();
+                        // TODO
                     }
                     else if (link.getId() == R.id.img_btn_cash_advance) {
-                        Toast.makeText(getBaseContext(), "R.id.img_btn_cash_advance",
-                                Toast.LENGTH_SHORT).show();
+                        // TODO
                     }
                     else if (link.getId() == R.id.img_btn_payment) {
-                        Toast.makeText(getBaseContext(), "R.id.img_btn_payment",
-                                Toast.LENGTH_SHORT).show();
+                        // TODO
                     }
                 }
             }
@@ -104,9 +99,11 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                             if ("Last Week".equalsIgnoreCase(parent.getSelectedItem().toString())) {
                                 HashMap date = Util.getDateLastWeek();
                                 if (date != null) {
-                                    vf.setText(getString(R.string.from_label) + " " + ((Util.Date) date.get("from"))
+                                    vf.setText(getString(R.string.from_label) + " " +
+                                            ((Util.Date) date.get("from"))
                                             .toMMDDYYYYStringFormat("/"));
-                                    vt.setText(getString(R.string.to_label) + " " + ((Util.Date) date.get("to"))
+                                    vt.setText(getString(R.string.to_label) + " " +
+                                            ((Util.Date) date.get("to"))
                                             .toMMDDYYYYStringFormat("/"));
                                 }
                             }
@@ -114,16 +111,20 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                                     .toString())) {
                                 HashMap date = Util.getDateLastMonth();
                                 if (date != null) {
-                                    vf.setText(getString(R.string.from_label) + " " + ((Util.Date) date.get("from"))
+                                    vf.setText(getString(R.string.from_label) + " " +
+                                            ((Util.Date) date.get("from"))
                                             .toMMDDYYYYStringFormat("/"));
-                                    vt.setText(getString(R.string.to_label) + " " + ((Util.Date) date.get("to"))
+                                    vt.setText(getString(R.string.to_label) + " " +
+                                            ((Util.Date) date.get("to"))
                                             .toMMDDYYYYStringFormat("/"));
                                 }
                             }
                             else {
-                                vf.setText(getString(R.string.from_label) + " " + Util.getDateToday()
+                                vf.setText(getString(R.string.from_label) + " " +
+                                        Util.getDateToday()
                                         .toMMDDYYYYStringFormat("/"));
-                                vt.setText(getString(R.string.to_label) + " " + Util.getDateToday()
+                                vt.setText(getString(R.string.to_label) + " " +
+                                        Util.getDateToday()
                                         .toMMDDYYYYStringFormat("/"));
                             }
                         }
@@ -234,7 +235,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         }
 
         public class TransmittedTab extends LinearLayout implements UI.DatePickerCallbackListener,
-                View.OnClickListener{
+                View.OnClickListener {
 
             public TransmittedTab(Context context) {
                 super(context);
@@ -244,7 +245,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
 
             TransmittedTab mInstance;
             Button mButtonFrom, mButtonTo;
-            Util.Date mDateToday, mDateFrom, mDateTo;
+            Util.Date mDateToday = null, mDateFrom = null, mDateTo = null;
 
             private void initialize() {
                 setBackgroundColor(Color.WHITE);
@@ -268,68 +269,45 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     mDateToday = Util.getDateToday();
                     Button btn = (Button) v;
                     if (btn != null) {
-                        Util.Date selectedDate;
-                        Util.Date selectedMaxDate;
-                        UI.CustomDatePicker dp;
+                        UI.CustomDatePicker dp = null;
                         int tag;
                         if (btn.getId() == R.id.btn_from) {
-                            Toast.makeText(getBaseContext(), "mDateFrom", Toast.LENGTH_SHORT).show();
-                            if (mDateFrom == null) {
-                                Toast.makeText(getBaseContext(), "mDateFrom == null",
-                                        Toast.LENGTH_SHORT).show();
-                                selectedDate = mDateToday;
+                            if (mDateFrom == null && mDateTo == null) {
+                                dp = UI.createCustomDatePickerWithMaxDate(mDateToday,
+                                        Util.getDateInMillis(mDateToday));
+                            }
+                            else if (mDateFrom != null && mDateTo == null) {
+                                dp = UI.createCustomDatePickerWithMaxDate(mDateFrom,
+                                        Util.getDateInMillis(mDateToday));
+                            }
+                            else if (mDateFrom == null && mDateTo != null) {
+                                dp = UI.createCustomDatePickerWithMaxDate(mDateToday,
+                                        Util.getDateInMillis(mDateTo));
                             }
                             else {
-                                Toast.makeText(getBaseContext(), "mDateFrom: else",
-                                        Toast.LENGTH_SHORT).show();
-                                selectedDate = mDateFrom;
+                                dp = UI.createCustomDatePickerWithMaxDate(mDateFrom,
+                                        Util.getDateInMillis(mDateTo));
                             }
-                            if (mDateTo == null) {
-                                Toast.makeText(getBaseContext(), "mDateTo == null",
-                                        Toast.LENGTH_SHORT).show();
-                                selectedMaxDate = Util.Date.forMinusMonth(mDateToday, 1);
-                            }
-                            else {
-                                Toast.makeText(getBaseContext(), "mDateTo: else",
-                                        Toast.LENGTH_SHORT).show();
-                                selectedMaxDate = mDateTo;
-                            }
-                            dp = UI.createCustomDatePickerWithMaxDate(selectedDate,
-                                    Util.getDateInMillis(selectedMaxDate));
                             tag = UI.CustomDatePicker.DATE_FROM;
                         }
                         else {
-                            Toast.makeText(getBaseContext(), "mDateTo", Toast.LENGTH_SHORT).show();
-                            if (mDateFrom == null && mDateTo == null) {
-                                Toast.makeText(getBaseContext(), "mDateFrom == null && mDateTo == null",
-                                        Toast.LENGTH_SHORT).show();
-                                selectedDate = mDateToday;
-                                selectedMaxDate = Util.Date.forMinusMonth(selectedDate, 1);
+                            if (mDateTo == null && mDateFrom == null){
+                                dp = UI.createCustomDatePickerWithMaxDate(mDateToday,
+                                        Util.getDateInMillis(mDateToday));
                             }
-                            else if (mDateFrom == null && mDateTo != null) {
-                                Toast.makeText(getBaseContext(), "mDateFrom == null && mDateTo != null",
-                                        Toast.LENGTH_SHORT).show();
-                                selectedDate = mDateTo;
-                                selectedMaxDate = Util.Date.forMinusMonth(mDateToday, 1);
+                            else if (mDateTo != null && mDateFrom == null) {
+                                dp = UI.createCustomDatePickerWithMaxDate(mDateTo,
+                                        Util.getDateInMillis(mDateToday));
                             }
-                            else {
-                                Toast.makeText(getBaseContext(), "else",
-                                        Toast.LENGTH_SHORT).show();
-                                selectedDate = mDateTo;
-                                selectedMaxDate = mDateTo;
-                            }
-                            if (mDateFrom == null) {
-                                Toast.makeText(getBaseContext(), "dp: mDateFrom == null",
-                                        Toast.LENGTH_SHORT).show();
-                                dp = UI.createCustomDatePickerWithMaxDate(selectedDate,
-                                        Util.getDateInMillis(selectedMaxDate));
-                            }
-                            else {
-                                Toast.makeText(getBaseContext(), "dp: else",
-                                        Toast.LENGTH_SHORT).show();
-                                dp = UI.createCustomDatePickerWithMinMaxDate(selectedDate,
+                            else if (mDateTo == null && mDateFrom != null) {
+                                dp = UI.createCustomDatePickerWithMinMaxDate(mDateToday,
                                         Util.getDateInMillis(mDateFrom),
-                                        Util.getDateInMillis(selectedMaxDate));
+                                        Util.getDateInMillis(mDateToday));
+                            }
+                            else {
+                                dp = UI.createCustomDatePickerWithMinMaxDate(mDateTo,
+                                        Util.getDateInMillis(mDateFrom),
+                                        Util.getDateInMillis(mDateToday));
                             }
                             tag = UI.CustomDatePicker.DATE_TO;
                         }
@@ -341,22 +319,16 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 }
             }
 
-            public void onDateSelected(int tag, DatePicker view, int year, int month, int day) {
+            public void onDateSelected(int tag, Util.Date date) {
                 if (tag == UI.CustomDatePicker.DATE_FROM) {
-                    mDateFrom = Util.Date.instance(String.valueOf(day), String.valueOf(month),
-                            String.valueOf(year));
+                    mDateFrom = date;
                     if (mButtonFrom != null)
-                        mButtonFrom.setText(Util.Date.instance(String.valueOf(day),
-                                String.valueOf(month + 1),
-                                String.valueOf(year)).toMMDDYYYYStringFormat("/"));
+                        mButtonFrom.setText(mDateFrom.toMMDDYYYYStringFormat("/"));
                 }
-                else if (tag == UI.CustomDatePicker.DATE_TO) {
-                    mDateTo = Util.Date.instance(String.valueOf(day), String.valueOf(month),
-                            String.valueOf(year));
+                else {
+                    mDateTo = date;
                     if (mButtonTo != null)
-                        mButtonTo.setText(Util.Date.instance(String.valueOf(day),
-                                String.valueOf(month + 1),
-                                String.valueOf(year)).toMMDDYYYYStringFormat("/"));
+                        mButtonTo.setText(mDateTo.toMMDDYYYYStringFormat("/"));
                 }
             }
         }
@@ -414,8 +386,8 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
 
         private View createTabView(final Context context, final String text) {
             View v = LayoutInflater.from(context).inflate(R.layout.tab_item, null);
-            v.setBackgroundResource(R.drawable.tab_blue_background);
             if (v != null) {
+                v.setBackgroundResource(R.drawable.tab_blue_background);
                 TextView tv = (TextView)v.findViewById(R.id.tab_label);
                 if (tv != null)
                     tv.setText(text);
@@ -468,25 +440,25 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             ArrayList<Transaction> res_list = new ArrayList<>();
             ArrayList<Transaction> temp_list = new ArrayList<>();
             temp_list.add(new Transaction("offline", "100.00", "123456789", "Cash",
-                    Util.getDateTime(new java.util.Date()).getTime(), "Yves Tayao", "Payment"));
+                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Payment"));
             temp_list.add(new Transaction("offline", "200.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new java.util.Date()).getTime(), "Yves Tayao", "Payment"));
+                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Payment"));
             temp_list.add(new Transaction("approved", "0.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new java.util.Date()).getTime(), "Yves Tayao", "Balance"));
+                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Balance"));
             temp_list.add(new Transaction("approved", "0.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new java.util.Date()).getTime(), "Yves Tayao", "Withdrawal"));
+                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Withdrawal"));
             temp_list.add(new Transaction("approved", "1,500.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new java.util.Date()).getTime(), "Yves Tayao", "Cash Advance"));
+                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Cash Advance"));
             temp_list.add(new Transaction("offline", "100.00", "123456789", "Cash",
-                    Util.getDateTime(new java.util.Date()).getTime(), "Yves Tayao", "Payment"));
+                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Payment"));
             temp_list.add(new Transaction("offline", "200.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new java.util.Date()).getTime(), "Yves Tayao", "Payment"));
+                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Payment"));
             temp_list.add(new Transaction("approved", "0.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new java.util.Date()).getTime(), "Yves Tayao", "Balance"));
+                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Balance"));
             temp_list.add(new Transaction("approved", "0.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new java.util.Date()).getTime(), "Yves Tayao", "Withdrawal"));
+                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Withdrawal"));
             temp_list.add(new Transaction("approved", "1,500.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new java.util.Date()).getTime(), "Yves Tayao", "Cash Advance"));
+                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Cash Advance"));
             if("all".equalsIgnoreCase(mode)) {
                 res_list = temp_list;
             }
@@ -524,14 +496,10 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             LinearLayout p = UI.createLinerLayout(getContext(), LinearLayout.VERTICAL);
             int plr = (int) getResources().getDimension(R.dimen._20sdp);
             p.setPadding(plr, (int) getResources().getDimension(R.dimen._10sdp), plr, 0);
-            LinearLayout card = (LinearLayout) LayoutInflater.from(getContext())
-                    .inflate(R.layout.last_transaction_card, null);
-            if (card != null)
-                p.addView(card);
-            LinearLayout details = (LinearLayout) LayoutInflater.from(getContext())
-                    .inflate(R.layout.last_transaction_summary, null);
-            if (details != null)
-                p.addView(details);
+            p.addView(LayoutInflater.from(getContext())
+                    .inflate(R.layout.last_transaction_card, null));
+            p.addView(LayoutInflater.from(getContext())
+                        .inflate(R.layout.last_transaction_summary, null));
             addView(p);
         }
 
@@ -622,12 +590,9 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
     }
 
     public static TransactionActivity mInstance = null;
-    static int LAST = 0;
-    static int DAILY = 1;
-    static int HISTORY = 2;
-    static int STATISTICS = 3;
-    int mSelectedTab = 0;
     LastTransactionTab mLast;
+    final static int LAST = 0, DAILY = 1, HISTORY = 2, STATISTICS = 3;
+    int mSelectedTab = 0;
 
     @Override
     public void onResume() {
@@ -657,10 +622,14 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 if (host != null) {
                     host.setup();
                     setupTab(createContent((LinearLayout) v.findViewById(R.id.first_tab),
-                            mLast = new LastTransactionTab(this)), getString(R.string.trans_last_label), host);
-                    setupTab(v.findViewById(R.id.second_tab), getString(R.string.trans_daily_label), host);
-                    setupTab(v.findViewById(R.id.third_tab), getString(R.string.trans_history_label), host);
-                    setupTab(v.findViewById(R.id.fourth_tab), getString(R.string.trans_statistics_label), host);
+                            mLast = new LastTransactionTab(this)),
+                            getString(R.string.trans_last_label), host);
+                    setupTab(v.findViewById(R.id.second_tab),
+                            getString(R.string.trans_daily_label), host);
+                    setupTab(v.findViewById(R.id.third_tab),
+                            getString(R.string.trans_history_label), host);
+                    setupTab(v.findViewById(R.id.fourth_tab),
+                            getString(R.string.trans_statistics_label), host);
                     host.setOnTabChangedListener(this);
                 }
                 content.addView(v);
@@ -743,8 +712,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
     }
 
     private void showPrintDialogPopup() {
-        String title = null;
-        String message = null;
+        String title = null, message = null;
         if (mSelectedTab == DAILY) {
             title = getString(R.string.trans_daily_title);
             message = getString(R.string.trans_daily_message);
