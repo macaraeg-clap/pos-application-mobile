@@ -48,7 +48,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             Spinner v = (Spinner) findViewById(R.id.spin_date_range);
             if (v != null)
                 v.setOnItemSelectedListener(this);
-            setDefaultDateRange(1);
+            setDateRangeValue(1);
             Spinner vv = (Spinner) findViewById(R.id.spin_mode);
             if (vv != null)
                 vv.setOnItemSelectedListener(this);
@@ -90,22 +90,21 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             }
         }
 
+        @Override
         public void onItemClicked(UI.CustomImageLink link) {
             if (link != null) {
-                if (getString(R.string.trans_statistics_balance)
-                        .equalsIgnoreCase(link.getLabel())) {
-                    // TODO
-                }
-                else if (getString(R.string.trans_statistics_withdrawal)
-                        .equalsIgnoreCase(link.getLabel())) {
-                    // TODO
-                }
-                else if (getString(R.string.trans_statistics_cash_advance)
-                        .equalsIgnoreCase(link.getLabel())) {
-                    // TODO
-                }
-                else {
-                    // TODO
+                TabHost host = TransactionActivity.mTabHost;
+                if (host != null) {
+                    host.setCurrentTab(2);
+                    HistoryTab tab = TransactionActivity.mHistoryTab;
+                    if (tab != null) {
+                        HistoryTab.TransmittedTab v = tab.mTransmittedTab;
+                        if (v != null) {
+                            v.setModeValue(link.getLabel(), true);
+                            v.setDateFromValue(mStatisticFrom);
+                            v.setDateToValue(mStatisticTo);
+                        }
+                    }
                 }
             }
         }
@@ -158,11 +157,10 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                             }
                         }
                     }
-                    else if (v.getId() == R.id.spin_mode) {
-                        if (vf != null && vt != null) {
+                    /*else if (v.getId() == R.id.spin_mode) {
+                        if (vf != null && vt != null)
                             updateStatisticDetails(parent.getSelectedItem().toString(), vf, vt);
-                        }
-                    }
+                    }*/
                 }
             }
         }
@@ -171,10 +169,14 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         public void onNothingSelected(AdapterView<?> arg0) {
         }
 
-        private void updateStatisticDetails(String label, TextView vf, TextView vt) { // FIXME
-            String fDate = vf.getText().toString();
-            String tDate = vt.getText().toString();
-            /*if ("Balance".equalsIgnoreCase(label)) {
+        public void setDateRangeValue(int index) {
+            Spinner v = (Spinner) findViewById(R.id.spin_date_range);
+            if (v != null)
+                v.setSelection(index);
+        }
+
+        /*private void updateStatisticDetails(String label, TextView vf, TextView vt) { // FIXME
+            if ("Balance".equalsIgnoreCase(label)) {
                 // TODO
                 updateTotalBalanceInquiryCount(25);
             }
@@ -202,16 +204,10 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 updateTotalPaymentAmount("0.00");
                 updateTotalWithdrawalCount(0);
                 updateTotalWithdrawalAmount("0.00");
-            }*/
+            }
         }
 
-        public void setDefaultDateRange(int index) {
-            Spinner v = (Spinner) findViewById(R.id.spin_date_range);
-            if (v != null)
-                v.setSelection(index);
-        }
-
-        /*public void updateTotalBalanceInquiryCount(int total) {
+        public void updateTotalBalanceInquiryCount(int total) {
             TextView v = (TextView) findViewById(R.id.txt_bal_total);
             if (v != null)
                 v.setText(String.valueOf(total));
@@ -292,6 +288,39 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 }
             }
 
+            public void setDateFromValue(Util.Date date) {
+                mDateFrom = date;
+                if (mButtonFrom != null)
+                    mButtonFrom.setText(mDateFrom.toMMDDYYYYStringFormat("/"));
+            }
+
+            public void setDateToValue(Util.Date date) {
+                mDateTo = date;
+                if (mButtonTo != null)
+                    mButtonTo.setText(mDateTo.toMMDDYYYYStringFormat("/"));
+            }
+
+            public void setModeValue(String label, boolean is_contain) {
+                Spinner v = (Spinner) findViewById(R.id.spin_mode);
+                if (v != null) {
+                    for(int i = 0; i < v.getCount(); i++){
+                        String value = v.getItemAtPosition(i).toString();
+                        if (is_contain) {
+                            if (label.contains(value)) {
+                                v.setSelection(i);
+                                break;
+                            }
+                        }
+                        else {
+                            if(label.equalsIgnoreCase(value)){
+                                v.setSelection(i);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
             @Override
             public void onClick(View v) {
                 if (v instanceof Button) {
@@ -348,16 +377,13 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 }
             }
 
+            @Override
             public void onDateSelected(int tag, Util.Date date) {
                 if (tag == UI.CustomDatePicker.DATE_FROM) {
-                    mDateFrom = date;
-                    if (mButtonFrom != null)
-                        mButtonFrom.setText(mDateFrom.toMMDDYYYYStringFormat("/"));
+                    setDateFromValue(date);
                 }
                 else {
-                    mDateTo = date;
-                    if (mButtonTo != null)
-                        mButtonTo.setText(mDateTo.toMMDDYYYYStringFormat("/"));
+                    setDateToValue(date);
                 }
             }
         }
@@ -367,6 +393,8 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             initialize();
         }
 
+        public TransmittedTab mTransmittedTab;
+
         private void initialize() {
             setBackgroundColor(Color.WHITE);
             setOrientation(LinearLayout.VERTICAL);
@@ -375,7 +403,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             if (host != null) {
                 host.setup();
                 setupTab(createContent((LinearLayout) findViewById(R.id.first_tab),
-                        new TransmittedTab(getBaseContext())), getString(R.string.trans_transmitted_label), host);
+                        mTransmittedTab = new TransmittedTab(getBaseContext())), getString(R.string.trans_transmitted_label), host);
                 setupTab(findViewById(R.id.second_tab), getString(R.string.trans_untransmitted_label), host);
                 host.setOnTabChangedListener(this);
             }
@@ -619,7 +647,9 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
     }
 
     public static TransactionActivity mInstance = null;
-    LastTransactionTab mLast;
+    public static TabHost mTabHost;
+    public static HistoryTab mHistoryTab;
+    LastTransactionTab mLastTransactionTab;
     final static int LAST = 0, DAILY = 1, HISTORY = 2, STATISTICS = 3;
     int mSelectedTab = 0;
 
@@ -647,19 +677,19 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             final LinearLayout v = (LinearLayout) LayoutInflater.from(this)
                     .inflate(R.layout.activity_transaction, null);
             if (v != null) {
-                TabHost host = (TabHost) v.findViewById(android.R.id.tabhost);
-                if (host != null) {
-                    host.setup();
+                mTabHost = (TabHost) v.findViewById(android.R.id.tabhost);
+                if (mTabHost != null) {
+                    mTabHost.setup();
                     setupTab(createContent((LinearLayout) v.findViewById(R.id.first_tab),
-                            mLast = new LastTransactionTab(this)),
-                            getString(R.string.trans_last_label), host);
+                            mLastTransactionTab = new LastTransactionTab(this)),
+                            getString(R.string.trans_last_label), mTabHost);
                     setupTab(v.findViewById(R.id.second_tab),
-                            getString(R.string.trans_daily_label), host);
+                            getString(R.string.trans_daily_label), mTabHost);
                     setupTab(v.findViewById(R.id.third_tab),
-                            getString(R.string.trans_history_label), host);
+                            getString(R.string.trans_history_label), mTabHost);
                     setupTab(v.findViewById(R.id.fourth_tab),
-                            getString(R.string.trans_statistics_label), host);
-                    host.setOnTabChangedListener(this);
+                            getString(R.string.trans_statistics_label), mTabHost);
+                    mTabHost.setOnTabChangedListener(this);
                 }
                 content.addView(v);
             }
@@ -677,7 +707,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         else if (getString(R.string.trans_history_label).equals(tabId)) {
             mSelectedTab = HISTORY;
             createContent((LinearLayout) findViewById(R.id.third_tab),
-                    new HistoryTab(getBaseContext()));
+                    mHistoryTab = new HistoryTab(getBaseContext()));
         }
         else if (getString(R.string.trans_statistics_label).equals(tabId)) {
             mSelectedTab = STATISTICS;
@@ -693,14 +723,14 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
 
     public void updateLastTransactionDetails() {
         // FIXME: change static values
-        if (mLast != null) {
-            mLast.updateDetails(new Transaction("APPROVED", "1,000.00", "xxxx xxxx xxxx 0000",
+        if (mLastTransactionTab != null) {
+            mLastTransactionTab.updateDetails(new Transaction("APPROVED", "1,000.00", "xxxx xxxx xxxx 0000",
                     Util.getDateMonthYear("MM", "YY").toMonthYearStringFormat("/"),
                     Util.getDateToday().toMMDDYYYYStringFormat("/") + " @ " +
                             Util.getDateTime().getTime(),
                     "Contact", "Debit Card - RCBC", "Withdrawal", "123456789",
                     "BIR", "Juan Dela Cruz", "11111111"));
-            mLast.updateQRCode(null);
+            mLastTransactionTab.updateQRCode(null);
         }
     }
 

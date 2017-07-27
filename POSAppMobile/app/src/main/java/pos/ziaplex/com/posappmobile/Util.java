@@ -194,25 +194,28 @@ public class Util {
         if (date != null) {
             String dow = DateFormat.format("EEE", date).toString();
             if ("Mon".equalsIgnoreCase(dow)) {
-                return (24 * 60 * 60 * 1000);
-            }
-            else if ("Tue".equalsIgnoreCase(dow)) {
                 return ((24 * 60 * 60 * 1000) * 2);
             }
-            else if ("Wed".equalsIgnoreCase(dow)) {
+            else if ("Tue".equalsIgnoreCase(dow)) {
                 return ((24 * 60 * 60 * 1000) * 3);
             }
-            else if ("Thu".equalsIgnoreCase(dow)) {
+            else if ("Wed".equalsIgnoreCase(dow)) {
                 return ((24 * 60 * 60 * 1000) * 4);
             }
-            else if ("Fri".equalsIgnoreCase(dow)) {
+            else if ("Thu".equalsIgnoreCase(dow)) {
                 return ((24 * 60 * 60 * 1000) * 5);
             }
-            else if ("Sat".equalsIgnoreCase(dow)) {
+            else if ("Fri".equalsIgnoreCase(dow)) {
                 return ((24 * 60 * 60 * 1000) * 6);
             }
-            else {
+            else if ("Sat".equalsIgnoreCase(dow)) {
                 return ((24 * 60 * 60 * 1000) * 7);
+            }
+            else if ("Sun".equalsIgnoreCase(dow)) {
+                return ((24 * 60 * 60 * 1000) * 8);
+            }
+            else {
+                return (24 * 60 * 60 * 1000);
             }
         }
         return 0;

@@ -57,10 +57,10 @@ public class UI {
         public void onCreate(int bg_id, String label, boolean has_amount, ImageLinkCallbackListener listener) {
             LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             li.inflate(R.layout.custom_image_link, this, true);
-            ImageButton ib = (ImageButton) findViewById(R.id.img_btn_link);
-            if (ib != null) {
-                ib.setImageResource(bg_id);
-                ib.setOnClickListener(this);
+            FrameLayout v = (FrameLayout) findViewById(R.id.img_link);
+            if (v != null) {
+                v.setBackgroundResource(bg_id);
+                v.setOnClickListener(this);
             }
             mLabel = label;
             TextView txt_label = (TextView) findViewById(R.id.txt_label);
@@ -84,10 +84,8 @@ public class UI {
 
         @Override
         public void onClick(View v) {
-            if (v instanceof ImageButton) {
-                if (mListener != null)
-                    mListener.onItemClicked(this);
-            }
+            if (mListener != null)
+                mListener.onItemClicked(this);
         }
 
         public void setTotal(int total) {
@@ -229,71 +227,83 @@ public class UI {
         }
     }
 
-    public static class CustomHomeItemWithIcon extends LinearLayout {
+    public static class CustomHomeItemWithIcon extends LinearLayout implements
+            View.OnTouchListener {
 
         public CustomHomeItemWithIcon(Context context) {
             super(context);
         }
 
         ImageView mIcon;
-        TextView mLabel;
+        TextView mTextLabel;
+        String mLabel;
+        ButtonCallbackListener mListener;
         int icon_id_normal, icon_id_pressed, bg_color_normal, bg_color_pressed, text_color_normal,
                 text_color_pressed;
 
         public void onCreate(int icon_id_normal, int icon_id_pressed, int bg_color_normal,
                              int bg_color_pressed, int text_color_normal, int text_color_pressed,
-                             final String label, final ButtonCallbackListener listener) {
+                             String label, ButtonCallbackListener listener) {
             this.icon_id_normal = icon_id_normal;
             this.icon_id_pressed = icon_id_pressed;
             this.bg_color_normal = bg_color_normal;
             this.bg_color_pressed = bg_color_pressed;
             this.text_color_normal = text_color_normal;
             this.text_color_pressed = text_color_pressed;
-            LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater li = (LayoutInflater) getContext()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             li.inflate(R.layout.custom_grid_item_image, this, true);
             mIcon = (ImageView) findViewById(R.id.img_icon);
             if (mIcon != null)
                 mIcon.setImageResource(icon_id_normal);
-            mLabel = (TextView) findViewById(R.id.txt_title);
-            if (mLabel != null) {
-                mLabel.setText(label);
-                mLabel.setTextColor(ContextCompat.getColor(getContext(), text_color_normal));
+            mLabel = label;
+            mTextLabel = (TextView) findViewById(R.id.txt_title);
+            if (mTextLabel != null) {
+                mTextLabel.setText(mLabel);
+                mTextLabel.setTextColor(ContextCompat.getColor(getContext(), text_color_normal));
             }
-            setOnTouchListener(new OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (v instanceof CustomHomeItemWithIcon) {
-                        CustomHomeItemWithIcon p = (CustomHomeItemWithIcon) v;
-                        if (p != null) {
-                            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                                p.setBackgroundColor(ContextCompat.getColor(getContext(), p.bg_color_pressed));
-                                if (mIcon != null)
-                                    mIcon.setImageResource(p.icon_id_pressed);
-                                if (mLabel != null)
-                                    mLabel.setTextColor(ContextCompat.getColor(getContext(), p.text_color_pressed));
-                            }
-                            else if (event.getAction() == MotionEvent.ACTION_UP) {
-                                p.setBackgroundColor(ContextCompat.getColor(getContext(), p.bg_color_normal));
-                                if (mIcon != null)
-                                    mIcon.setImageResource(p.icon_id_normal);
-                                if (mLabel != null)
-                                    mLabel.setTextColor(ContextCompat.getColor(getContext(), p.text_color_normal));
-                                if (listener != null)
-                                    listener.onItemClicked(label);
-                            }
-                            else {
-                                p.setBackgroundColor(ContextCompat.getColor(getContext(), p.bg_color_normal));
-                                if (mIcon != null)
-                                    mIcon.setImageResource(p.icon_id_normal);
-                                if (mLabel != null)
-                                    mLabel.setTextColor(ContextCompat.getColor(getContext(), p.text_color_normal));
-                            }
-                        }
-                    }
-                    return true;
-                }
-            });
+            setOnTouchListener(this);
             setBackgroundColor(ContextCompat.getColor(getContext(), bg_color_normal));
+            mListener = listener;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (v instanceof CustomHomeItemWithIcon) {
+                CustomHomeItemWithIcon p = (CustomHomeItemWithIcon) v;
+                if (p != null) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        p.setBackgroundColor(ContextCompat.getColor(getContext(),
+                                p.bg_color_pressed));
+                        if (mIcon != null)
+                            mIcon.setImageResource(p.icon_id_pressed);
+                        if (mTextLabel != null)
+                            mTextLabel.setTextColor(ContextCompat.getColor(getContext(),
+                                    p.text_color_pressed));
+                    }
+                    else if (event.getAction() == MotionEvent.ACTION_UP) {
+                        p.setBackgroundColor(ContextCompat.getColor(getContext(),
+                                p.bg_color_normal));
+                        if (mIcon != null)
+                            mIcon.setImageResource(p.icon_id_normal);
+                        if (mTextLabel != null)
+                            mTextLabel.setTextColor(ContextCompat.getColor(getContext(),
+                                    p.text_color_normal));
+                        if (mListener != null)
+                            mListener.onItemClicked(mLabel);
+                    }
+                    else {
+                        p.setBackgroundColor(ContextCompat.getColor(getContext(),
+                                p.bg_color_normal));
+                        if (mIcon != null)
+                            mIcon.setImageResource(p.icon_id_normal);
+                        if (mTextLabel != null)
+                            mTextLabel.setTextColor(ContextCompat.getColor(getContext(),
+                                    p.text_color_normal));
+                    }
+                }
+            }
+            return true;
         }
     }
 
@@ -303,8 +313,9 @@ public class UI {
             super(context);
         }
 
-        public void onCreate(String label, int background_id, final ButtonCallbackListener listener) {
-            LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        public void onCreate(String label, int background_id, ButtonCallbackListener listener) {
+            LayoutInflater li = (LayoutInflater) getContext()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             li.inflate(R.layout.custom_image_button, this, true);
             ImageView iv = (ImageView) findViewById(R.id.img_background);
             if (iv != null)
