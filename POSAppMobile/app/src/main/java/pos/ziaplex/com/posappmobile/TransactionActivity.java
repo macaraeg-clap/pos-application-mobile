@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -32,7 +31,7 @@ import java.util.HashMap;
 public class TransactionActivity extends BaseActivity implements TabHost.OnTabChangeListener {
 
     public class StatisticTab extends LinearLayout implements AdapterView.OnItemSelectedListener,
-            View.OnClickListener {
+            UI.ImageLinkCallbackListener {
 
         public StatisticTab(Context context) {
             super(context);
@@ -40,6 +39,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         }
 
         Util.Date mStatisticFrom, mStatisticTo;
+        UI.CustomImageLink balance_link, withdrawal_link, cash_advance_link, payment_link;
 
         private void initialize() {
             setBackgroundColor(Color.WHITE);
@@ -52,37 +52,60 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             Spinner vv = (Spinner) findViewById(R.id.spin_mode);
             if (vv != null)
                 vv.setOnItemSelectedListener(this);
-            ImageButton balance_link = (ImageButton) findViewById(R.id.img_btn_balance);
-            if (balance_link != null)
-                balance_link.setOnClickListener(this);
-            ImageButton withdrawal_link = (ImageButton) findViewById(R.id.img_btn_withdrawal);
-            if (withdrawal_link != null)
-                withdrawal_link.setOnClickListener(this);
-            ImageButton cash_advance_link = (ImageButton) findViewById(R.id.img_btn_cash_advance);
-            if (cash_advance_link != null)
-                cash_advance_link.setOnClickListener(this);
-            ImageButton payment_link = (ImageButton) findViewById(R.id.img_btn_payment);
-            if (payment_link != null)
-                payment_link.setOnClickListener(this);
+            LinearLayout tContent = (LinearLayout) findViewById(R.id.top_content);
+            if (tContent != null) {
+                tContent.addView(UI.createCustomVerticalSeparator(getContext()));
+                balance_link = UI.createCustomImageLink(getContext(),
+                        R.drawable.bg_statistics_balance,
+                        getString(R.string.trans_statistics_balance), false, this);
+                balance_link.setLayoutParams(UI.getLinearLayoutParams(0, LayoutParams.MATCH_PARENT,
+                        1));
+                tContent.addView(balance_link);
+                tContent.addView(UI.createCustomVerticalSeparator(getContext()));
+                withdrawal_link = UI.createCustomImageLink(getContext(),
+                        R.drawable.bg_statistics_withdrawal,
+                        getString(R.string.trans_statistics_withdrawal), true, this);
+                withdrawal_link.setLayoutParams(UI.getLinearLayoutParams(0, LayoutParams.MATCH_PARENT,
+                        1));
+                tContent.addView(withdrawal_link);
+                tContent.addView(UI.createCustomVerticalSeparator(getContext()));
+            }
+            LinearLayout bContent = (LinearLayout) findViewById(R.id.bottom_content);
+            if (bContent != null) {
+                bContent.addView(UI.createCustomVerticalSeparator(getContext()));
+                cash_advance_link = UI.createCustomImageLink(getContext(),
+                        R.drawable.bg_statistics_cash_advance,
+                        getString(R.string.trans_statistics_cash_advance), true, this);
+                cash_advance_link.setLayoutParams(UI.getLinearLayoutParams(0, LayoutParams.MATCH_PARENT,
+                        1));
+                bContent.addView(cash_advance_link);
+                bContent.addView(UI.createCustomVerticalSeparator(getContext()));
+                payment_link = UI.createCustomImageLink(getContext(),
+                        R.drawable.bg_statistics_payment,
+                        getString(R.string.trans_statistics_payment), true, this);
+                payment_link.setLayoutParams(UI.getLinearLayoutParams(0, LayoutParams.MATCH_PARENT,
+                        1));
+                bContent.addView(payment_link);
+                bContent.addView(UI.createCustomVerticalSeparator(getContext()));
+            }
         }
 
-        @Override
-        public void onClick(View v) {
-            if (v instanceof ImageButton) {
-                ImageButton link = (ImageButton) v;
-                if (link != null) {
-                    if (link.getId() == R.id.img_btn_balance) {
-                        // TODO
-                    }
-                    else if (link.getId() == R.id.img_btn_withdrawal) {
-                        // TODO
-                    }
-                    else if (link.getId() == R.id.img_btn_cash_advance) {
-                        // TODO
-                    }
-                    else if (link.getId() == R.id.img_btn_payment) {
-                        // TODO
-                    }
+        public void onItemClicked(UI.CustomImageLink link) {
+            if (link != null) {
+                if (getString(R.string.trans_statistics_balance)
+                        .equalsIgnoreCase(link.getLabel())) {
+                    // TODO
+                }
+                else if (getString(R.string.trans_statistics_withdrawal)
+                        .equalsIgnoreCase(link.getLabel())) {
+                    // TODO
+                }
+                else if (getString(R.string.trans_statistics_cash_advance)
+                        .equalsIgnoreCase(link.getLabel())) {
+                    // TODO
+                }
+                else {
+                    // TODO
                 }
             }
         }
@@ -99,33 +122,39 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                             if ("Last Week".equalsIgnoreCase(parent.getSelectedItem().toString())) {
                                 HashMap date = Util.getDateLastWeek();
                                 if (date != null) {
-                                    vf.setText(getString(R.string.from_label) + " " +
-                                            ((Util.Date) date.get("from"))
-                                            .toMMDDYYYYStringFormat("/"));
-                                    vt.setText(getString(R.string.to_label) + " " +
-                                            ((Util.Date) date.get("to"))
-                                            .toMMDDYYYYStringFormat("/"));
+                                    mStatisticFrom = (Util.Date) date.get("from");
+                                    if (mStatisticFrom != null)
+                                        vf.setText(getString(R.string.from_label) + " " +
+                                                (mStatisticFrom).toMMDDYYYYStringFormat("/"));
+                                    mStatisticTo = (Util.Date) date.get("to");
+                                    if (mStatisticTo != null)
+                                        vt.setText(getString(R.string.to_label) + " " +
+                                                (mStatisticTo).toMMDDYYYYStringFormat("/"));
                                 }
                             }
                             else if ("Last Month".equalsIgnoreCase(parent.getSelectedItem()
                                     .toString())) {
                                 HashMap date = Util.getDateLastMonth();
                                 if (date != null) {
-                                    vf.setText(getString(R.string.from_label) + " " +
-                                            ((Util.Date) date.get("from"))
-                                            .toMMDDYYYYStringFormat("/"));
-                                    vt.setText(getString(R.string.to_label) + " " +
-                                            ((Util.Date) date.get("to"))
-                                            .toMMDDYYYYStringFormat("/"));
+                                    mStatisticFrom = (Util.Date) date.get("from");
+                                    if (mStatisticFrom != null)
+                                        vf.setText(getString(R.string.from_label) + " " +
+                                                (mStatisticFrom).toMMDDYYYYStringFormat("/"));
+                                    mStatisticTo = (Util.Date) date.get("to");
+                                    if (mStatisticTo != null)
+                                        vt.setText(getString(R.string.to_label) + " " +
+                                                (mStatisticTo).toMMDDYYYYStringFormat("/"));
                                 }
                             }
                             else {
-                                vf.setText(getString(R.string.from_label) + " " +
-                                        Util.getDateToday()
-                                        .toMMDDYYYYStringFormat("/"));
-                                vt.setText(getString(R.string.to_label) + " " +
-                                        Util.getDateToday()
-                                        .toMMDDYYYYStringFormat("/"));
+                                mStatisticFrom = Util.getDateToday();
+                                mStatisticTo = Util.getDateToday();
+                                if (mStatisticFrom != null && mStatisticTo != null) {
+                                    vf.setText(getString(R.string.from_label) + " " +
+                                            mStatisticFrom.toMMDDYYYYStringFormat("/"));
+                                    vt.setText(getString(R.string.to_label) + " " +
+                                            mStatisticTo.toMMDDYYYYStringFormat("/"));
+                                }
                             }
                         }
                     }
@@ -145,7 +174,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         private void updateStatisticDetails(String label, TextView vf, TextView vt) { // FIXME
             String fDate = vf.getText().toString();
             String tDate = vt.getText().toString();
-            if ("Balance".equalsIgnoreCase(label)) {
+            /*if ("Balance".equalsIgnoreCase(label)) {
                 // TODO
                 updateTotalBalanceInquiryCount(25);
             }
@@ -173,7 +202,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 updateTotalPaymentAmount("0.00");
                 updateTotalWithdrawalCount(0);
                 updateTotalWithdrawalAmount("0.00");
-            }
+            }*/
         }
 
         public void setDefaultDateRange(int index) {
@@ -182,7 +211,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 v.setSelection(index);
         }
 
-        public void updateTotalBalanceInquiryCount(int total) {
+        /*public void updateTotalBalanceInquiryCount(int total) {
             TextView v = (TextView) findViewById(R.id.txt_bal_total);
             if (v != null)
                 v.setText(String.valueOf(total));
@@ -222,7 +251,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             TextView v = (TextView) findViewById(R.id.txt_payment_amount);
             if (v != null)
                 v.setText(getString(R.string.amount_sign) + " " + amount);
-        }
+        }*/
     }
 
     public class HistoryTab extends LinearLayout implements TabHost.OnTabChangeListener {
@@ -724,7 +753,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         else if (mSelectedTab == STATISTICS) {
             // TODO:
         }
-        final UI.CustomDialogPopup dialog = UI.createDialogPopup(this, title);
+        final UI.CustomDialogPopup dialog = UI.createCustomDialogPopup(this, title);
         LinearLayout p = (LinearLayout) LayoutInflater.from(this)
                 .inflate(R.layout.custom_icon_with_text, null);
         if (p != null) {

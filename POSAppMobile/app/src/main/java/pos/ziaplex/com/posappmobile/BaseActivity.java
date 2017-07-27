@@ -99,7 +99,7 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(new Intent(this, AboutActivity.class));
                 break;
             case R.id.action_log_out:
-                final UI.CustomDialogPopup dialog = UI.createDialogPopup(this, getString(R.string.logout_title));
+                final UI.CustomDialogPopup dialog = UI.createCustomDialogPopup(this, getString(R.string.logout_title));
                 LinearLayout p = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.custom_icon_with_text, null);
                 if (p != null) {
                     ImageView iv = (ImageView) p.findViewById(R.id.img_icon);
@@ -167,7 +167,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showBluetoothDeviceOptions() {
-        final UI.CustomDialogPopup dialog = UI.createDialogPopup(this, getString(R.string.select_device_title));
+        final UI.CustomDialogPopup dialog = UI.createCustomDialogPopup(this, getString(R.string.select_device_title));
         dialog.setDialogContent(LayoutInflater.from(this).inflate(R.layout.device_list, null));
         ListView v = (ListView) dialog.findViewById(R.id.list_device);
         if (v != null) {

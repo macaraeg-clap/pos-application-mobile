@@ -16,7 +16,9 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,9 +34,76 @@ public class UI {
         void onItemClicked(String tag);
     }
 
+    interface ImageLinkCallbackListener {
+
+        void onItemClicked(UI.CustomImageLink link);
+    }
+
     interface DatePickerCallbackListener {
 
         void onDateSelected(int tag, Util.Date date);
+    }
+
+    public static class CustomImageLink extends FrameLayout implements View.OnClickListener {
+
+        public CustomImageLink(Context context) {
+            super(context);
+        }
+
+        ImageLinkCallbackListener mListener;
+        String mLabel;
+        TextView mTextTotal, mTextAmount;
+
+        public void onCreate(int bg_id, String label, boolean has_amount, ImageLinkCallbackListener listener) {
+            LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            li.inflate(R.layout.custom_image_link, this, true);
+            ImageButton ib = (ImageButton) findViewById(R.id.img_btn_link);
+            if (ib != null) {
+                ib.setImageResource(bg_id);
+                ib.setOnClickListener(this);
+            }
+            mLabel = label;
+            TextView txt_label = (TextView) findViewById(R.id.txt_label);
+            if (txt_label != null)
+                txt_label.setText(mLabel);
+            mTextTotal = (TextView) findViewById(R.id.txt_total);
+            if (mTextTotal != null)
+                mTextTotal.setText("0");
+            mTextAmount = (TextView) findViewById(R.id.txt_amount);
+            if (mTextAmount != null) {
+                if (has_amount) {
+                    mTextAmount.setText(getContext().getResources().getString(R.string.amount_sign)
+                            + " 0.00");
+                }
+                else {
+                    removeView(mTextAmount);
+                }
+            }
+            mListener = listener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v instanceof ImageButton) {
+                if (mListener != null)
+                    mListener.onItemClicked(this);
+            }
+        }
+
+        public void setTotal(int total) {
+            if (mTextTotal != null)
+                mTextTotal.setText(String.valueOf(total));
+        }
+
+        public void setAmount(String amount) {
+            if (mTextAmount != null)
+                mTextAmount.setText(getContext().getResources().getString(R.string.amount_sign)
+                        + " " + amount);
+        }
+
+        public String getLabel() {
+            return mLabel;
+        }
     }
 
     public static class CustomDatePicker extends DialogFragment implements
@@ -294,7 +363,29 @@ public class UI {
         }
     }
 
-    public static CustomDialogPopup createDialogPopup(Context context, String title) {
+    public static View createCustomHorizontalSeparator(Context context) {
+        View v = LayoutInflater.from(context).inflate(R.layout.custom_horizontal_separator, null);
+        v.setLayoutParams(getLinearLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                (int) context.getResources().getDimension(R.dimen._1sdp)));
+        return v;
+    }
+
+    public static View createCustomVerticalSeparator(Context context) {
+        View v = LayoutInflater.from(context).inflate(R.layout.custom_vertical_separator, null);
+        v.setLayoutParams(getLinearLayoutParams((int) context.getResources()
+                        .getDimension(R.dimen._1sdp), LinearLayout.LayoutParams.MATCH_PARENT));
+        return v;
+    }
+
+    public static CustomImageLink createCustomImageLink(Context context, int bg_id, String label,
+                                                        boolean has_amount,
+                                                        ImageLinkCallbackListener listener) {
+        CustomImageLink v = new CustomImageLink(context);
+        v.onCreate(bg_id, label, has_amount, listener);
+        return v;
+    }
+
+    public static CustomDialogPopup createCustomDialogPopup(Context context, String title) {
         return CustomDialogPopup.instance(context, title);
     }
 

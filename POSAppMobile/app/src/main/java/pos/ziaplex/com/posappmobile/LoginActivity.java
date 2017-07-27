@@ -118,7 +118,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void showErrorMessage(String title, int error_type) {
-        final UI.CustomDialogPopup dialog = UI.createDialogPopup(this, title);
+        final UI.CustomDialogPopup dialog = UI.createCustomDialogPopup(this, title);
         if (dialog != null) {
             dialog.setDialogTitleBackground(ContextCompat.getColor(this, R.color.colorRed));
             String msg;
