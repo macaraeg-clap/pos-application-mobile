@@ -1,82 +1,63 @@
 package pos.ziaplex.com.posappmobile;
 
+import android.graphics.drawable.BitmapDrawable;
+
 /**
  * Created by jimmy.macaraeg on 10/07/2017.
  */
 
 public class Transaction {
 
-    public Transaction(String status, String amount, String transReference, String accountNumber,
-                       String date, String operatorName, String transType) {
-        mStatus = status;
+    public Transaction(long amount, String account_number, boolean card_holder,
+                       Util.Date expiry_date, String status, Util.Date date_time, String method,
+                       String mode, String transaction_type, String transaction_reference,
+                       String payment_for, String operator_name, String operator_number,
+                       BitmapDrawable offline_validation) {
         mAmount = amount;
-        mTransReference = transReference;
-        mAccountNumber = accountNumber;
-        mDate = date;
-        mOperatorName = operatorName;
-        mTransType = transType;
-    }
-
-    public Transaction(String status, String amount, String accountNumber, String expiryDate, String date,
-                       String method, String mode, String transType, String transReference, String paymentFor,
-                       String operatorName, String operatorNumber) {
+        mAccountNumber = account_number;
+        mCardHolder = card_holder;
+        mExpiryDate = expiry_date;
         mStatus = status;
-        mAmount = amount;
-        mAccountNumber = accountNumber;
-        mExpiryDate = expiryDate;
-        mDate = date;
+        mDateTime = date_time;
         mMethod = method;
         mMode = mode;
-        mTransType = transType;
-        mTransReference = transReference;
-        mPaymentFor = paymentFor;
-        mOperatorName = operatorName;
-        mOperatorNumber = operatorNumber;
+        mTransactionType = transaction_type;
+        mTransactionReference = transaction_reference;
+        mPaymentFor = payment_for;
+        mOperatorName = operator_name;
+        mOperatorNumber = operator_number;
+        mOfflineValidation = offline_validation;
     }
 
-    String mStatus;
-    String mAmount;
-    String mTransReference;
-    String mAccountNumber;
-    String mDate;
-    String mOperatorName;
-    String mTransType;
-    String mExpiryDate;
-    String mMethod;
-    String mMode;
-    String mPaymentFor;
-    String mOperatorNumber;
+    Util.Date mExpiryDate, mDateTime;
+    String mAccountNumber, mStatus, mMethod, mMode, mTransactionType, mTransactionReference,
+        mPaymentFor, mOperatorName, mOperatorNumber;
+    BitmapDrawable mOfflineValidation;
+    boolean mCardHolder;
+    long mAmount;
 
-    public String getStatus() {
-        return mStatus;
-    }
-
-    public String getAmount() {
+    public long getAmount() {
         return mAmount;
-    }
-
-    public String getTransReference() {
-        return mTransReference;
     }
 
     public String getAccountNumber() {
         return mAccountNumber;
     }
 
-    public String getDate() {
-        return mDate;
+    public boolean getCardHolder() {
+        return mCardHolder;
     }
 
-    public String getOperatorName() {
-        return mOperatorName;
-    }
-
-    public String getTransType() {
-        return mTransType;
-    }
-
-    public String getExpiryDate() {
+    public Util.Date getExpiryDate() {
         return mExpiryDate;
+    }
+
+    public String getStatus() {
+        return mStatus;
+    }
+
+    public Util.Date getDateTime() {
+        return mDateTime;
     }
 
     public String getMethod() {
@@ -87,11 +68,27 @@ public class Transaction {
         return mMode;
     }
 
+    public String getTransactionType() {
+        return mTransactionType;
+    }
+
+    public String getTransactionReference() {
+        return mTransactionReference;
+    }
+
     public String getPaymentFor() {
         return mPaymentFor;
     }
 
-    public String getmOperatorNumber() {
+    public String getOperatorName() {
+        return mOperatorName;
+    }
+
+    public String getOperatorNumber() {
         return mOperatorNumber;
+    }
+
+    public BitmapDrawable getOfflineValidation() {
+        return mOfflineValidation;
     }
 }

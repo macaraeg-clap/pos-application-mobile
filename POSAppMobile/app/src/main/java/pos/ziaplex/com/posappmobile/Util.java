@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.text.format.DateFormat;
 
+import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -62,6 +63,21 @@ public class Util {
             v.mYear = year;
             v.mTime = time;
             return v;
+        }
+
+        public static Date forPlusDay(Date date, int n) {
+            return Date.instance(String.valueOf(Integer.valueOf(date.getDay()) + n),
+                    date.getMonth(), date.getYear());
+        }
+
+        public static Date forPlusMonth(Date date, int n) {
+            return Date.instance(date.getDay(),
+                    String.valueOf(Integer.valueOf(date.getMonth()) + n), date.getYear());
+        }
+
+        public static Date forPlusYear(Date date, int n) {
+            return Date.instance(date.getDay(), date.getMonth(),
+                    String.valueOf(Integer.valueOf(date.getYear()) + n));
         }
 
         public static Date forMinusDay(Date date, int n) {
@@ -221,6 +237,11 @@ public class Util {
         return 0;
     }
 
+    public static Date getDateTimeToday() {
+        return Date.instance(getDateDay().getDay(), getDateMonth().getMonth(),
+                getDateYear().getYear(), getDateTime().getTime());
+    }
+
     public static Date getDateToday() {
         return Date.instance(getDateDay().getDay(), getDateMonth().getMonth(),
                 getDateYear().getYear());
@@ -269,5 +290,16 @@ public class Util {
         if (h > 11)
             m = "PM";
         return DateFormat.format("hh:mm", date).toString() + " " + m;
+    }
+
+    public static boolean isWithinDates(Date from_date, Date to_date, Date value) {
+        java.util.Date vDate = new java.util.Date(Util.getDateInMillis(value));
+        return vDate.after(new java.util.Date(Util.getDateInMillis(
+                Util.Date.forMinusDay(from_date, 1)))) && vDate.before(new java.util.Date(
+                Util.getDateInMillis(Util.Date.forPlusDay(to_date, 1))));
+    }
+
+    public static String convertToCurrency(String sign, long value) {
+        return sign + " " + NumberFormat.getCurrencyInstance().format(value).substring(1);
     }
 }

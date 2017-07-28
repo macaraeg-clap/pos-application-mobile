@@ -2,7 +2,7 @@ package pos.ziaplex.com.posappmobile;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -21,7 +21,6 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -40,6 +39,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
 
         Util.Date mStatisticFrom, mStatisticTo;
         UI.CustomImageLink balance_link, withdrawal_link, cash_advance_link, payment_link;
+        Spinner mSpinnerMode;
 
         private void initialize() {
             setBackgroundColor(Color.WHITE);
@@ -49,9 +49,9 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             if (v != null)
                 v.setOnItemSelectedListener(this);
             setDateRangeValue(1);
-            Spinner vv = (Spinner) findViewById(R.id.spin_mode);
-            if (vv != null)
-                vv.setOnItemSelectedListener(this);
+            mSpinnerMode = (Spinner) findViewById(R.id.spin_mode);
+            if (mSpinnerMode != null)
+                mSpinnerMode.setOnItemSelectedListener(this);
             LinearLayout tContent = (LinearLayout) findViewById(R.id.top_content);
             if (tContent != null) {
                 tContent.addView(UI.createCustomVerticalSeparator(getContext()));
@@ -100,7 +100,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     if (tab != null) {
                         HistoryTab.TransmittedTab v = tab.mTransmittedTab;
                         if (v != null) {
-                            v.setModeValue(link.getLabel(), true);
+                            v.setModeValue(link.getLabel());
                             v.setDateFromValue(mStatisticFrom);
                             v.setDateToValue(mStatisticTo);
                         }
@@ -157,10 +157,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                             }
                         }
                     }
-                    /*else if (v.getId() == R.id.spin_mode) {
-                        if (vf != null && vt != null)
-                            updateStatisticDetails(parent.getSelectedItem().toString(), vf, vt);
-                    }*/
+                    updateStatisticResult();
                 }
             }
         }
@@ -175,79 +172,79 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 v.setSelection(index);
         }
 
-        /*private void updateStatisticDetails(String label, TextView vf, TextView vt) { // FIXME
-            if ("Balance".equalsIgnoreCase(label)) {
-                // TODO
-                updateTotalBalanceInquiryCount(25);
+        public void updateStatisticResult() {
+            String type = "all";
+            if (mSpinnerMode != null)
+                type = mSpinnerMode.getSelectedItem().toString();
+            ArrayList<Transaction> v = TransactionListData.getListData(), res = new ArrayList<>();
+            for (int i = 0; i < v.size(); i++) {
+                Transaction trans = v.get(i);
+                if (trans != null) {
+                    if (Util.isWithinDates(mStatisticFrom, mStatisticTo, trans.getDateTime()))
+                        res.add(trans);
+                }
             }
-            else if ("Cash Advance".equalsIgnoreCase(label)) {
-                // TODO
-                updateTotalCashAdvanceCount(1);
-                updateTotalCashAdvanceAmount("5,000.00");
+            if ("balance".equalsIgnoreCase(type)) {
+                updateBalanceInquiryStatisticDetails(res);
             }
-            else if ("Payment".equalsIgnoreCase(label)) {
-                // TODO
-                updateTotalPaymentCount(146);
-                updateTotalPaymentAmount("52,000.00");
+            else if ("cash advance".equalsIgnoreCase(type)) {
+                updateCashAdvanceStatisticDetails(res);
             }
-            else if ("Withdrawal".equalsIgnoreCase(label)) {
-                // TODO
-                updateTotalWithdrawalCount(12);
-                updateTotalWithdrawalAmount("10,000.00");
+            else if ("payment".equalsIgnoreCase(type)) {
+                updatePaymentStatisticDetails(res);
+            }
+            else if ("withdrawal".equalsIgnoreCase(type)) {
+                updateWithdrawalStatisticDetails(res);
             }
             else {
-                // TODO
-                updateTotalBalanceInquiryCount(0);
-                updateTotalCashAdvanceCount(0);
-                updateTotalCashAdvanceAmount("0.00");
-                updateTotalPaymentCount(0);
-                updateTotalPaymentAmount("0.00");
-                updateTotalWithdrawalCount(0);
-                updateTotalWithdrawalAmount("0.00");
+                updateBalanceInquiryStatisticDetails(res);
+                updateWithdrawalStatisticDetails(res);
+                updateCashAdvanceStatisticDetails(res);
+                updatePaymentStatisticDetails(res);
             }
         }
 
-        public void updateTotalBalanceInquiryCount(int total) {
-            TextView v = (TextView) findViewById(R.id.txt_bal_total);
-            if (v != null)
-                v.setText(String.valueOf(total));
+        private void updateBalanceInquiryStatisticDetails(ArrayList<Transaction> data) {
+            if (balance_link != null && data != null) {
+                ArrayList<Transaction> v = TransactionListData
+                        .getByTransactionType(data, "balance");
+                if (v != null)
+                    balance_link.setTotal(v.size());
+            }
         }
 
-        public void updateTotalWithdrawalCount(int total) {
-            TextView v = (TextView) findViewById(R.id.txt_withdrawal_total);
-            if (v != null)
-                v.setText(String.valueOf(total));
+        private void updateWithdrawalStatisticDetails(ArrayList<Transaction> data) {
+            if (withdrawal_link != null && data != null) {
+                ArrayList<Transaction> v = TransactionListData
+                        .getByTransactionType(data, "withdrawal");
+                if (v != null) {
+                    withdrawal_link.setTotal(v.size());
+                    withdrawal_link.setAmount(TransactionListData.getTotalAmount(v));
+                }
+            }
         }
 
-        public void updateTotalWithdrawalAmount(String amount) {
-            TextView v = (TextView) findViewById(R.id.txt_withdrawal_amount);
-            if (v != null)
-                v.setText(getString(R.string.amount_sign) + " " + amount);
+        private void updateCashAdvanceStatisticDetails(ArrayList<Transaction> data) {
+            if (cash_advance_link != null && data != null) {
+                ArrayList<Transaction> v = TransactionListData
+                        .getByTransactionType(data, "cash advance");
+                if (v != null) {
+                    cash_advance_link.setTotal(v.size());
+                    cash_advance_link.setAmount(TransactionListData.getTotalAmount(v));
+                }
+            }
         }
 
-        public void updateTotalCashAdvanceCount(int total) {
-            TextView v = (TextView) findViewById(R.id.txt_advance_total);
-            if (v != null)
-                v.setText(String.valueOf(total));
+        private void updatePaymentStatisticDetails(ArrayList<Transaction> data) {
+            if (payment_link != null && data != null) {
+                ArrayList<Transaction> v = TransactionListData
+                        .getByTransactionType(data, "payment");
+                if (v != null) {
+                    payment_link.setTotal(v.size());
+                    payment_link.setAmount(TransactionListData.getTotalAmount(v));
+                }
+            }
         }
-
-        public void updateTotalCashAdvanceAmount(String amount) {
-            TextView v = (TextView) findViewById(R.id.txt_advance_amount);
-            if (v != null)
-                v.setText(getString(R.string.amount_sign) + " " + amount);
-        }
-
-        public void updateTotalPaymentCount(int total) {
-            TextView v = (TextView) findViewById(R.id.txt_payment_total);
-            if (v != null)
-                v.setText(String.valueOf(total));
-        }
-
-        public void updateTotalPaymentAmount(String amount) {
-            TextView v = (TextView) findViewById(R.id.txt_payment_amount);
-            if (v != null)
-                v.setText(getString(R.string.amount_sign) + " " + amount);
-        }*/
     }
 
     public class HistoryTab extends LinearLayout implements TabHost.OnTabChangeListener {
@@ -300,22 +297,14 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     mButtonTo.setText(mDateTo.toMMDDYYYYStringFormat("/"));
             }
 
-            public void setModeValue(String label, boolean is_contain) {
+            public void setModeValue(String label) {
                 Spinner v = (Spinner) findViewById(R.id.spin_mode);
                 if (v != null) {
                     for(int i = 0; i < v.getCount(); i++){
                         String value = v.getItemAtPosition(i).toString();
-                        if (is_contain) {
-                            if (label.contains(value)) {
-                                v.setSelection(i);
-                                break;
-                            }
-                        }
-                        else {
-                            if(label.equalsIgnoreCase(value)){
-                                v.setSelection(i);
-                                break;
-                            }
+                        if (label.contains(value)) {
+                            v.setSelection(i);
+                            break;
                         }
                     }
                 }
@@ -493,45 +482,14 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         public void updateTransactionList(String mode) {
             if (mListAdapter != null)
                 mListAdapter.clear();
-            // FIXME: Dummy data
-            ArrayList<Transaction> res_list = new ArrayList<>();
-            ArrayList<Transaction> temp_list = new ArrayList<>();
-            temp_list.add(new Transaction("offline", "100.00", "123456789", "Cash",
-                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Payment"));
-            temp_list.add(new Transaction("offline", "200.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Payment"));
-            temp_list.add(new Transaction("approved", "0.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Balance"));
-            temp_list.add(new Transaction("approved", "0.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Withdrawal"));
-            temp_list.add(new Transaction("approved", "1,500.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Cash Advance"));
-            temp_list.add(new Transaction("offline", "100.00", "123456789", "Cash",
-                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Payment"));
-            temp_list.add(new Transaction("offline", "200.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Payment"));
-            temp_list.add(new Transaction("approved", "0.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Balance"));
-            temp_list.add(new Transaction("approved", "0.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Withdrawal"));
-            temp_list.add(new Transaction("approved", "1,500.00", "123456789", "xxxx xxxx xxxx 0000",
-                    Util.getDateTime(new Date()).getTime(), "Yves Tayao", "Cash Advance"));
+            ArrayList<Transaction> v;
             if("all".equalsIgnoreCase(mode)) {
-                res_list = temp_list;
+                v = TransactionListData.getListData();
             }
             else {
-                for (int i = 0; i < temp_list.size(); i++) {
-                    Transaction trans = temp_list.get(i);
-                    if (trans != null) {
-                        if (trans.getTransType().equalsIgnoreCase(mode))
-                            res_list.add(trans);
-                    }
-                }
+                v = TransactionListData.getByTransactionType(mode);
             }
-            TransactionListTask task = new TransactionListTask(mListAdapter, mListView,
-                    mProgressContainer);
-            if (task != null)
-                task.execute(res_list);
+            new TransactionListTask(mListAdapter, mListView, mProgressContainer).execute(v);
         }
 
         public void updateDateDisplay() {
@@ -558,12 +516,14 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             p.addView(LayoutInflater.from(getContext())
                         .inflate(R.layout.last_transaction_summary, null));
             addView(p);
+            updateDetails();
         }
 
-        public void updateDetails(Transaction trans) {
+        public void updateDetails() {
+            Transaction trans = TransactionListData.getLastTransaction();
             if (trans != null) {
                 String status = trans.getStatus();
-                String type = trans.getTransType();
+                String type = trans.getTransactionType();
                 String mode = trans.getMode();
                 LinearLayout bgCard = (LinearLayout) findViewById(R.id.bg_status);
                 TextView txtStatus = (TextView) findViewById(R.id.txt_status);
@@ -582,12 +542,13 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                                 R.color.colorGreen));
                 }
                 if (txtStatus != null)
-                    txtStatus.setText(status);
+                    txtStatus.setText(status.toUpperCase());
                 TextView txtAmount = (TextView) findViewById(R.id.txt_amount);
                 if (txtAmount != null)
-                    txtAmount.setText(getString(R.string.amount_sign) + " " + trans.getAmount());
+                    txtAmount.setText(Util.convertToCurrency(getString(R.string.amount_sign),
+                            trans.getAmount()));
                 TextView txtAccountNo = (TextView) findViewById(R.id.txt_account_no);
-                if ("Cash".equalsIgnoreCase(mode)) {
+                if ("cash".equalsIgnoreCase(mode)) {
                     if (txtAccountNo != null)
                         txtAccountNo.setVisibility(INVISIBLE);
                     LinearLayout cardHolder = (LinearLayout) findViewById(R.id.card_holder_details);
@@ -598,12 +559,18 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     if (txtAccountNo != null)
                         txtAccountNo.setText(trans.getAccountNumber());
                     TextView txtExpiryDate = (TextView) findViewById(R.id.txt_expiry_date);
-                    if (txtExpiryDate != null)
-                        txtExpiryDate.setText(trans.getExpiryDate());
+                    if (txtExpiryDate != null) {
+                        Util.Date d = trans.getExpiryDate();
+                        if (d != null)
+                            txtExpiryDate.setText(d.toMonthYearStringFormat("/"));
+                    }
                 }
                 TextView txtDateTime = (TextView) findViewById(R.id.txt_date_time);
-                if (txtDateTime != null)
-                    txtDateTime.setText(trans.getDate());
+                if (txtDateTime != null) {
+                    Util.Date d = trans.getDateTime();
+                    if (d != null)
+                        txtDateTime.setText(d.toMMDDYYYYStringFormat("/") + " @ " + d.getTime());
+                }
                 TextView txtMethod = (TextView) findViewById(R.id.txt_method);
                 if (txtMethod != null)
                     txtMethod.setText(trans.getMethod());
@@ -615,11 +582,11 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     txtTransType.setText(type);
                 TextView txtTransReference = (TextView) findViewById(R.id.txt_reference);
                 if (txtTransReference != null)
-                    txtTransReference.setText(trans.getTransReference().toString());
+                    txtTransReference.setText(trans.getTransactionReference());
                 if ("payment".equalsIgnoreCase(type)) {
                     TextView txtPaymentFor = (TextView) findViewById(R.id.txt_payment_for);
                     if (txtPaymentFor != null)
-                        txtPaymentFor.setText(trans.getPaymentFor().toString());
+                        txtPaymentFor.setText(trans.getPaymentFor());
                 }
                 else {
                     LinearLayout v = (LinearLayout) findViewById(R.id.pay_for_details);
@@ -628,17 +595,17 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 }
                 TextView txtOperatorName = (TextView) findViewById(R.id.txt_operator_name);
                 if (txtOperatorName != null)
-                    txtOperatorName.setText(trans.getOperatorName().toString());
+                    txtOperatorName.setText(trans.getOperatorName());
                 TextView txtOperatorNumber = (TextView) findViewById(R.id.txt_operator_number);
                 if (txtOperatorNumber != null)
-                    txtOperatorNumber.setText(trans.getmOperatorNumber().toString());
+                    txtOperatorNumber.setText(trans.getOperatorNumber());
+                ImageView v = (ImageView) findViewById(R.id.img_offline_validation);
+                if (v != null) {
+                    BitmapDrawable img = trans.getOfflineValidation();
+                    if (img != null)
+                        v.setImageDrawable(img);
+                }
             }
-        }
-
-        public void updateQRCode(Drawable img) {
-            ImageView v = (ImageView) findViewById(R.id.img_offline_validation);
-            if (v != null && img != null)
-                v.setImageDrawable(img);
         }
     }
 
@@ -649,7 +616,6 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
     public static TransactionActivity mInstance = null;
     public static TabHost mTabHost;
     public static HistoryTab mHistoryTab;
-    LastTransactionTab mLastTransactionTab;
     final static int LAST = 0, DAILY = 1, HISTORY = 2, STATISTICS = 3;
     int mSelectedTab = 0;
 
@@ -681,7 +647,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 if (mTabHost != null) {
                     mTabHost.setup();
                     setupTab(createContent((LinearLayout) v.findViewById(R.id.first_tab),
-                            mLastTransactionTab = new LastTransactionTab(this)),
+                            new LastTransactionTab(this)),
                             getString(R.string.trans_last_label), mTabHost);
                     setupTab(v.findViewById(R.id.second_tab),
                             getString(R.string.trans_daily_label), mTabHost);
@@ -693,7 +659,6 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 }
                 content.addView(v);
             }
-            updateLastTransactionDetails();
         }
     }
 
@@ -719,19 +684,6 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         }
         if (TransactionActivity.mInstance != null)
             TransactionActivity.mInstance.invalidateOptionsMenu();
-    }
-
-    public void updateLastTransactionDetails() {
-        // FIXME: change static values
-        if (mLastTransactionTab != null) {
-            mLastTransactionTab.updateDetails(new Transaction("APPROVED", "1,000.00", "xxxx xxxx xxxx 0000",
-                    Util.getDateMonthYear("MM", "YY").toMonthYearStringFormat("/"),
-                    Util.getDateToday().toMMDDYYYYStringFormat("/") + " @ " +
-                            Util.getDateTime().getTime(),
-                    "Contact", "Debit Card - RCBC", "Withdrawal", "123456789",
-                    "BIR", "Juan Dela Cruz", "11111111"));
-            mLastTransactionTab.updateQRCode(null);
-        }
     }
 
     private View createContent(LinearLayout parent, View child) {

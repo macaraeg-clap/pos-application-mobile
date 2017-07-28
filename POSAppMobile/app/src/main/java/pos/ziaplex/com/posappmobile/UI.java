@@ -72,8 +72,8 @@ public class UI {
             mTextAmount = (TextView) findViewById(R.id.txt_amount);
             if (mTextAmount != null) {
                 if (has_amount) {
-                    mTextAmount.setText(getContext().getResources().getString(R.string.amount_sign)
-                            + " 0.00");
+                    mTextAmount.setText(Util.convertToCurrency(getContext().getResources()
+                            .getString(R.string.amount_sign), 0));
                 }
                 else {
                     removeView(mTextAmount);
@@ -93,10 +93,10 @@ public class UI {
                 mTextTotal.setText(String.valueOf(total));
         }
 
-        public void setAmount(String amount) {
+        public void setAmount(long amount) {
             if (mTextAmount != null)
-                mTextAmount.setText(getContext().getResources().getString(R.string.amount_sign)
-                        + " " + amount);
+                mTextAmount.setText(Util.convertToCurrency(getContext().getResources()
+                        .getString(R.string.amount_sign), amount));
         }
 
         public String getLabel() {

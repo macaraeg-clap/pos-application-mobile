@@ -57,7 +57,8 @@ public class BaseActivity extends AppCompatActivity {
             bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             bar.setDisplayShowCustomEnabled(true);
             bar.setCustomView(R.layout.header_base);
-            bar.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.header_background_green));
+            bar.setBackgroundDrawable(ContextCompat.getDrawable(this,
+                    R.drawable.header_background_green));
         }
     }
 
@@ -99,8 +100,10 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(new Intent(this, AboutActivity.class));
                 break;
             case R.id.action_log_out:
-                final UI.CustomDialogPopup dialog = UI.createCustomDialogPopup(this, getString(R.string.logout_title));
-                LinearLayout p = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.custom_icon_with_text, null);
+                final UI.CustomDialogPopup dialog = UI.createCustomDialogPopup(this,
+                        getString(R.string.logout_title));
+                LinearLayout p = (LinearLayout) LayoutInflater.from(this)
+                        .inflate(R.layout.custom_icon_with_text, null);
                 if (p != null) {
                     ImageView iv = (ImageView) p.findViewById(R.id.img_icon);
                     if (iv != null)
@@ -115,7 +118,8 @@ public class BaseActivity extends AppCompatActivity {
                         LinearLayout.LayoutParams.WRAP_CONTENT));
                 Button btnPos = UI.createCustomButton(this, getString(R.string.action_yes));
                 btnPos.setBackgroundColor(ContextCompat.getColor(this, R.color.colorGreen));
-                btnPos.setLayoutParams(UI.getLinearLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                btnPos.setLayoutParams(
+                        UI.getLinearLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT, 1));
                 btnPos.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -128,7 +132,8 @@ public class BaseActivity extends AppCompatActivity {
                 v.addView(btnPos);
                 Button btnNeg = UI.createCustomButton(this, getString(R.string.action_no));
                 btnNeg.setBackgroundColor(ContextCompat.getColor(this, R.color.colorRed));
-                btnNeg.setLayoutParams(UI.getLinearLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                btnNeg.setLayoutParams(
+                        UI.getLinearLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT, 1));
                 btnNeg.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -163,15 +168,18 @@ public class BaseActivity extends AppCompatActivity {
         return list;
     }
 
-    public void onDeviceItemSelected(AdapterView<?> parent, final View view, int position, long id) {
+    public void onDeviceItemSelected(AdapterView<?> parent, final View view, int position,
+                                     long id) {
     }
 
     public void showBluetoothDeviceOptions() {
-        final UI.CustomDialogPopup dialog = UI.createCustomDialogPopup(this, getString(R.string.select_device_title));
+        final UI.CustomDialogPopup dialog = UI.createCustomDialogPopup(this,
+                getString(R.string.select_device_title));
         dialog.setDialogContent(LayoutInflater.from(this).inflate(R.layout.device_list, null));
         ListView v = (ListView) dialog.findViewById(R.id.list_device);
         if (v != null) {
-            v.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getBluetoothDeviceOptions()));
+            v.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1,
+                    getBluetoothDeviceOptions()));
             v.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {

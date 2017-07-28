@@ -61,22 +61,23 @@ public class TransactionAdapter extends BaseAdapter {
             }
             TextView tvAmount = (TextView) rv.findViewById(R.id.txt_amount);
             if (tvAmount != null)
-                tvAmount.setText(mContext.getString(R.string.amount_sign) + " " + trans.getAmount());
+                tvAmount.setText(Util.convertToCurrency(mContext.getString(R.string.amount_sign),
+                        trans.getAmount()));
             TextView tvTransRef = (TextView) rv.findViewById(R.id.txt_trans_reference);
             if (tvTransRef != null)
-                tvTransRef.setText(trans.getTransReference());
+                tvTransRef.setText(trans.getTransactionReference());
             TextView tvAccountNo = (TextView) rv.findViewById(R.id.txt_account_no);
             if (tvAccountNo != null)
                 tvAccountNo.setText(trans.getAccountNumber());
             TextView tvDate = (TextView) rv.findViewById(R.id.txt_time);
             if (tvDate != null)
-                tvDate.setText(trans.getDate());
+                tvDate.setText(trans.getDateTime().getTime());
             TextView tvOperator = (TextView) rv.findViewById(R.id.txt_operator_name);
             if (tvOperator != null)
                 tvOperator.setText(trans.getOperatorName());
             TextView tvTransType = (TextView) rv.findViewById(R.id.txt_trans_type);
             if (tvTransType != null)
-                tvTransType.setText(trans.getTransType());
+                tvTransType.setText(trans.getTransactionType());
         }
         return rv;
     }

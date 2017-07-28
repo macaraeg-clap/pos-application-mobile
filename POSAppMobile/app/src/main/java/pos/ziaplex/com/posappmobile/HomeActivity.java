@@ -6,6 +6,8 @@ import android.support.v4.content.ContextCompat;
 import android.widget.GridLayout;
 import android.widget.ScrollView;
 
+import java.util.ArrayList;
+
 /**
  * Created by jimmy.macaraeg on 04/07/2017.
  */
@@ -15,6 +17,7 @@ public class HomeActivity extends BaseActivity implements UI.ButtonCallbackListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        createTransactionDataList(); // FIXME:
     }
 
     @Override
@@ -79,5 +82,51 @@ public class HomeActivity extends BaseActivity implements UI.ButtonCallbackListe
         else if (getString(R.string.action_operator).equals(tag)) {
             startActivity(new Intent(getBaseContext(), OperatorInfoActivity.class));
         }
+    }
+
+    private void createTransactionDataList() {
+        // FIXME: Dummy Values
+        ArrayList<Transaction> list = new ArrayList<>();
+        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.getDateTimeToday(), "Magnetic", "Credit Card - VISA", "Cash Advance",
+                "123456789", null, "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(1000, "09xx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.getDateTimeToday(), "Contactless", "eWallet", "Withdrawal",
+                "123456789", null, "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.getDateTimeToday(), "Contact", "Debit Card - RCBC", "Withdrawal",
+                "123456789", null, "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(1000, "09xx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "offline",
+                Util.getDateTimeToday(), "Contactless", "eWallet", "Payment", "123456789",
+                "BIR", "Juan Dela Cruz", "11111111", null)); // TODO: Implement QR code display
+        list.add(new Transaction(1000, null, false,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.getDateTimeToday(), null, "Cash", "Payment", "123456789", "BIR",
+                "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.getDateTimeToday(), "Contactless", "eWallet", "Payment", "123456789",
+                "BIR", "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.getDateTimeToday(), "Contact", "Debit Card - RCBC", "Payment",
+                "123456789", "BIR", "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.getDateTimeToday(), "Magnetic", "Credit Card - VISA", "Payment",
+                "123456789", "BIR", "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(0, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.getDateTimeToday(), "Contactless", "e-Wallet", "Balance Inquiry",
+                "123456789", "BIR", "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(0, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.getDateTimeToday(), "Magnetic", "Debit Card - RCBC", "Balance Inquiry",
+                "123456789", "BIR", "Juan Dela Cruz", "11111111", null));
+        TransactionListData.create(list);
     }
 }
