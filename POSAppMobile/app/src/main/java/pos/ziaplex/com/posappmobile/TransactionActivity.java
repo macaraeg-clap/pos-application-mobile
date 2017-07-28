@@ -173,9 +173,6 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         }
 
         public void updateStatisticResult() {
-            String type = "all";
-            if (mSpinnerMode != null)
-                type = mSpinnerMode.getSelectedItem().toString();
             ArrayList<Transaction> v = TransactionListData.getListData(), res = new ArrayList<>();
             for (int i = 0; i < v.size(); i++) {
                 Transaction trans = v.get(i);
@@ -184,6 +181,9 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                         res.add(trans);
                 }
             }
+            String type = "all";
+            if (mSpinnerMode != null)
+                type = mSpinnerMode.getSelectedItem().toString();
             if ("balance".equalsIgnoreCase(type)) {
                 updateBalanceInquiryStatisticDetails(res);
             }
@@ -482,14 +482,17 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         public void updateTransactionList(String mode) {
             if (mListAdapter != null)
                 mListAdapter.clear();
-            ArrayList<Transaction> v;
-            if("all".equalsIgnoreCase(mode)) {
-                v = TransactionListData.getListData();
-            }
-            else {
+            ArrayList<Transaction> v = TransactionListData.getListData(), res = new ArrayList<>();
+            if (!"all".equalsIgnoreCase(mode))
                 v = TransactionListData.getByTransactionType(mode);
+            for (int i = 0; i < v.size(); i++) {
+                Transaction trans = v.get(i);
+                if (trans != null) {
+                    if (Util.getDateToday().toString().equals(trans.getDateTime().toString()))
+                        res.add(trans);
+                }
             }
-            new TransactionListTask(mListAdapter, mListView, mProgressContainer).execute(v);
+            new TransactionListTask(mListAdapter, mListView, mProgressContainer).execute(res);
         }
 
         public void updateDateDisplay() {
