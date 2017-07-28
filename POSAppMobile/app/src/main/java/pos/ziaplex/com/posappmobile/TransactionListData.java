@@ -94,6 +94,20 @@ public class TransactionListData {
         return getByTransactionType(type).size();
     }
 
+    public static ArrayList<Transaction> getByStatus(String status) {
+        ArrayList<Transaction> v = new ArrayList<>();
+        if (mData != null) {
+            for (int i = 0; i < getSize(); i++) {
+                Transaction trans = getTransactionData(i);
+                if (trans != null) {
+                    if (trans.getStatus().toLowerCase().contains(status.toLowerCase()))
+                        v.add(trans);
+                }
+            }
+        }
+        return v;
+    }
+
     public static long getTotalAmount(ArrayList<Transaction> list) {
         long amount = 0;
         if (list != null) {

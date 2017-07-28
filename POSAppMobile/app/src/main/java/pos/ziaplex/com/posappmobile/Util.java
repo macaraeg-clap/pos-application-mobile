@@ -67,32 +67,35 @@ public class Util {
 
         public static Date forPlusDay(Date date, int n) {
             return Date.instance(String.valueOf(Integer.valueOf(date.getDay()) + n),
-                    date.getMonth(), date.getYear());
+                    date.getMonth(), date.getYear(), date.getTime());
         }
 
         public static Date forPlusMonth(Date date, int n) {
             return Date.instance(date.getDay(),
-                    String.valueOf(Integer.valueOf(date.getMonth()) + n), date.getYear());
+                    String.valueOf(Integer.valueOf(date.getMonth()) + n), date.getYear(),
+                    date.getTime());
         }
 
         public static Date forPlusYear(Date date, int n) {
             return Date.instance(date.getDay(), date.getMonth(),
-                    String.valueOf(Integer.valueOf(date.getYear()) + n));
+                    String.valueOf(Integer.valueOf(date.getYear()) + n), date.getTime());
         }
 
         public static Date forMinusDay(Date date, int n) {
             return Date.instance(String.valueOf(Integer.valueOf(date.getDay()) - n),
-                    date.getMonth(), date.getYear());
+                    date.getMonth(), date.getYear(), date.getTime());
         }
 
         public static Date forMinusMonth(Date date, int n) {
             return Date.instance(date.getDay(),
-                    String.valueOf(Integer.valueOf(date.getMonth()) - n), date.getYear());
+                    String.valueOf(Integer.valueOf(date.getMonth()) - n), date.getYear(),
+                    date.getTime());
         }
 
         public static Date forMinusYear(Date date, int n) {
             return Date.instance(date.getDay(), date.getMonth(),
-                    String.valueOf(Integer.valueOf(date.getYear()) - n));
+                    String.valueOf(Integer.valueOf(date.getYear()) - n),
+                    date.getTime());
         }
 
         String mDay, mMonth, mYear, mTime;
@@ -168,10 +171,12 @@ public class Util {
         java.util.Date date = gc.getTime();
         hm.put("from", Date.instance(DateFormat.format("dd", date).toString(),
                 DateFormat.format("MM", date).toString(),
-                DateFormat.format("yyyy", date).toString()));
+                DateFormat.format("yyyy", date).toString(),
+                getDateTime(date).getTime()));
         hm.put("to", Date.instance(String.valueOf(gc.getActualMaximum(Calendar.DAY_OF_MONTH)),
                 DateFormat.format("MM", date).toString(),
-                DateFormat.format("yyyy", date).toString()));
+                DateFormat.format("yyyy", date).toString(),
+                getDateTime(date).getTime()));
         return hm;
     }
 
@@ -198,11 +203,13 @@ public class Util {
                 ((24 * 60 * 60 * 1000) * 6)));
         hm.put("from", Util.Date.instance(DateFormat.format("dd", fDate).toString(),
                 DateFormat.format("MM", fDate).toString(),
-                DateFormat.format("yyyy", fDate).toString()));
+                DateFormat.format("yyyy", fDate).toString(),
+                getDateTime(fDate).getTime()));
         java.util.Date tDate = new java.util.Date(mDate.getTime() - getDayDOWStamp(mDate));
         hm.put("to", Util.Date.instance(DateFormat.format("dd", tDate).toString(),
                 DateFormat.format("MM", tDate).toString(),
-                DateFormat.format("yyyy", tDate).toString()));
+                DateFormat.format("yyyy", tDate).toString(),
+                getDateTime(tDate).getTime()));
         return hm;
     }
 

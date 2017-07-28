@@ -133,20 +133,54 @@ public class HomeActivity extends BaseActivity implements UI.ButtonCallbackListe
         HashMap<String, Util.Date> date = Util.getDateLastWeek();
         list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
                 Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
-                Util.Date.forPlusDay(date.get("from"), 4), "Contact", "Debit Card - RCBC", "Withdrawal",
-                "123456789", null, "Juan Dela Cruz", "11111111", null));
+                Util.Date.forPlusDay(date.get("from"), 4), "Contact", "Debit Card - RCBC",
+                "Withdrawal", "123456789", null, "Juan Dela Cruz", "11111111", null));
         list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
                 Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
-                Util.Date.forPlusDay(date.get("from"), 2), "Contactless", "eWallet", "Payment", "123456789",
-                "BIR", "Juan Dela Cruz", "11111111", null));
+                Util.Date.forPlusDay(date.get("from"), 2), "Contactless", "eWallet", "Payment",
+                "123456789", "BIR", "Juan Dela Cruz", "11111111", null));
         list.add(new Transaction(0, "xxxx xxxx xxxx 0000", true,
                 Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
-                Util.Date.forPlusDay(date.get("from"), 2), "Magnetic", "Debit Card - RCBC", "Balance Inquiry",
+                Util.Date.forPlusDay(date.get("from"), 2), "Magnetic", "Debit Card - RCBC",
+                "Balance Inquiry", "123456789", "BIR", "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.Date.forPlusDay(date.get("from"), 1), "Magnetic", "Credit Card - VISA",
+                "Cash Advance", "123456789", null, "Juan Dela Cruz", "11111111", null));
+        // Last Month
+        date = Util.getDateLastMonth();
+        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.Date.forPlusDay(date.get("from"), 4), "Contact", "Debit Card - RCBC",
+                "Withdrawal", "123456789", null, "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.Date.forPlusDay(date.get("from"), 4), "Contact", "Debit Card - RCBC",
+                "Withdrawal", "123456789", null, "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.Date.forPlusDay(date.get("from"), 2), "Contactless", "eWallet", "Payment",
                 "123456789", "BIR", "Juan Dela Cruz", "11111111", null));
         list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
                 Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
-                Util.Date.forPlusDay(date.get("from"), 1), "Magnetic", "Credit Card - VISA", "Cash Advance",
-                "123456789", null, "Juan Dela Cruz", "11111111", null));
+                Util.Date.forPlusDay(date.get("from"), 2), "Contactless", "eWallet", "Payment",
+                "123456789", "BIR", "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(0, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.Date.forPlusDay(date.get("from"), 2), "Magnetic", "Debit Card - RCBC",
+                "Balance Inquiry", "123456789", "BIR", "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(0, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.Date.forPlusDay(date.get("from"), 2), "Magnetic", "Debit Card - RCBC",
+                "Balance Inquiry", "123456789", "BIR", "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.Date.forPlusDay(date.get("from"), 1), "Magnetic", "Credit Card - VISA",
+                "Cash Advance", "123456789", null, "Juan Dela Cruz", "11111111", null));
+        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
+                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+                Util.Date.forPlusDay(date.get("from"), 1), "Magnetic", "Credit Card - VISA",
+                "Cash Advance", "123456789", null, "Juan Dela Cruz", "11111111", null));
         TransactionListData.create(list);
     }
 }

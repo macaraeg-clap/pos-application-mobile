@@ -98,7 +98,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     host.setCurrentTab(2);
                     HistoryTab tab = TransactionActivity.mHistoryTab;
                     if (tab != null) {
-                        HistoryTab.TransmittedTab v = tab.mTransmittedTab;
+                        HistoryTab.BaseTransmittedTab v = tab.mTransmittedTab;
                         if (v != null) {
                             v.setModeValue(link.getLabel());
                             v.setDateFromValue(mStatisticFrom);
@@ -249,23 +249,19 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
 
     public class HistoryTab extends LinearLayout implements TabHost.OnTabChangeListener {
 
-        public class UntransmittedTab extends TransmittedTab {
+        public class BaseTransmittedTab extends LinearLayout implements UI.DatePickerCallbackListener,
+                View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-            public UntransmittedTab(Context context) {
-                super(context);
-            }
-        }
-
-        public class TransmittedTab extends LinearLayout implements UI.DatePickerCallbackListener,
-                View.OnClickListener {
-
-            public TransmittedTab(Context context) {
+            public BaseTransmittedTab(Context context) {
                 super(context);
                 mInstance = this;
                 initialize();
             }
 
-            TransmittedTab mInstance;
+            BaseTransmittedTab mInstance;
+            TransactionAdapter mListAdapter;
+            LinearLayout mProgressContainer;
+            ListView mListView;
             Button mButtonFrom, mButtonTo;
             Util.Date mDateToday = null, mDateFrom = null, mDateTo = null;
 
@@ -282,18 +278,42 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     mButtonTo = (Button) v.findViewById(R.id.btn_to);
                     if (mButtonTo != null)
                         mButtonTo.setOnClickListener(this);
+                    Spinner sMode = (Spinner) findViewById(R.id.spin_mode);
+                    if (sMode != null)
+                        sMode.setOnItemSelectedListener(this);
+                    mProgressContainer = (LinearLayout) v.findViewById(R.id.progress_container);
+                    mProgressContainer.setVisibility(View.VISIBLE);
+                    mListView = (ListView) v.findViewById(R.id.history_list);
+                    mListView.setAdapter(mListAdapter = new TransactionAdapter(getBaseContext()));
+                    updateTransactionList(mListAdapter, mListView, mProgressContainer);
                 }
+            }
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //if (parent != null)
+                    //updateTransactionList(parent.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+
+            public void updateTransactionList(TransactionAdapter adapter, ListView list,
+                                              LinearLayout progress) {
+                if (adapter != null)
+                    adapter.clear();
             }
 
             public void setDateFromValue(Util.Date date) {
                 mDateFrom = date;
-                if (mButtonFrom != null)
+                if (mButtonFrom != null && mDateFrom != null)
                     mButtonFrom.setText(mDateFrom.toMMDDYYYYStringFormat("/"));
             }
 
             public void setDateToValue(Util.Date date) {
                 mDateTo = date;
-                if (mButtonTo != null)
+                if (mButtonTo != null && mDateTo != null)
                     mButtonTo.setText(mDateTo.toMMDDYYYYStringFormat("/"));
             }
 
@@ -316,7 +336,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     mDateToday = Util.getDateToday();
                     Button btn = (Button) v;
                     if (btn != null) {
-                        UI.CustomDatePicker dp = null;
+                        UI.CustomDatePicker dp;
                         int tag;
                         if (btn.getId() == R.id.btn_from) {
                             if (mDateFrom == null && mDateTo == null) {
@@ -370,10 +390,49 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             public void onDateSelected(int tag, Util.Date date) {
                 if (tag == UI.CustomDatePicker.DATE_FROM) {
                     setDateFromValue(date);
+                    return;
                 }
-                else {
-                    setDateToValue(date);
-                }
+                setDateToValue(date);
+            }
+        }
+
+        public class UntransmittedTab extends BaseTransmittedTab {
+
+            public UntransmittedTab(Context context) {
+                super(context);
+            }
+
+            @Override
+            public void updateTransactionList(TransactionAdapter adapter, ListView list,
+                                              LinearLayout progress) {
+                super.updateTransactionList(adapter, list, progress);
+                new TransactionListTask(adapter, list, progress)
+                        .execute(TransactionListData.getByStatus("offline"));
+            }
+        }
+
+        public class TransmittedTab extends BaseTransmittedTab {
+
+            public TransmittedTab(Context context) {
+                super(context);
+            }
+
+            @Override
+            public void updateTransactionList(TransactionAdapter adapter, ListView list,
+                                              LinearLayout progress) {
+                super.updateTransactionList(adapter, list, progress);
+                ArrayList<Transaction> v = TransactionListData.getByStatus("approved"),
+                        res = new ArrayList<>();
+                /*if (!"all".equalsIgnoreCase(mode))
+                    v = TransactionListData.getByTransactionType(mode);
+                for (int i = 0; i < v.size(); i++) {
+                    Transaction trans = v.get(i);
+                    if (trans != null) {
+                        if (Util.getDateToday().toString().equals(trans.getDateTime().toString()))
+                            res.add(trans);
+                    }
+                }*/
+                new TransactionListTask(adapter, list, progress).execute(v);
             }
         }
 
@@ -382,7 +441,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             initialize();
         }
 
-        public TransmittedTab mTransmittedTab;
+        public BaseTransmittedTab mTransmittedTab;
 
         private void initialize() {
             setBackgroundColor(Color.WHITE);
@@ -392,8 +451,10 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             if (host != null) {
                 host.setup();
                 setupTab(createContent((LinearLayout) findViewById(R.id.first_tab),
-                        mTransmittedTab = new TransmittedTab(getBaseContext())), getString(R.string.trans_transmitted_label), host);
-                setupTab(findViewById(R.id.second_tab), getString(R.string.trans_untransmitted_label), host);
+                        mTransmittedTab = new TransmittedTab(getBaseContext())),
+                        getString(R.string.trans_transmitted_label), host);
+                setupTab(findViewById(R.id.second_tab),
+                        getString(R.string.trans_untransmitted_label), host);
                 host.setOnTabChangedListener(this);
             }
         }
@@ -403,13 +464,17 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             if (getString(R.string.trans_untransmitted_label).equals(tabId)) {
                 createContent((LinearLayout) findViewById(R.id.second_tab),
                         new UntransmittedTab(getBaseContext()));
+                return;
             }
+            createContent((LinearLayout) findViewById(R.id.first_tab),
+                    new TransmittedTab(getBaseContext()));
         }
 
         private View createContent(LinearLayout parent, View child) {
             if (parent != null) {
-                if (parent.getChildCount() < 1)
-                    parent.addView(child);
+                if (parent.getChildCount() > 0)
+                    parent.removeAllViews();
+                parent.addView(child);
                 return parent;
             }
             return null;
@@ -670,20 +735,22 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         if (getString(R.string.trans_daily_label).equals(tabId)) {
             mSelectedTab = DAILY;
             createContent((LinearLayout) findViewById(R.id.second_tab),
-                    new DailyTab(getBaseContext()));
+                    new DailyTab(this));
         }
         else if (getString(R.string.trans_history_label).equals(tabId)) {
             mSelectedTab = HISTORY;
             createContent((LinearLayout) findViewById(R.id.third_tab),
-                    mHistoryTab = new HistoryTab(getBaseContext()));
+                    mHistoryTab = new HistoryTab(this));
         }
         else if (getString(R.string.trans_statistics_label).equals(tabId)) {
             mSelectedTab = STATISTICS;
             createContent((LinearLayout) findViewById(R.id.fourth_tab),
-                    new StatisticTab(getBaseContext()));
+                    new StatisticTab(this));
         }
         else {
             mSelectedTab = LAST;
+            createContent((LinearLayout) findViewById(R.id.first_tab),
+                    new LastTransactionTab(this));
         }
         if (TransactionActivity.mInstance != null)
             TransactionActivity.mInstance.invalidateOptionsMenu();
