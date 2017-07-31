@@ -165,7 +165,33 @@
             android:layout_height="match_parent" />
 
         <LinearLayout
+            android:id="@+id/no_found_container"
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_found_label"
+                android:textAlignment="center" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/progress_container"
+            android:background="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"

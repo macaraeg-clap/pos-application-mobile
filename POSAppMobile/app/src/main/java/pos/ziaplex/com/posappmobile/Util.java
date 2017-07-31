@@ -98,7 +98,7 @@ public class Util {
                     date.getTime());
         }
 
-        String mDay, mMonth, mYear, mTime;
+        String mDay = "", mMonth = "", mYear = "", mTime = "";
 
         public Date duplicate() {
             return Date.instance(getDay(), getMonth(), getYear(), getTime());
@@ -120,8 +120,12 @@ public class Util {
             return mTime;
         }
 
-        public String toString() {
+        public String getDate() {
             return mMonth + "-" + mDay + "-" + mYear;
+        }
+
+        public String toString() {
+            return mMonth + "-" + mDay + "-" + mYear + " " + mTime;
         }
 
         public String toMonthYearStringFormat(String sep) {

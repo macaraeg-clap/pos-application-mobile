@@ -27,6 +27,7 @@
     <string name="select_device_title">SELECT BLUETOOTH DEVICE</string>
     <string name="preferred_device_label">Set as preferred device</string>
     <string name="action_proceed_payment_label">Proceed with Payment</string>
+    <string name="no_found_label">No transactions found ..</string>
     <string-array name="date_range_array">
         <item>Last Month</item>
         <item>Last Week</item>

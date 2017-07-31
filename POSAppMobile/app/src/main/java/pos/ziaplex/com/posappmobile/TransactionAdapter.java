@@ -69,9 +69,9 @@ public class TransactionAdapter extends BaseAdapter {
             TextView tvAccountNo = (TextView) rv.findViewById(R.id.txt_account_no);
             if (tvAccountNo != null)
                 tvAccountNo.setText(trans.getAccountNumber());
-            TextView tvDate = (TextView) rv.findViewById(R.id.txt_time);
-            if (tvDate != null)
-                tvDate.setText(trans.getDateTime().getTime());
+            TextView tvTime = (TextView) rv.findViewById(R.id.txt_time);
+            if (tvTime != null)
+                tvTime.setText(trans.getDateTime().getTime());
             TextView tvOperator = (TextView) rv.findViewById(R.id.txt_operator_name);
             if (tvOperator != null)
                 tvOperator.setText(trans.getOperatorName());

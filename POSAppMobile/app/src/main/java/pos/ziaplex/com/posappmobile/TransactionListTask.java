@@ -14,20 +14,23 @@ import java.util.ArrayList;
 public class TransactionListTask extends AsyncTask<ArrayList<Transaction>, Void, ArrayList<Transaction>> {
 
     public TransactionListTask(TransactionAdapter list_adapter, ListView list_view,
-                               LinearLayout progress_container) {
+                               LinearLayout progress_container, LinearLayout no_found_container) {
         mListAdapter = list_adapter;
         mListView = list_view;
         mProgressContainer = progress_container;
+        mNoFoundContainer = no_found_container;
     }
 
     TransactionAdapter mListAdapter;
     ListView mListView;
-    LinearLayout mProgressContainer;
+    LinearLayout mProgressContainer, mNoFoundContainer;
 
     @Override
     protected void onPreExecute() {
         if (mListView != null)
             mListView.setVisibility(View.GONE);
+        if (mNoFoundContainer != null)
+            mNoFoundContainer.setVisibility(View.GONE);
         if (mProgressContainer != null)
             mProgressContainer.setVisibility(View.VISIBLE);
     }
@@ -36,10 +39,22 @@ public class TransactionListTask extends AsyncTask<ArrayList<Transaction>, Void,
     protected void onPostExecute(ArrayList<Transaction> result) {
         if (mListAdapter != null) {
             mListAdapter.clear();
-            if (mListView != null)
-                mListView.setVisibility(View.VISIBLE);
-            for (int i = 0; i < result.size(); i++)
-                mListAdapter.addTransaction(result.get(i));
+            int sz = result.size();
+            if (sz > 0) {
+                if (mListView != null)
+                    mListView.setVisibility(View.VISIBLE);
+                if (mNoFoundContainer != null)
+                    mNoFoundContainer.setVisibility(View.GONE);
+                for (int i = 0; i < sz; i++)
+                    mListAdapter.addTransaction(result.get(i));
+            }
+            else {
+                if (mListView != null)
+                    mListView.setVisibility(View.GONE);
+                if (mNoFoundContainer != null)
+                    mNoFoundContainer.setVisibility(View.VISIBLE);
+            }
+
         }
         if (mProgressContainer != null)
             mProgressContainer.setVisibility(View.GONE);

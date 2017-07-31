@@ -173,12 +173,15 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         }
 
         public void updateStatisticResult() {
-            ArrayList<Transaction> v = TransactionListData.getListData(), res = new ArrayList<>();
-            for (int i = 0; i < v.size(); i++) {
-                Transaction trans = v.get(i);
-                if (trans != null) {
-                    if (Util.isWithinDates(mStatisticFrom, mStatisticTo, trans.getDateTime()))
-                        res.add(trans);
+            ArrayList<Transaction> v = TransactionListData.getByStatus("approved"),
+                    res = new ArrayList<>();
+            if (v != null) {
+                for (int i = 0; i < v.size(); i++) {
+                    Transaction trans = v.get(i);
+                    if (trans != null) {
+                        if (Util.isWithinDates(mStatisticFrom, mStatisticTo, trans.getDateTime()))
+                            res.add(trans);
+                    }
                 }
             }
             String type = "all";
@@ -260,10 +263,10 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
 
             BaseTransmittedTab mInstance;
             TransactionAdapter mListAdapter;
-            LinearLayout mProgressContainer;
+            LinearLayout mProgressContainer, mNoFoundContainer;
             ListView mListView;
             Button mButtonFrom, mButtonTo;
-            Util.Date mDateToday = null, mDateFrom = null, mDateTo = null;
+            Util.Date mDateFrom = null, mDateTo = null, mDateToday = null;
 
             private void initialize() {
                 setBackgroundColor(Color.WHITE);
@@ -278,43 +281,71 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     mButtonTo = (Button) v.findViewById(R.id.btn_to);
                     if (mButtonTo != null)
                         mButtonTo.setOnClickListener(this);
-                    Spinner sMode = (Spinner) findViewById(R.id.spin_mode);
-                    if (sMode != null)
-                        sMode.setOnItemSelectedListener(this);
                     mProgressContainer = (LinearLayout) v.findViewById(R.id.progress_container);
                     mProgressContainer.setVisibility(View.VISIBLE);
+                    mNoFoundContainer = (LinearLayout) v.findViewById(R.id.no_found_container);
                     mListView = (ListView) v.findViewById(R.id.history_list);
                     mListView.setAdapter(mListAdapter = new TransactionAdapter(getBaseContext()));
-                    updateTransactionList(mListAdapter, mListView, mProgressContainer);
+                    updatedSelectedModeList();
+                }
+            }
+
+            private void updatedSelectedModeList() {
+                Spinner sMode = (Spinner) findViewById(R.id.spin_mode);
+                if (sMode != null) {
+                    sMode.setOnItemSelectedListener(this);
+                    updateTransactionList(sMode.getSelectedItem().toString());
                 }
             }
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                //if (parent != null)
-                    //updateTransactionList(parent.getSelectedItem().toString());
+                if (parent != null)
+                    updateTransactionList(parent.getSelectedItem().toString());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
 
-            public void updateTransactionList(TransactionAdapter adapter, ListView list,
-                                              LinearLayout progress) {
-                if (adapter != null)
-                    adapter.clear();
+            public void updateTransactionList(String mode) {
+                if (mListAdapter != null)
+                    mListAdapter.clear();
+                ArrayList<Transaction> v = getTransactionList(), res = new ArrayList<>();
+                if (!"all".equalsIgnoreCase(mode))
+                    v = TransactionListData.getByTransactionType(v, mode);
+                for (int i = 0; i < v.size(); i++) {
+                    Transaction trans = v.get(i);
+                    if (trans != null) {
+                        if (mDateFrom != null && mDateTo != null) {
+                            if (Util.isWithinDates(mDateFrom, mDateTo, trans.getDateTime()))
+                                res.add(trans);
+                        }
+                        else {
+                            res.add(trans);
+                        }
+                    }
+                }
+                new TransactionListTask(mListAdapter, mListView, mProgressContainer,
+                        mNoFoundContainer).execute(res);
+            }
+
+            public ArrayList<Transaction> getTransactionList() {
+                return new ArrayList<>();
             }
 
             public void setDateFromValue(Util.Date date) {
                 mDateFrom = date;
                 if (mButtonFrom != null && mDateFrom != null)
                     mButtonFrom.setText(mDateFrom.toMMDDYYYYStringFormat("/"));
+                updatedSelectedModeList();
             }
 
             public void setDateToValue(Util.Date date) {
                 mDateTo = date;
                 if (mButtonTo != null && mDateTo != null)
                     mButtonTo.setText(mDateTo.toMMDDYYYYStringFormat("/"));
+                updatedSelectedModeList();
             }
 
             public void setModeValue(String label) {
@@ -403,11 +434,8 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             }
 
             @Override
-            public void updateTransactionList(TransactionAdapter adapter, ListView list,
-                                              LinearLayout progress) {
-                super.updateTransactionList(adapter, list, progress);
-                new TransactionListTask(adapter, list, progress)
-                        .execute(TransactionListData.getByStatus("offline"));
+            public ArrayList<Transaction> getTransactionList() {
+                return TransactionListData.getByStatus("offline");
             }
         }
 
@@ -418,21 +446,8 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             }
 
             @Override
-            public void updateTransactionList(TransactionAdapter adapter, ListView list,
-                                              LinearLayout progress) {
-                super.updateTransactionList(adapter, list, progress);
-                ArrayList<Transaction> v = TransactionListData.getByStatus("approved"),
-                        res = new ArrayList<>();
-                /*if (!"all".equalsIgnoreCase(mode))
-                    v = TransactionListData.getByTransactionType(mode);
-                for (int i = 0; i < v.size(); i++) {
-                    Transaction trans = v.get(i);
-                    if (trans != null) {
-                        if (Util.getDateToday().toString().equals(trans.getDateTime().toString()))
-                            res.add(trans);
-                    }
-                }*/
-                new TransactionListTask(adapter, list, progress).execute(v);
+            public ArrayList<Transaction> getTransactionList() {
+                return TransactionListData.getByStatus("approved");
             }
         }
 
@@ -510,7 +525,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
     public class DailyTab extends LinearLayout implements AdapterView.OnItemSelectedListener {
 
         TransactionAdapter mListAdapter;
-        LinearLayout mProgressContainer;
+        LinearLayout mProgressContainer, mNoFoundContainer;
         ListView mListView;
 
         public DailyTab(Context context) {
@@ -524,6 +539,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             addView(LayoutInflater.from(getContext()).inflate(R.layout.daily_list, null));
             mProgressContainer = (LinearLayout) findViewById(R.id.progress_container);
             mProgressContainer.setVisibility(View.VISIBLE);
+            mNoFoundContainer = (LinearLayout) findViewById(R.id.no_found_container);
             mListView = (ListView) findViewById(R.id.daily_list);
             mListView.setAdapter(mListAdapter = new TransactionAdapter(getBaseContext()));
             updateDateDisplay();
@@ -549,21 +565,24 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 mListAdapter.clear();
             ArrayList<Transaction> v = TransactionListData.getListData(), res = new ArrayList<>();
             if (!"all".equalsIgnoreCase(mode))
-                v = TransactionListData.getByTransactionType(mode);
-            for (int i = 0; i < v.size(); i++) {
-                Transaction trans = v.get(i);
-                if (trans != null) {
-                    if (Util.getDateToday().toString().equals(trans.getDateTime().toString()))
-                        res.add(trans);
+                v = TransactionListData.getByTransactionType(v, mode);
+            if (v != null) {
+                for (int i = 0; i < v.size(); i++) {
+                    Transaction trans = v.get(i);
+                    if (trans != null) {
+                        if (Util.getDateToday().getDate().equals(trans.getDateTime().getDate()))
+                            res.add(trans);
+                    }
                 }
             }
-            new TransactionListTask(mListAdapter, mListView, mProgressContainer).execute(res);
+            new TransactionListTask(mListAdapter, mListView, mProgressContainer,
+                    mNoFoundContainer).execute(res);
         }
 
         public void updateDateDisplay() {
             TextView v = (TextView) findViewById(R.id.txt_date_today);
             if (v != null)
-                v.setText(Util.getDateToday().toString());
+                v.setText(Util.getDateToday().getDate());
         }
     }
 
