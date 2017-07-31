@@ -1,6 +1,7 @@
 package pos.ziaplex.com.posappmobile;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +19,73 @@ import java.util.ArrayList;
 
 public class ConnectionActivity extends BaseActivity {
 
+    public class ConnectionListTask  extends AsyncTask<ArrayList<Connection>, Void, ArrayList<Connection>> {
+
+        public ConnectionListTask(ConnectionAdapter list_adapter, ListView list_view,
+                                   LinearLayout progress_container, LinearLayout no_found_container) {
+            mListAdapter = list_adapter;
+            mListView = list_view;
+            mProgressContainer = progress_container;
+            mNoFoundContainer = no_found_container;
+        }
+
+        ConnectionAdapter mListAdapter;
+        ListView mListView;
+        LinearLayout mProgressContainer, mNoFoundContainer;
+
+        @Override
+        protected void onPreExecute() {
+            if (mListView != null)
+                mListView.setVisibility(View.GONE);
+            if (mNoFoundContainer != null)
+                mNoFoundContainer.setVisibility(View.GONE);
+            if (mProgressContainer != null)
+                mProgressContainer.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Connection> result) {
+            if (mListAdapter != null) {
+                mListAdapter.clear();
+                int sz = result.size();
+                if (sz > 0) {
+                    if (mListView != null)
+                        mListView.setVisibility(View.VISIBLE);
+                    if (mNoFoundContainer != null)
+                        mNoFoundContainer.setVisibility(View.GONE);
+                    for (int i = 0; i < sz; i++)
+                        mListAdapter.addConnection(result.get(i));
+                }
+                else {
+                    if (mListView != null)
+                        mListView.setVisibility(View.GONE);
+                    if (mNoFoundContainer != null)
+                        mNoFoundContainer.setVisibility(View.VISIBLE);
+                }
+            }
+            if (mProgressContainer != null)
+                mProgressContainer.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... progress) {
+        }
+
+        @Override
+        protected ArrayList<Connection> doInBackground(ArrayList<Connection>... params) {
+            return params[0];
+        }
+    }
+
     public class ConnectionAdapter extends BaseAdapter {
 
         private Context mContext;
         private LayoutInflater mInflater;
         private ArrayList<Connection> mDataSource;
 
-        public ConnectionAdapter(Context context, ArrayList<Connection> items) {
+        public ConnectionAdapter(Context context) {
             mContext = context;
-            mDataSource = items;
+            mDataSource = new ArrayList<>();
             mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -69,7 +128,23 @@ public class ConnectionActivity extends BaseActivity {
             }
             return rv;
         }
+
+        public void clear() {
+            if (mDataSource != null)
+                mDataSource.clear();
+            notifyDataSetChanged();
+        }
+
+        public void addConnection(Connection con) {
+            if (mDataSource != null)
+                mDataSource.add(con);
+            notifyDataSetChanged();
+        }
     }
+
+    ListView mListView;
+    ConnectionAdapter mListAdapter;
+    LinearLayout mProgressContainer, mNoFoundContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,14 +156,19 @@ public class ConnectionActivity extends BaseActivity {
     public void onCreateContent(LinearLayout content) {
         if (content != null) {
             content.addView(LayoutInflater.from(this).inflate(R.layout.activity_connection, null));
-            ListView v = (ListView) content.findViewById(R.id.connection_list);
-            if (v != null)
-                v.setAdapter(new ConnectionAdapter(getBaseContext(), createConnectionList()));
+            mListView = (ListView) content.findViewById(R.id.connection_list);
+            if (mListView != null)
+                mListView.setAdapter(mListAdapter = new ConnectionAdapter(getBaseContext()));
+            mProgressContainer = (LinearLayout) content.findViewById(R.id.progress_container);
+            mProgressContainer.setVisibility(View.VISIBLE);
+            mNoFoundContainer = (LinearLayout) content.findViewById(R.id.no_found_container);
+            new ConnectionListTask(mListAdapter, mListView, mProgressContainer, mNoFoundContainer)
+                    .execute(createConnectionList());
         }
     }
 
     private ArrayList<Connection> createConnectionList() {
-        ArrayList<Connection> l = new ArrayList<>();
+        ArrayList<Connection> l = new ArrayList<>(); // FIXME:
         l.add(new Connection("12345646513", "Hardware 6.0", "24/02/2016", "Firmware 3.42"));
         l.add(new Connection("12345646555", "Hardware 6.0", "24/02/2016", "Firmware 3.42"));
         return l;

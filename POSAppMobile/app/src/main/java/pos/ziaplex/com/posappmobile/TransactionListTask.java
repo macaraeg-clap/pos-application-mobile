@@ -54,7 +54,6 @@ public class TransactionListTask extends AsyncTask<ArrayList<Transaction>, Void,
                 if (mNoFoundContainer != null)
                     mNoFoundContainer.setVisibility(View.VISIBLE);
             }
-
         }
         if (mProgressContainer != null)
             mProgressContainer.setVisibility(View.GONE);
