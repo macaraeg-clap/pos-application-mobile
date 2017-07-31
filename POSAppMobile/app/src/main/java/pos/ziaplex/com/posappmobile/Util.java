@@ -13,42 +13,42 @@ import java.util.HashMap;
  * Created by jimmy.macaraeg on 06/07/2017.
  */
 
-public class Util {
+class Util {
 
-    public static class Date {
+    static class Date {
 
-        public static Date forTime(String time) {
+        static Date forTime(String time) {
             Date v = new Date();
             v.mTime = time;
             return v;
         }
 
-        public static Date forDay(String day) {
+        static Date forDay(String day) {
             Date v = new Date();
             v.mDay = day;
             return v;
         }
 
-        public static Date forMonth(String month) {
+        static Date forMonth(String month) {
             Date v = new Date();
             v.mMonth = month;
             return v;
         }
 
-        public static Date forYear(String year) {
+        static Date forYear(String year) {
             Date v = new Date();
             v.mYear = year;
             return v;
         }
 
-        public static Date forMonthYear(String month, String year) {
+        static Date forMonthYear(String month, String year) {
             Date v = new Date();
             v.mMonth = month;
             v.mYear = year;
             return v;
         }
 
-        public static Date instance(String day, String month, String year) {
+        static Date instance(String day, String month, String year) {
             Date v = new Date();
             v.mDay = day;
             v.mMonth = month;
@@ -56,7 +56,7 @@ public class Util {
             return v;
         }
 
-        public static Date instance(String day, String month, String year, String time) {
+        static Date instance(String day, String month, String year, String time) {
             Date v = new Date();
             v.mDay = day;
             v.mMonth = month;
@@ -65,7 +65,7 @@ public class Util {
             return v;
         }
 
-        public static Date forPlusDay(Date date, int n) {
+        static Date forPlusDay(Date date, int n) {
             return Date.instance(String.valueOf(Integer.valueOf(date.getDay()) + n),
                     date.getMonth(), date.getYear(), date.getTime());
         }
@@ -76,12 +76,12 @@ public class Util {
                     date.getTime());
         }
 
-        public static Date forPlusYear(Date date, int n) {
+        static Date forPlusYear(Date date, int n) {
             return Date.instance(date.getDay(), date.getMonth(),
                     String.valueOf(Integer.valueOf(date.getYear()) + n), date.getTime());
         }
 
-        public static Date forMinusDay(Date date, int n) {
+        static Date forMinusDay(Date date, int n) {
             return Date.instance(String.valueOf(Integer.valueOf(date.getDay()) - n),
                     date.getMonth(), date.getYear(), date.getTime());
         }
@@ -104,23 +104,23 @@ public class Util {
             return Date.instance(getDay(), getMonth(), getYear(), getTime());
         }
 
-        public String getDay() {
+        String getDay() {
             return mDay;
         }
 
-        public String getMonth() {
+        String getMonth() {
             return mMonth;
         }
 
-        public String getYear() {
+        String getYear() {
             return mYear;
         }
 
-        public String getTime() {
+        String getTime() {
             return mTime;
         }
 
-        public String getDate() {
+        String getDate() {
             return mMonth + "-" + mDay + "-" + mYear;
         }
 
@@ -128,11 +128,11 @@ public class Util {
             return mMonth + "-" + mDay + "-" + mYear + " " + mTime;
         }
 
-        public String toMonthYearStringFormat(String sep) {
+        String toMonthYearStringFormat(String sep) {
             return mMonth + sep + mYear;
         }
 
-        public String toMMDDYYYYStringFormat(String sep) {
+        String toMMDDYYYYStringFormat(String sep) {
             String dd, mm;
             int d = Integer.valueOf(mDay);
             if (d < 10) {
@@ -154,19 +154,19 @@ public class Util {
 
     static java.util.Date mDate;
 
-    public static int getScreenWidth(Activity activity) {
+    static int getScreenWidth(Activity activity) {
         Point p = new Point();
         activity.getWindowManager().getDefaultDisplay().getSize(p);
         return p.x;
     }
 
-    public static int getScreenHeight(Activity activity) {
+    static int getScreenHeight(Activity activity) {
         Point p = new Point();
         activity.getWindowManager().getDefaultDisplay().getSize(p);
         return p.y;
     }
 
-    public static HashMap getDateLastMonth() {
+    static HashMap getDateLastMonth() {
         if (mDate == null)
             mDate = new java.util.Date();
         HashMap<String, Date> hm = new HashMap();
@@ -184,7 +184,7 @@ public class Util {
         return hm;
     }
 
-    public static long getDateInMillis(Date date) {
+    static long getDateInMillis(Date date) {
         GregorianCalendar v;
         if (date == null) {
             v = new GregorianCalendar(Integer.valueOf(getDateYear().getYear()),
@@ -199,7 +199,7 @@ public class Util {
         return v.getTimeInMillis();
     }
 
-    public static HashMap getDateLastWeek() {
+    static HashMap getDateLastWeek() {
         if (mDate == null)
             mDate = new java.util.Date();
         HashMap<String, Date> hm = new HashMap();
@@ -217,7 +217,7 @@ public class Util {
         return hm;
     }
 
-    private static long getDayDOWStamp(java.util.Date date) {
+    static long getDayDOWStamp(java.util.Date date) {
         if (date != null) {
             String dow = DateFormat.format("EEE", date).toString();
             if ("Mon".equalsIgnoreCase(dow)) {
@@ -248,54 +248,54 @@ public class Util {
         return 0;
     }
 
-    public static Date getDateTimeToday() {
+    static Date getDateTimeToday() {
         return Date.instance(getDateDay().getDay(), getDateMonth().getMonth(),
                 getDateYear().getYear(), getDateTime().getTime());
     }
 
-    public static Date getDateToday() {
+    static Date getDateToday() {
         return Date.instance(getDateDay().getDay(), getDateMonth().getMonth(),
                 getDateYear().getYear());
     }
 
-    public static Date getDateDay() {
+    static Date getDateDay() {
         if (mDate == null)
             mDate = new java.util.Date();
         return Date.forDay(DateFormat.format("dd", mDate).toString());
     }
 
-    public static Date getDateMonth() {
+    static Date getDateMonth() {
         if (mDate == null)
             mDate = new java.util.Date();
         return Date.forMonth(DateFormat.format("MM", mDate).toString());
     }
 
-    public static Date getDateYear() {
+    static Date getDateYear() {
         if (mDate == null)
             mDate = new java.util.Date();
         return Date.forYear(DateFormat.format("yyyy", mDate).toString());
     }
 
-    public static Date getDateMonthYear(String month_format, String year_format) {
+    static Date getDateMonthYear(String month_format, String year_format) {
         if (mDate == null)
             mDate = new java.util.Date();
         return Date.forMonthYear(DateFormat.format(month_format, mDate).toString(),
                 DateFormat.format(year_format, mDate).toString());
     }
 
-    public static Date getDateTime() {
+    static Date getDateTime() {
         if (mDate == null)
             mDate = new java.util.Date();
         return Date.forTime(getMeridiem(mDate));
     }
 
-    public static Date getDateTime(java.util.Date date) {
+    static Date getDateTime(java.util.Date date) {
         if (date == null)
             date = new java.util.Date();
         return Date.forTime(getMeridiem(date));
     }
 
-    private static String getMeridiem(java.util.Date date) {
+    static String getMeridiem(java.util.Date date) {
         String m = "AM";
         int h = Integer.valueOf(DateFormat.format("HH", date).toString());
         if (h > 11)
@@ -303,14 +303,14 @@ public class Util {
         return DateFormat.format("hh:mm", date).toString() + " " + m;
     }
 
-    public static boolean isWithinDates(Date from_date, Date to_date, Date value) {
+    static boolean isWithinDates(Date from_date, Date to_date, Date value) {
         java.util.Date vDate = new java.util.Date(Util.getDateInMillis(value));
         return vDate.after(new java.util.Date(Util.getDateInMillis(
                 Util.Date.forMinusDay(from_date, 1)))) && vDate.before(new java.util.Date(
                 Util.getDateInMillis(Util.Date.forPlusDay(to_date, 1))));
     }
 
-    public static String convertToCurrency(String sign, long value) {
+    static String convertToCurrency(String sign, long value) {
         return sign + " " + NumberFormat.getCurrencyInstance().format(value).substring(1);
     }
 }

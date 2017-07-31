@@ -27,9 +27,7 @@ public class LoginActivity extends BaseActivity {
     static int EMPTY = 0;
     static int NOT_MATCHED = 1;
 
-    UI.CustomTextEditWithIcon mCode;
-    UI.CustomTextEditWithIcon oCode;
-    UI.CustomTextEditWithIcon oPin;
+    UI.CustomTextEditWithIcon mCode, oCode, oPin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,12 +110,12 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void goToHome() {
+    void goToHome() {
         startActivity(new Intent(getBaseContext(), HomeActivity.class));
         finish();
     }
 
-    private void showErrorMessage(String title, int error_type) {
+    void showErrorMessage(String title, int error_type) {
         final UI.CustomDialogPopup dialog = UI.createCustomDialogPopup(this, title);
         if (dialog != null) {
             dialog.setDialogTitleBackground(ContextCompat.getColor(this, R.color.colorRed));
@@ -153,7 +151,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void clearFields() {
+    void clearFields() {
         if (mCode != null)
             mCode.clearValue();
         if (oCode != null)

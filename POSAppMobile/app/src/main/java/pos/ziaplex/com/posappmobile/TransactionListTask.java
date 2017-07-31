@@ -11,9 +11,9 @@ import java.util.ArrayList;
  * Created by jimmy.macaraeg on 25/07/2017.
  */
 
-public class TransactionListTask extends AsyncTask<ArrayList<Transaction>, Void, ArrayList<Transaction>> {
+class TransactionListTask extends AsyncTask<ArrayList<Transaction>, Void, ArrayList<Transaction>> {
 
-    public TransactionListTask(TransactionAdapter list_adapter, ListView list_view,
+    TransactionListTask(TransactionAdapter list_adapter, ListView list_view,
                                LinearLayout progress_container, LinearLayout no_found_container) {
         mListAdapter = list_adapter;
         mListView = list_view;

@@ -11,20 +11,20 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by jimmy.macaraeg on 25/07/2017.
+ * Created by jimmy.macaraeg on 31/07/2017.
  */
 
 public class TransactionAdapter extends BaseAdapter {
 
-    private Context mContext;
-    private LayoutInflater mInflater;
-    private ArrayList<Transaction> mDataSource;
-
-    public TransactionAdapter(Context context) {
+    TransactionAdapter(Context context) {
         mContext = context;
         mDataSource = new ArrayList<>();
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
+    Context mContext;
+    LayoutInflater mInflater;
+    ArrayList<Transaction> mDataSource;
 
     @Override
     public int getCount() {
@@ -82,13 +82,13 @@ public class TransactionAdapter extends BaseAdapter {
         return rv;
     }
 
-    public void addTransaction(Transaction trans) {
+    void addTransaction(Transaction trans) {
         if (mDataSource != null)
             mDataSource.add(trans);
         notifyDataSetChanged();
     }
 
-    public void clear() {
+    void clear() {
         if (mDataSource != null)
             mDataSource.clear();
         notifyDataSetChanged();

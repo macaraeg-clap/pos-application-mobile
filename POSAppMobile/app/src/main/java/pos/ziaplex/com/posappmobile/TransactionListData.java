@@ -7,18 +7,17 @@ import pos.ziaplex.com.posappmobile.Transaction;
 /**
  * Created by jimmy.macaraeg on 27/07/2017.
  */
+ class TransactionListData {
 
-public class TransactionListData {
-
-    public TransactionListData() {
+    TransactionListData() {
         mData = new ArrayList<>();
     }
 
-    public static TransactionListData create() {
+    static TransactionListData create() {
         return new TransactionListData();
     }
 
-    public static TransactionListData create(ArrayList<Transaction> data) {
+    static TransactionListData create(ArrayList<Transaction> data) {
         TransactionListData v = create();
         v.updateListData(data);
         return v;
@@ -26,7 +25,7 @@ public class TransactionListData {
 
     static ArrayList<Transaction> mData;
 
-    public static ArrayList<Transaction> getListData() {
+    static ArrayList<Transaction> getListData() {
         return mData;
     }
 
@@ -35,17 +34,17 @@ public class TransactionListData {
             mData.clear();
     }
 
-    public static Transaction getLastTransaction() {
+    static Transaction getLastTransaction() {
         if (mData != null)
             return mData.get(0);
         return null;
     }
 
-    public static void updateListData(ArrayList<Transaction> list) {
+    static void updateListData(ArrayList<Transaction> list) {
         mData = list;
     }
 
-    public static Transaction getTransactionData(int index) {
+    static Transaction getTransactionData(int index) {
         if (mData != null)
             return mData.get(index);
         return null;
@@ -61,7 +60,7 @@ public class TransactionListData {
             mData.add(data);
     }
 
-    public static ArrayList<Transaction> getByTransactionType(String type) {
+    static ArrayList<Transaction> getByTransactionType(String type) {
         ArrayList<Transaction> v = new ArrayList<>();
         if (mData != null) {
             for (int i = 0; i < getSize(); i++) {
@@ -75,7 +74,7 @@ public class TransactionListData {
         return v;
     }
 
-    public static ArrayList<Transaction> getByTransactionType(ArrayList<Transaction> data,
+    static ArrayList<Transaction> getByTransactionType(ArrayList<Transaction> data,
                                                               String type) {
         ArrayList<Transaction> v = new ArrayList<>();
         if (data != null) {
@@ -94,7 +93,7 @@ public class TransactionListData {
         return getByTransactionType(type).size();
     }
 
-    public static ArrayList<Transaction> getByStatus(String status) {
+    static ArrayList<Transaction> getByStatus(String status) {
         ArrayList<Transaction> v = new ArrayList<>();
         if (mData != null) {
             for (int i = 0; i < getSize(); i++) {
@@ -108,7 +107,7 @@ public class TransactionListData {
         return v;
     }
 
-    public static long getTotalAmount(ArrayList<Transaction> list) {
+    static long getTotalAmount(ArrayList<Transaction> list) {
         long amount = 0;
         if (list != null) {
             for (int i = 0; i < list.size(); i++) {
@@ -133,7 +132,7 @@ public class TransactionListData {
         return amount;
     }
 
-    public static int getSize() {
+    static int getSize() {
         if (mData != null)
             return mData.size();
         return 0;

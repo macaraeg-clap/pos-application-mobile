@@ -157,7 +157,7 @@ public class BaseActivity extends AppCompatActivity {
     public void onCreateContent(LinearLayout content) {
     }
 
-    private ArrayList<String> getBluetoothDeviceOptions() {
+    ArrayList<String> getBluetoothDeviceOptions() {
         // FIXME:
         String[] devices = new String[] { "WP000000000000000000001", "WP000000000000000000002",
                 "WP000000000000000000003" };

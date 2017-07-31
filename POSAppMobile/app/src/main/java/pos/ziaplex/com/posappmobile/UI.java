@@ -44,9 +44,9 @@ public class UI {
         void onDateSelected(int tag, Util.Date date);
     }
 
-    public static class CustomImageLink extends FrameLayout implements View.OnClickListener {
+    static class CustomImageLink extends FrameLayout implements View.OnClickListener {
 
-        public CustomImageLink(Context context) {
+        CustomImageLink(Context context) {
             super(context);
         }
 
@@ -326,7 +326,7 @@ public class UI {
         }
     }
 
-    public static class CustomDialogPopup extends Dialog {
+    static class CustomDialogPopup extends Dialog {
 
         public CustomDialogPopup(Context context) {
             super(context);
@@ -381,14 +381,14 @@ public class UI {
         return v;
     }
 
-    public static View createCustomVerticalSeparator(Context context) {
+    static View createCustomVerticalSeparator(Context context) {
         View v = LayoutInflater.from(context).inflate(R.layout.custom_vertical_separator, null);
         v.setLayoutParams(getLinearLayoutParams((int) context.getResources()
                         .getDimension(R.dimen._1sdp), LinearLayout.LayoutParams.MATCH_PARENT));
         return v;
     }
 
-    public static CustomImageLink createCustomImageLink(Context context, int bg_id, String label,
+    static CustomImageLink createCustomImageLink(Context context, int bg_id, String label,
                                                         boolean has_amount,
                                                         ImageLinkCallbackListener listener) {
         CustomImageLink v = new CustomImageLink(context);
@@ -396,11 +396,11 @@ public class UI {
         return v;
     }
 
-    public static CustomDialogPopup createCustomDialogPopup(Context context, String title) {
+    static CustomDialogPopup createCustomDialogPopup(Context context, String title) {
         return CustomDialogPopup.instance(context, title);
     }
 
-    public static CustomTextEditWithIcon createCustomTextEditWithIcon(Context context, int icon_id,
+    static CustomTextEditWithIcon createCustomTextEditWithIcon(Context context, int icon_id,
                                                                       String placeholder,
                                                                       int input_type,
                                                                       int data_type,
@@ -410,7 +410,7 @@ public class UI {
         return v;
     }
 
-    public static CustomHomeItemWithIcon createCustomHomeItemWithIcon(Context context,
+    static CustomHomeItemWithIcon createCustomHomeItemWithIcon(Context context,
                                                                       int icon_id_normal,
                                                                       int icon_id_pressed,
                                                                       int bg_color_normal,
@@ -429,7 +429,7 @@ public class UI {
         return new CustomDatePicker();
     }
 
-    public static CustomDatePicker createCustomDatePickerWithMinMaxDate(Util.Date date,
+    static CustomDatePicker createCustomDatePickerWithMinMaxDate(Util.Date date,
                                                                         long min_date,
                                                                         long max_date) {
         return CustomDatePicker.instance(date, min_date, max_date);
@@ -440,24 +440,24 @@ public class UI {
         return CustomDatePicker.forMinDate(date, min_date);
     }
 
-    public static CustomDatePicker createCustomDatePickerWithMaxDate(Util.Date date,
+    static CustomDatePicker createCustomDatePickerWithMaxDate(Util.Date date,
                                                                      long max_date) {
         return CustomDatePicker.forMaxDate(date, max_date);
     }
 
-    public static Button createCustomButton(Context context, String text) {
+    static Button createCustomButton(Context context, String text) {
         Button v = (Button) LayoutInflater.from(context).inflate(R.layout.custom_button, null);
         v.setText(text);
         return v;
     }
 
-    public static LinearLayout createLinerLayout(Context context, int orientation) {
+    static LinearLayout createLinerLayout(Context context, int orientation) {
         LinearLayout v = new LinearLayout(context);
         v.setOrientation(orientation);
         return v;
     }
 
-    public static GridLayout createGridLayout(Context context, int orientation, int row_count,
+    static GridLayout createGridLayout(Context context, int orientation, int row_count,
                                               int column_count) {
         GridLayout v = new GridLayout(context);
         v.setOrientation(orientation);
@@ -466,31 +466,31 @@ public class UI {
         return v;
     }
 
-    public static LinearLayout.LayoutParams getLinearLayoutParams(int w, int h) {
+    static LinearLayout.LayoutParams getLinearLayoutParams(int w, int h) {
         return new LinearLayout.LayoutParams(w, h);
     }
 
-    public static LinearLayout.LayoutParams getLinearLayoutParams(int w, int h, int wt) {
+    static LinearLayout.LayoutParams getLinearLayoutParams(int w, int h, int wt) {
         LinearLayout.LayoutParams v = getLinearLayoutParams(w, h);
         v.weight = wt;
         return v;
     }
 
-    public static LinearLayout.LayoutParams getLinearLayoutParams(int w, int h, int lm, int tm,
+    static LinearLayout.LayoutParams getLinearLayoutParams(int w, int h, int lm, int tm,
                                                                       int rm, int bm) {
         LinearLayout.LayoutParams v = getLinearLayoutParams(w, h);
         v.setMargins(lm, tm, rm, bm);
         return v;
     }
 
-    public static GridLayout.LayoutParams getGridLayoutParams(int w, int h) {
+    static GridLayout.LayoutParams getGridLayoutParams(int w, int h) {
         GridLayout.LayoutParams v = new GridLayout.LayoutParams();
         v.width = w;
         v.height = h;
         return v;
     }
 
-    public static GridLayout.LayoutParams getGridLayoutParams(int w, int h, GridLayout.Spec row,
+    static GridLayout.LayoutParams getGridLayoutParams(int w, int h, GridLayout.Spec row,
                                                               GridLayout.Spec col) {
         GridLayout.LayoutParams v = new GridLayout.LayoutParams(row, col);
         v.width = w;
@@ -498,7 +498,7 @@ public class UI {
         return v;
     }
 
-    public static CustomImageButton createCustomImageButton(Context context, String label,
+    static CustomImageButton createCustomImageButton(Context context, String label,
                                                             int background_id,
                                                             ButtonCallbackListener listener) {
         CustomImageButton v = new CustomImageButton(context);

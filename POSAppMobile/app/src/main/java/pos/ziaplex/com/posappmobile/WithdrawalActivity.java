@@ -48,7 +48,7 @@ public class WithdrawalActivity extends BaseActivity implements ConnectDeviceLis
         }
     }
 
-    private void updateSelectorList(View v) {
+    void updateSelectorList(View v) {
         if (v != null) {
             Spinner spinAccount = (Spinner) v.findViewById(R.id.spin_account);
             if (spinAccount != null) {
@@ -57,7 +57,8 @@ public class WithdrawalActivity extends BaseActivity implements ConnectDeviceLis
                 for (int i = 0; i < s.length; i++)
                     l.add(s[i]);
                 l.add("Cash Advance");
-                ArrayAdapter<String> aA = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, l);
+                ArrayAdapter<String> aA = new ArrayAdapter<>(this,
+                        android.R.layout.simple_spinner_item, l);
                 aA.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinAccount.setAdapter(aA);
             }

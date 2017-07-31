@@ -19,9 +19,9 @@ import java.util.ArrayList;
 
 public class ConnectionActivity extends BaseActivity {
 
-    public class ConnectionListTask  extends AsyncTask<ArrayList<Connection>, Void, ArrayList<Connection>> {
+    class ConnectionListTask extends AsyncTask<ArrayList<Connection>, Void, ArrayList<Connection>> {
 
-        public ConnectionListTask(ConnectionAdapter list_adapter, ListView list_view,
+        ConnectionListTask(ConnectionAdapter list_adapter, ListView list_view,
                                    LinearLayout progress_container, LinearLayout no_found_container) {
             mListAdapter = list_adapter;
             mListView = list_view;
@@ -77,13 +77,13 @@ public class ConnectionActivity extends BaseActivity {
         }
     }
 
-    public class ConnectionAdapter extends BaseAdapter {
+    class ConnectionAdapter extends BaseAdapter {
 
-        private Context mContext;
-        private LayoutInflater mInflater;
-        private ArrayList<Connection> mDataSource;
+        Context mContext;
+        LayoutInflater mInflater;
+        ArrayList<Connection> mDataSource;
 
-        public ConnectionAdapter(Context context) {
+        ConnectionAdapter(Context context) {
             mContext = context;
             mDataSource = new ArrayList<>();
             mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -129,16 +129,44 @@ public class ConnectionActivity extends BaseActivity {
             return rv;
         }
 
-        public void clear() {
+        void clear() {
             if (mDataSource != null)
                 mDataSource.clear();
             notifyDataSetChanged();
         }
 
-        public void addConnection(Connection con) {
+        void addConnection(Connection con) {
             if (mDataSource != null)
                 mDataSource.add(con);
             notifyDataSetChanged();
+        }
+    }
+
+    class Connection {
+
+        Connection(String device_name, String hardware, String last_used, String firmware) {
+            mDeviceName = device_name;
+            mHardware = hardware;
+            mLastUsed = last_used;
+            mFirmware = firmware;
+        }
+
+        String mDeviceName, mHardware, mLastUsed, mFirmware;
+
+        String getDeviceName() {
+            return mDeviceName;
+        }
+
+        String getHardware() {
+            return mHardware;
+        }
+
+        String getLastUsed() {
+            return mLastUsed;
+        }
+
+        String getFirmware() {
+            return mFirmware;
         }
     }
 
@@ -167,7 +195,7 @@ public class ConnectionActivity extends BaseActivity {
         }
     }
 
-    private ArrayList<Connection> createConnectionList() {
+    ArrayList<Connection> createConnectionList() {
         ArrayList<Connection> l = new ArrayList<>(); // FIXME:
         l.add(new Connection("12345646513", "Hardware 6.0", "24/02/2016", "Firmware 3.42"));
         l.add(new Connection("12345646555", "Hardware 6.0", "24/02/2016", "Firmware 3.42"));

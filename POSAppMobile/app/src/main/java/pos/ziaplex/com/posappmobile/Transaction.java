@@ -6,9 +6,9 @@ import android.graphics.drawable.BitmapDrawable;
  * Created by jimmy.macaraeg on 10/07/2017.
  */
 
-public class Transaction {
+class Transaction {
 
-    public Transaction(long amount, String account_number, boolean card_holder,
+    Transaction(long amount, String account_number, boolean card_holder,
                        Util.Date expiry_date, String status, Util.Date date_time, String method,
                        String mode, String transaction_type, String transaction_reference,
                        String payment_for, String operator_name, String operator_number,
@@ -36,11 +36,11 @@ public class Transaction {
     boolean mCardHolder;
     long mAmount;
 
-    public long getAmount() {
+    long getAmount() {
         return mAmount;
     }
 
-    public String getAccountNumber() {
+    String getAccountNumber() {
         return mAccountNumber;
     }
 
@@ -48,47 +48,47 @@ public class Transaction {
         return mCardHolder;
     }
 
-    public Util.Date getExpiryDate() {
+    Util.Date getExpiryDate() {
         return mExpiryDate;
     }
 
-    public String getStatus() {
+    String getStatus() {
         return mStatus;
     }
 
-    public Util.Date getDateTime() {
+    Util.Date getDateTime() {
         return mDateTime;
     }
 
-    public String getMethod() {
+    String getMethod() {
         return mMethod;
     }
 
-    public String getMode() {
+    String getMode() {
         return mMode;
     }
 
-    public String getTransactionType() {
+    String getTransactionType() {
         return mTransactionType;
     }
 
-    public String getTransactionReference() {
+    String getTransactionReference() {
         return mTransactionReference;
     }
 
-    public String getPaymentFor() {
+    String getPaymentFor() {
         return mPaymentFor;
     }
 
-    public String getOperatorName() {
+    String getOperatorName() {
         return mOperatorName;
     }
 
-    public String getOperatorNumber() {
+    String getOperatorNumber() {
         return mOperatorNumber;
     }
 
-    public BitmapDrawable getOfflineValidation() {
+    BitmapDrawable getOfflineValidation() {
         return mOfflineValidation;
     }
 }

@@ -1,5 +1,6 @@
 package pos.ziaplex.com.posappmobile;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import java.io.Serializable;
 
 /**
  * Created by jimmy.macaraeg on 11/07/2017.

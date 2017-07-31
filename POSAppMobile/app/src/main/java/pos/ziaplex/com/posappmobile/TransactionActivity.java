@@ -10,7 +10,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,7 +31,7 @@ import java.util.HashMap;
 
 public class TransactionActivity extends BaseActivity implements TabHost.OnTabChangeListener {
 
-    public class StatisticTab extends LinearLayout implements AdapterView.OnItemSelectedListener,
+    class StatisticTab extends LinearLayout implements AdapterView.OnItemSelectedListener,
             UI.ImageLinkCallbackListener {
 
         public StatisticTab(Context context) {
@@ -41,7 +43,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         UI.CustomImageLink balance_link, withdrawal_link, cash_advance_link, payment_link;
         Spinner mSpinnerMode;
 
-        private void initialize() {
+        void initialize() {
             setBackgroundColor(Color.WHITE);
             setOrientation(LinearLayout.VERTICAL);
             addView(LayoutInflater.from(getContext()).inflate(R.layout.statistic_summary, null));
@@ -93,16 +95,19 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         @Override
         public void onItemClicked(UI.CustomImageLink link) {
             if (link != null) {
-                TabHost host = TransactionActivity.mTabHost;
-                if (host != null) {
-                    host.setCurrentTab(2);
-                    HistoryTab tab = TransactionActivity.mHistoryTab;
-                    if (tab != null) {
-                        HistoryTab.BaseTransmittedTab v = tab.mTransmittedTab;
-                        if (v != null) {
-                            v.setModeValue(link.getLabel());
-                            v.setDateFromValue(mStatisticFrom);
-                            v.setDateToValue(mStatisticTo);
+                TransactionActivity instance = TransactionActivity.this;
+                if (instance != null) {
+                    TabHost host = instance.mTabHost;
+                    if (host != null) {
+                        host.setCurrentTab(2);
+                        HistoryTab tab = TransactionActivity.mHistoryTab;
+                        if (tab != null) {
+                            HistoryTab.BaseTransmittedTab v = tab.mTransmittedTab;
+                            if (v != null) {
+                                v.setModeValue(link.getLabel());
+                                v.setDateFromValue(mStatisticFrom);
+                                v.setDateToValue(mStatisticTo);
+                            }
                         }
                     }
                 }
@@ -207,7 +212,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             }
         }
 
-        private void updateBalanceInquiryStatisticDetails(ArrayList<Transaction> data) {
+        void updateBalanceInquiryStatisticDetails(ArrayList<Transaction> data) {
             if (balance_link != null && data != null) {
                 ArrayList<Transaction> v = TransactionListData
                         .getByTransactionType(data, "balance");
@@ -216,7 +221,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             }
         }
 
-        private void updateWithdrawalStatisticDetails(ArrayList<Transaction> data) {
+        void updateWithdrawalStatisticDetails(ArrayList<Transaction> data) {
             if (withdrawal_link != null && data != null) {
                 ArrayList<Transaction> v = TransactionListData
                         .getByTransactionType(data, "withdrawal");
@@ -227,7 +232,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             }
         }
 
-        private void updateCashAdvanceStatisticDetails(ArrayList<Transaction> data) {
+        void updateCashAdvanceStatisticDetails(ArrayList<Transaction> data) {
             if (cash_advance_link != null && data != null) {
                 ArrayList<Transaction> v = TransactionListData
                         .getByTransactionType(data, "cash advance");
@@ -238,7 +243,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             }
         }
 
-        private void updatePaymentStatisticDetails(ArrayList<Transaction> data) {
+        void updatePaymentStatisticDetails(ArrayList<Transaction> data) {
             if (payment_link != null && data != null) {
                 ArrayList<Transaction> v = TransactionListData
                         .getByTransactionType(data, "payment");
@@ -250,25 +255,23 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         }
     }
 
-    public class HistoryTab extends LinearLayout implements TabHost.OnTabChangeListener {
+    class HistoryTab extends LinearLayout implements TabHost.OnTabChangeListener {
 
-        public class BaseTransmittedTab extends LinearLayout implements UI.DatePickerCallbackListener,
+        class BaseTransmittedTab extends LinearLayout implements UI.DatePickerCallbackListener,
                 View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-            public BaseTransmittedTab(Context context) {
+            BaseTransmittedTab(Context context) {
                 super(context);
-                mInstance = this;
                 initialize();
             }
 
-            BaseTransmittedTab mInstance;
             TransactionAdapter mListAdapter;
             LinearLayout mProgressContainer, mNoFoundContainer;
             ListView mListView;
             Button mButtonFrom, mButtonTo;
             Util.Date mDateFrom = null, mDateTo = null, mDateToday = null;
 
-            private void initialize() {
+            void initialize() {
                 setBackgroundColor(Color.WHITE);
                 setOrientation(LinearLayout.VERTICAL);
                 LinearLayout v = (LinearLayout) LayoutInflater.from(getContext())
@@ -290,7 +293,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 }
             }
 
-            private void updatedSelectedModeList() {
+            void updatedSelectedModeList() {
                 Spinner sMode = (Spinner) findViewById(R.id.spin_mode);
                 if (sMode != null) {
                     sMode.setOnItemSelectedListener(this);
@@ -410,7 +413,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                             tag = UI.CustomDatePicker.DATE_TO;
                         }
                         if(dp != null) {
-                            dp.setDatePickerListener(mInstance);
+                            dp.setDatePickerListener(this);
                             dp.show(getSupportFragmentManager(), tag);
                         }
                     }
@@ -427,9 +430,9 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             }
         }
 
-        public class UntransmittedTab extends BaseTransmittedTab {
+        class UntransmittedTab extends BaseTransmittedTab {
 
-            public UntransmittedTab(Context context) {
+            UntransmittedTab(Context context) {
                 super(context);
             }
 
@@ -439,9 +442,9 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             }
         }
 
-        public class TransmittedTab extends BaseTransmittedTab {
+        class TransmittedTab extends BaseTransmittedTab {
 
-            public TransmittedTab(Context context) {
+            TransmittedTab(Context context) {
                 super(context);
             }
 
@@ -458,7 +461,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
 
         public BaseTransmittedTab mTransmittedTab;
 
-        private void initialize() {
+        void initialize() {
             setBackgroundColor(Color.WHITE);
             setOrientation(LinearLayout.VERTICAL);
             addView(LayoutInflater.from(getContext()).inflate(R.layout.history_list, null));
@@ -485,7 +488,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     new TransmittedTab(getBaseContext()));
         }
 
-        private View createContent(LinearLayout parent, View child) {
+        View createContent(LinearLayout parent, View child) {
             if (parent != null) {
                 if (parent.getChildCount() > 0)
                     parent.removeAllViews();
@@ -495,7 +498,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             return null;
         }
 
-        private void setupTab(final View view, final String tag, TabHost host) {
+        void setupTab(final View view, final String tag, TabHost host) {
             if (host != null) {
                 TabHost.TabSpec i = host.newTabSpec(tag);
                 if (i != null) {
@@ -510,7 +513,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             }
         }
 
-        private View createTabView(final Context context, final String text) {
+        View createTabView(final Context context, final String text) {
             View v = LayoutInflater.from(context).inflate(R.layout.tab_item, null);
             if (v != null) {
                 v.setBackgroundResource(R.drawable.tab_blue_background);
@@ -522,18 +525,18 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         }
     }
 
-    public class DailyTab extends LinearLayout implements AdapterView.OnItemSelectedListener {
+    class DailyTab extends LinearLayout implements AdapterView.OnItemSelectedListener {
 
         TransactionAdapter mListAdapter;
         LinearLayout mProgressContainer, mNoFoundContainer;
         ListView mListView;
 
-        public DailyTab(Context context) {
+        DailyTab(Context context) {
             super(context);
             initialize();
         }
 
-        private void initialize() {
+        void initialize() {
             setBackgroundColor(Color.WHITE);
             setOrientation(LinearLayout.VERTICAL);
             addView(LayoutInflater.from(getContext()).inflate(R.layout.daily_list, null));
@@ -586,14 +589,14 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         }
     }
 
-    public class LastTransactionTab extends ScrollView {
+    class LastTransactionTab extends ScrollView {
 
-        public LastTransactionTab(Context context) {
+        LastTransactionTab(Context context) {
             super(context);
             initialize();
         }
 
-        private void initialize() {
+        void initialize() {
             setBackgroundColor(Color.WHITE);
             LinearLayout p = UI.createLinerLayout(getContext(), LinearLayout.VERTICAL);
             int plr = (int) getResources().getDimension(R.dimen._20sdp);
@@ -696,26 +699,19 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         }
     }
 
-    public TransactionActivity() {
-        mInstance = this;
-    }
-
-    public static TransactionActivity mInstance = null;
-    public static TabHost mTabHost;
     public static HistoryTab mHistoryTab;
     final static int LAST = 0, DAILY = 1, HISTORY = 2, STATISTICS = 3;
+    public TabHost mTabHost;
     int mSelectedTab = 0;
 
     @Override
     public void onResume() {
         super.onResume();
-        mInstance = this;
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mInstance = null;
     }
 
     @Override
@@ -771,11 +767,10 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             createContent((LinearLayout) findViewById(R.id.first_tab),
                     new LastTransactionTab(this));
         }
-        if (TransactionActivity.mInstance != null)
-            TransactionActivity.mInstance.invalidateOptionsMenu();
+        invalidateOptionsMenu();
     }
 
-    private View createContent(LinearLayout parent, View child) {
+    View createContent(LinearLayout parent, View child) {
         if (parent != null) {
             if (parent.getChildCount() > 0)
                 parent.removeAllViews();
@@ -785,7 +780,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         return null;
     }
 
-    private void setupTab(final View view, final String tag, TabHost host) {
+    void setupTab(final View view, final String tag, TabHost host) {
         if (host != null) {
             TabHost.TabSpec i = host.newTabSpec(tag);
             if (i != null) {
@@ -800,7 +795,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         }
     }
 
-    private View createTabView(final Context context, final String text) {
+    View createTabView(final Context context, final String text) {
         View v = LayoutInflater.from(context).inflate(R.layout.tab_item, null);
         v.setBackgroundResource(R.drawable.tab_violet_background);
         if (v != null) {
@@ -811,7 +806,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
         return v;
     }
 
-    private void showPrintDialogPopup() {
+    void showPrintDialogPopup() {
         String title = null, message = null;
         if (mSelectedTab == DAILY) {
             title = getString(R.string.trans_daily_title);

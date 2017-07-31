@@ -16,6 +16,56 @@ import android.widget.TextView;
 
 public class PaymentDetailActivity extends BaseActivity implements ConnectDeviceListener {
 
+    class PaymentDetail {
+
+        PaymentDetail(String first_name, String payor, String transaction_number, String payment_for,
+                             String transaction_amount, String transaction_fee, String total_amount) {
+            mFirstName = first_name;
+            mPayor = payor;
+            mTransactionNumber = transaction_number;
+            mPaymentFor = payment_for;
+            mTransactionAmount = transaction_amount;
+            mTransactionFee = transaction_fee;
+            mTotalAmount = total_amount;
+        }
+
+        String mFirstName;
+        String mPayor;
+        String mPaymentFor;
+        String mTransactionNumber;
+        String mTransactionAmount;
+        String mTransactionFee;
+        String mTotalAmount;
+
+        String getFirstName() {
+            return mFirstName;
+        }
+
+        String getPayor() {
+            return mPayor;
+        }
+
+        String getPaymentFor() {
+            return mPaymentFor;
+        }
+
+        String getTransactionNumber() {
+            return mTransactionNumber;
+        }
+
+        String getTransactionAmount() {
+            return mTransactionAmount;
+        }
+
+        String getTransactionFee() {
+            return mTransactionFee;
+        }
+
+        String getTotalAmount() {
+            return mTotalAmount;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +103,7 @@ public class PaymentDetailActivity extends BaseActivity implements ConnectDevice
         // TODO
     }
 
-    private void loadDetails() {
+    void loadDetails() {
         // FIXME: Temporary
         updateDetails(new PaymentDetail("Yves", "Yves Tayao", "123455958923423", "PEZA",
                 "Php 15,000.00", "100", "15,100"));

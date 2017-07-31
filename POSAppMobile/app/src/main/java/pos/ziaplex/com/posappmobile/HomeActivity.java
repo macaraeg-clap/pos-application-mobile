@@ -85,7 +85,7 @@ public class HomeActivity extends BaseActivity implements UI.ButtonCallbackListe
         }
     }
 
-    private void createTransactionDataList() {
+    void createTransactionDataList() {
         // FIXME: Dummy Values
         ArrayList<Transaction> list = new ArrayList<>();
         // Today

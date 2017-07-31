@@ -5,10 +5,10 @@ import android.content.Context;
 import java.io.Serializable;
 
 /**
- * Created by jimmy.macaraeg on 11/07/2017.
+ * Created by jimmy.macaraeg on 31/07/2017.
  */
 
-public interface ConnectDeviceListener extends Serializable {
+interface ConnectDeviceListener extends Serializable {
 
-    public void onConnectDeviceFinish(Context context);
+    void onConnectDeviceFinish(Context context);
 }
