@@ -7,10 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-/**
- * Created by jimmy.macaraeg on 11/07/2017.
- */
-
 public class PaymentActivity extends BaseActivity {
 
     @Override

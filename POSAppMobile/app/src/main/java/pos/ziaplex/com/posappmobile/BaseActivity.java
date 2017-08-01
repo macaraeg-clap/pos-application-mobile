@@ -23,10 +23,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by jimmy.macaraeg on 03/07/2017.
- */
-
 public class BaseActivity extends AppCompatActivity {
 
     public static Class mHome;
@@ -159,13 +155,11 @@ public class BaseActivity extends AppCompatActivity {
 
     ArrayList<String> getBluetoothDeviceOptions() {
         // FIXME:
-        String[] devices = new String[] { "WP000000000000000000001", "WP000000000000000000002",
-                "WP000000000000000000003" };
-        final ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < devices.length; ++i) {
-            list.add(devices[i]);
-        }
-        return list;
+        ArrayList<String> l = new ArrayList<>();
+        l.add("WP000000000000000000001");
+        l.add("WP000000000000000000002");
+        l.add("WP000000000000000000003");
+        return l;
     }
 
     public void onDeviceItemSelected(AdapterView<?> parent, final View view, int position,

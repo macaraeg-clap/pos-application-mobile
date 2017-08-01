@@ -10,9 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,10 +22,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-/**
- * Created by jimmy.macaraeg on 06/07/2017.
- */
 
 public class TransactionActivity extends BaseActivity implements TabHost.OnTabChangeListener {
 

@@ -8,10 +8,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 
-/**
- * Created by jimmy.macaraeg on 06/07/2017.
- */
-
 public class AboutActivity extends BaseActivity {
 
     @Override

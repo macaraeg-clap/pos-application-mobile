@@ -20,13 +20,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-/**
- * Created by jimmy.macaraeg on 06/07/2017.
- */
 
 public class OperatorInfoActivity extends BaseActivity {
 

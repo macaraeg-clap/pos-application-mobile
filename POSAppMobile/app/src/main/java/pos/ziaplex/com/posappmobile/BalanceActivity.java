@@ -10,11 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-/**
- * Created by jimmy.macaraeg on 11/07/2017.
- */
-
-public class BalanceActivity extends BaseActivity implements UI.ConnectDeviceListener {
+public class BalanceActivity extends BaseActivity implements UI.ConnectDeviceListener,
+        View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +31,14 @@ public class BalanceActivity extends BaseActivity implements UI.ConnectDeviceLis
             if (vv != null)
                 vv.setBackgroundResource(R.drawable.ic_bancnet);
             Button btnCon = (Button) content.findViewById(R.id.btn_continue);
-            if (btnCon != null) {
-                btnCon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showBluetoothDeviceOptions();
-                    }
-                });
-            }
+            if (btnCon != null)
+                btnCon.setOnClickListener(this);
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        showBluetoothDeviceOptions();
     }
 
     @Override

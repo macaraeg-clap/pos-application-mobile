@@ -15,10 +15,6 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by jimmy.macaraeg on 11/07/2017.
- */
-
 public class WithdrawalActivity extends BaseActivity implements UI.ConnectDeviceListener {
 
     @Override

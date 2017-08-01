@@ -2,11 +2,6 @@ package pos.ziaplex.com.posappmobile;
 
 import java.util.ArrayList;
 
-import pos.ziaplex.com.posappmobile.Transaction;
-
-/**
- * Created by jimmy.macaraeg on 27/07/2017.
- */
 class TransactionListData {
 
     TransactionListData() {

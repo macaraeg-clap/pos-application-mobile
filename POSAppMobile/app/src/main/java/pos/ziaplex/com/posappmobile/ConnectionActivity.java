@@ -13,10 +13,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by jimmy.macaraeg on 11/07/2017.
- */
-
 public class ConnectionActivity extends BaseActivity {
 
     class ConnectionListTask extends AsyncTask<ArrayList<Connection>, Void, ArrayList<Connection>> {

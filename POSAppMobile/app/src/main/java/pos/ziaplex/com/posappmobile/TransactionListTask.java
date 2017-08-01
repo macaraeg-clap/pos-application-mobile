@@ -7,10 +7,6 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-/**
- * Created by jimmy.macaraeg on 25/07/2017.
- */
-
 class TransactionListTask extends AsyncTask<ArrayList<Transaction>, Void, ArrayList<Transaction>> {
 
     TransactionListTask(TransactionAdapter list_adapter, ListView list_view,

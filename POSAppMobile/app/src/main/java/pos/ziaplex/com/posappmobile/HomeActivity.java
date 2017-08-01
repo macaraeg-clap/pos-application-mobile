@@ -9,10 +9,6 @@ import android.widget.ScrollView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by jimmy.macaraeg on 04/07/2017.
- */
-
 public class HomeActivity extends BaseActivity implements UI.ButtonCallbackListener {
 
     @Override

@@ -2,12 +2,7 @@ package pos.ziaplex.com.posappmobile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.LinearLayout;
-
-/**
- * Created by jimmy.macaraeg on 12/07/2017.
- */
 
 public class PaymentModeActivity extends BaseActivity {
 

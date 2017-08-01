@@ -6,10 +6,6 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-/**
- * Created by jimmy.macaraeg on 11/07/2017.
- */
-
 public class TransactionFeeActivity extends BaseActivity {
 
     int mRoundId;

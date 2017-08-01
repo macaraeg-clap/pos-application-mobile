@@ -24,10 +24,6 @@ import android.widget.TextView;
 
 import java.io.Serializable;
 
-/**
- * Created by jimmy.macaraeg on 03/07/2017.
- */
-
 public class UI {
 
     interface ConnectDeviceListener extends Serializable {

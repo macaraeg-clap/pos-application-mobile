@@ -2,10 +2,6 @@ package pos.ziaplex.com.posappmobile;
 
 import android.graphics.drawable.BitmapDrawable;
 
-/**
- * Created by jimmy.macaraeg on 10/07/2017.
- */
-
 class Transaction {
 
     Transaction(long amount, String account_number, boolean card_holder,

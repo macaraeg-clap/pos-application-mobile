@@ -9,10 +9,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
-/**
- * Created by jimmy.macaraeg on 06/07/2017.
- */
-
 class Util {
 
     static class Date {
