@@ -20,7 +20,7 @@ import java.io.Serializable;
 
 public class ConnectDeviceActivity extends BaseActivity {
 
-    ConnectDeviceListener mListener;
+    UI.ConnectDeviceListener mListener;
     String mDeviceName;
     int progressStatus = 0;
 
@@ -31,7 +31,7 @@ public class ConnectDeviceActivity extends BaseActivity {
         if (i != null) {
             title = i.getStringExtra("title");
             mDeviceName = i.getStringExtra("deviceName");
-            mListener = (ConnectDeviceListener) i.getSerializableExtra("listener");
+            mListener = (UI.ConnectDeviceListener) i.getSerializableExtra("listener");
         }
         super.onCreate(savedInstanceState);
         setDefaultTitle(title);

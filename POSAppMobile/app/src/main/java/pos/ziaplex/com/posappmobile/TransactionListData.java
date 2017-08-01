@@ -7,7 +7,7 @@ import pos.ziaplex.com.posappmobile.Transaction;
 /**
  * Created by jimmy.macaraeg on 27/07/2017.
  */
- class TransactionListData {
+class TransactionListData {
 
     TransactionListData() {
         mData = new ArrayList<>();
@@ -29,7 +29,7 @@ import pos.ziaplex.com.posappmobile.Transaction;
         return mData;
     }
 
-    public static void clearListData() {
+    static void clearListData() {
         if (mData != null)
             mData.clear();
     }
@@ -50,12 +50,12 @@ import pos.ziaplex.com.posappmobile.Transaction;
         return null;
     }
 
-    public static void removeTransactionData(int index) {
+    static void removeTransactionData(int index) {
         if (mData != null)
             mData.remove(index);
     }
 
-    public static void addTransactionData(Transaction data) {
+    static void addTransactionData(Transaction data) {
         if (mData != null)
             mData.add(data);
     }
@@ -89,7 +89,7 @@ import pos.ziaplex.com.posappmobile.Transaction;
         return v;
     }
 
-    public static int getByTransactionTypeTotalCount(String type) {
+    static int getByTransactionTypeTotalCount(String type) {
         return getByTransactionType(type).size();
     }
 
@@ -119,7 +119,7 @@ import pos.ziaplex.com.posappmobile.Transaction;
         return amount;
     }
 
-    public static long getByTransactionTypeTotalAmount(String type) {
+    static long getByTransactionTypeTotalAmount(String type) {
         long amount = 0;
         ArrayList<Transaction> v = getByTransactionType(type);
         if (v != null) {

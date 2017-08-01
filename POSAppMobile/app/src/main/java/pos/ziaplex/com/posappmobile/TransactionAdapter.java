@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by jimmy.macaraeg on 31/07/2017.
  */
 
-public class TransactionAdapter extends BaseAdapter {
+class TransactionAdapter extends BaseAdapter {
 
     TransactionAdapter(Context context) {
         mContext = context;

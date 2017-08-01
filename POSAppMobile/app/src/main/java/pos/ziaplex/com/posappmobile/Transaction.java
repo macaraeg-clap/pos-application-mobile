@@ -44,7 +44,7 @@ class Transaction {
         return mAccountNumber;
     }
 
-    public boolean getCardHolder() {
+    boolean getCardHolder() {
         return mCardHolder;
     }
 

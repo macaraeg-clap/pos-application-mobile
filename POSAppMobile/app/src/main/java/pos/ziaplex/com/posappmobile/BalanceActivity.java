@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
  * Created by jimmy.macaraeg on 11/07/2017.
  */
 
-public class BalanceActivity extends BaseActivity implements ConnectDeviceListener {
+public class BalanceActivity extends BaseActivity implements UI.ConnectDeviceListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

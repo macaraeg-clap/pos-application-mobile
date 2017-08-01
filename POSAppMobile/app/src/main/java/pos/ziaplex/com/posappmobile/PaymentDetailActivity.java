@@ -14,7 +14,7 @@ import android.widget.TextView;
  * Created by jimmy.macaraeg on 13/07/2017.
  */
 
-public class PaymentDetailActivity extends BaseActivity implements ConnectDeviceListener {
+public class PaymentDetailActivity extends BaseActivity implements UI.ConnectDeviceListener {
 
     class PaymentDetail {
 

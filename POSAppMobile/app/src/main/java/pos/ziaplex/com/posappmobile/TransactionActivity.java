@@ -270,6 +270,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             ListView mListView;
             Button mButtonFrom, mButtonTo;
             Util.Date mDateFrom = null, mDateTo = null, mDateToday = null;
+            Spinner mSpinMode;
 
             void initialize() {
                 setBackgroundColor(Color.WHITE);
@@ -284,21 +285,20 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     mButtonTo = (Button) v.findViewById(R.id.btn_to);
                     if (mButtonTo != null)
                         mButtonTo.setOnClickListener(this);
+                    mSpinMode = (Spinner) findViewById(R.id.spin_mode);
+                    mSpinMode.setOnItemSelectedListener(this);
                     mProgressContainer = (LinearLayout) v.findViewById(R.id.progress_container);
                     mProgressContainer.setVisibility(View.VISIBLE);
                     mNoFoundContainer = (LinearLayout) v.findViewById(R.id.no_found_container);
                     mListView = (ListView) v.findViewById(R.id.history_list);
                     mListView.setAdapter(mListAdapter = new TransactionAdapter(getBaseContext()));
-                    updatedSelectedModeList();
+                    updateListByMode();
                 }
             }
 
-            void updatedSelectedModeList() {
-                Spinner sMode = (Spinner) findViewById(R.id.spin_mode);
-                if (sMode != null) {
-                    sMode.setOnItemSelectedListener(this);
-                    updateTransactionList(sMode.getSelectedItem().toString());
-                }
+            void updateListByMode() {
+                if (mSpinMode != null)
+                    updateTransactionList(mSpinMode.getSelectedItem().toString());
             }
 
             @Override
@@ -341,14 +341,14 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 mDateFrom = date;
                 if (mButtonFrom != null && mDateFrom != null)
                     mButtonFrom.setText(mDateFrom.toMMDDYYYYStringFormat("/"));
-                updatedSelectedModeList();
+                updateListByMode();
             }
 
             public void setDateToValue(Util.Date date) {
                 mDateTo = date;
                 if (mButtonTo != null && mDateTo != null)
                     mButtonTo.setText(mDateTo.toMMDDYYYYStringFormat("/"));
-                updatedSelectedModeList();
+                updateListByMode();
             }
 
             public void setModeValue(String label) {
@@ -614,7 +614,6 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
             if (trans != null) {
                 String status = trans.getStatus();
                 String type = trans.getTransactionType();
-                String mode = trans.getMode();
                 LinearLayout bgCard = (LinearLayout) findViewById(R.id.bg_status);
                 TextView txtStatus = (TextView) findViewById(R.id.txt_status);
                 if ("offline".equalsIgnoreCase(status)) {
@@ -638,14 +637,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     txtAmount.setText(Util.convertToCurrency(getString(R.string.amount_sign),
                             trans.getAmount()));
                 TextView txtAccountNo = (TextView) findViewById(R.id.txt_account_no);
-                if ("cash".equalsIgnoreCase(mode)) {
-                    if (txtAccountNo != null)
-                        txtAccountNo.setVisibility(INVISIBLE);
-                    LinearLayout cardHolder = (LinearLayout) findViewById(R.id.card_holder_details);
-                    if (cardHolder != null)
-                        cardHolder.setVisibility(INVISIBLE);
-                }
-                else {
+                if (trans.getCardHolder()) {
                     if (txtAccountNo != null)
                         txtAccountNo.setText(trans.getAccountNumber());
                     TextView txtExpiryDate = (TextView) findViewById(R.id.txt_expiry_date);
@@ -654,6 +646,13 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                         if (d != null)
                             txtExpiryDate.setText(d.toMonthYearStringFormat("/"));
                     }
+                }
+                else {
+                    if (txtAccountNo != null)
+                        txtAccountNo.setVisibility(INVISIBLE);
+                    LinearLayout cardHolder = (LinearLayout) findViewById(R.id.card_holder_details);
+                    if (cardHolder != null)
+                        cardHolder.setVisibility(INVISIBLE);
                 }
                 TextView txtDateTime = (TextView) findViewById(R.id.txt_date_time);
                 if (txtDateTime != null) {
@@ -666,7 +665,7 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     txtMethod.setText(trans.getMethod());
                 TextView txtMode = (TextView) findViewById(R.id.txt_mode);
                 if (txtMode != null)
-                    txtMode.setText(mode);
+                    txtMode.setText(trans.getMode());
                 TextView txtTransType = (TextView) findViewById(R.id.txt_type);
                 if (txtTransType != null)
                     txtTransType.setText(type);

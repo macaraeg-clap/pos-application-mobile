@@ -18,16 +18,22 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.io.Serializable;
 
 /**
  * Created by jimmy.macaraeg on 03/07/2017.
  */
 
 public class UI {
+
+    interface ConnectDeviceListener extends Serializable {
+
+        void onConnectDeviceFinish(Context context);
+    }
 
     interface ButtonCallbackListener {
 
