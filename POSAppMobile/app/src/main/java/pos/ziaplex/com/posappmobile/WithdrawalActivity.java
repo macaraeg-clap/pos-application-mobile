@@ -1,6 +1,5 @@
 package pos.ziaplex.com.posappmobile;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,9 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class WithdrawalActivity extends BaseActivity implements UI.ConnectDeviceListener {
+public class WithdrawalActivity extends BaseActivity implements UI.TitleCallBackListener,
+        UI.LogoCallBackListener, UI.FeeCallBackListener, View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,22 +25,23 @@ public class WithdrawalActivity extends BaseActivity implements UI.ConnectDevice
     @Override
     public void onCreateContent(LinearLayout content) {
         if (content != null) {
-            content.addView(LayoutInflater.from(this).inflate(R.layout.transaction_view, null));
-            content.addView(LayoutInflater.from(this).inflate(R.layout.select_account, null));
+            content.addView(LayoutInflater.from(this)
+                    .inflate(R.layout.transaction_logo_view, null));
+            content.addView(LayoutInflater.from(this)
+                    .inflate(R.layout.transaction_select_account_view, null));
             ImageView v = (ImageView) content.findViewById(R.id.img_icon);
             if (v != null)
                 v.setBackgroundResource(R.drawable.ic_withdrawal_round);
             Button btnCon = (Button) content.findViewById(R.id.btn_continue);
-            if (btnCon != null) {
-                btnCon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showBluetoothDeviceOptions();
-                    }
-                });
-            }
+            if (btnCon != null)
+                btnCon.setOnClickListener(this);
             updateSelectorList(content);
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        showBluetoothDeviceOptions();
     }
 
     void updateSelectorList(View v) {
@@ -49,7 +49,7 @@ public class WithdrawalActivity extends BaseActivity implements UI.ConnectDevice
             Spinner spinAccount = (Spinner) v.findViewById(R.id.spin_account);
             if (spinAccount != null) {
                 String[] s = getResources().getStringArray(R.array.account_array);
-                List<String> l = new ArrayList<>();
+                ArrayList<String> l = new ArrayList<>();
                 for (int i = 0; i < s.length; i++)
                     l.add(s[i]);
                 l.add("Cash Advance");
@@ -62,16 +62,29 @@ public class WithdrawalActivity extends BaseActivity implements UI.ConnectDevice
     }
 
     @Override
-    public void onDeviceItemSelected(AdapterView<?> parent, final View view, int position, long id) {
+    public void onDeviceItemSelected(AdapterView<?> parent, final View view, int position,
+                                     long id) {
         Intent i = new Intent(getBaseContext(), ConnectDeviceActivity.class);
         i.putExtra("title", getString(R.string.withdrawal_label));
         i.putExtra("deviceName", (String) parent.getItemAtPosition(position));
-        i.putExtra("listener", this);
+        i.putExtra("titleListener", this);
+        i.putExtra("logoListener", this);
+        i.putExtra("feeListener", this);
         startActivity(i);
     }
 
     @Override
-    public void onConnectDeviceFinish(Context context) {
-        // TODO
+    public long getFeeAmount() {
+        return 15100; // FIXME: dummy value
+    }
+
+    @Override
+    public int getTransactionTitleId() {
+        return R.string.withdrawal_label;
+    }
+
+    @Override
+    public int getTransactionLogoId() {
+        return R.drawable.ic_withdrawal_round;
     }
 }

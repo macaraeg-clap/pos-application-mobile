@@ -1,6 +1,5 @@
 package pos.ziaplex.com.posappmobile;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,8 +9,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-public class BalanceActivity extends BaseActivity implements UI.ConnectDeviceListener,
-        View.OnClickListener {
+public class BalanceActivity extends BaseActivity implements UI.TitleCallBackListener,
+        UI.LogoCallBackListener, UI.FeeCallBackListener, View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +21,10 @@ public class BalanceActivity extends BaseActivity implements UI.ConnectDeviceLis
     @Override
     public void onCreateContent(LinearLayout content) {
         if (content != null) {
-            content.addView(LayoutInflater.from(this).inflate(R.layout.transaction_view, null));
-            content.addView(LayoutInflater.from(this).inflate(R.layout.select_account, null));
+            content.addView(LayoutInflater.from(this)
+                    .inflate(R.layout.transaction_logo_view, null));
+            content.addView(LayoutInflater.from(this)
+                    .inflate(R.layout.transaction_select_account_view, null));
             ImageView v = (ImageView) content.findViewById(R.id.img_icon);
             if (v != null)
                 v.setBackgroundResource(R.drawable.ic_balance_round);
@@ -34,7 +35,7 @@ public class BalanceActivity extends BaseActivity implements UI.ConnectDeviceLis
             if (btnCon != null)
                 btnCon.setOnClickListener(this);
         }
-    }
+}
 
     @Override
     public void onClick(View v) {
@@ -42,16 +43,29 @@ public class BalanceActivity extends BaseActivity implements UI.ConnectDeviceLis
     }
 
     @Override
-    public void onDeviceItemSelected(AdapterView<?> parent, final View view, int position, long id) {
+    public void onDeviceItemSelected(AdapterView<?> parent, final View view, int position,
+                                     long id) {
         Intent i = new Intent(getBaseContext(), ConnectDeviceActivity.class);
         i.putExtra("title", getString(R.string.balance_label));
         i.putExtra("deviceName", (String) parent.getItemAtPosition(position));
-        i.putExtra("listener", this);
+        i.putExtra("titleListener", this);
+        i.putExtra("logoListener", this);
+        i.putExtra("feeListener", this);
         startActivity(i);
     }
 
     @Override
-    public void onConnectDeviceFinish(Context context) {
-        // TODO
+    public long getFeeAmount() {
+        return 15100; // FIXME: dummy value
+    }
+
+    @Override
+    public int getTransactionTitleId() {
+        return R.string.balance_label;
+    }
+
+    @Override
+    public int getTransactionLogoId() {
+        return R.drawable.ic_balance_round;
     }
 }

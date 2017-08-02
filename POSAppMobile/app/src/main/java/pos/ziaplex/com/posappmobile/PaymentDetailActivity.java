@@ -1,6 +1,5 @@
 package pos.ziaplex.com.posappmobile;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,12 +9,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class PaymentDetailActivity extends BaseActivity implements UI.ConnectDeviceListener {
+public class PaymentDetailActivity extends BaseActivity implements View.OnClickListener {
 
     class PaymentDetail {
 
-        PaymentDetail(String first_name, String payor, String transaction_number, String payment_for,
-                             String transaction_amount, String transaction_fee, String total_amount) {
+        PaymentDetail(String first_name, String payor, String transaction_number,
+                      String payment_for, String transaction_amount, String transaction_fee,
+                      String total_amount) {
             mFirstName = first_name;
             mPayor = payor;
             mTransactionNumber = transaction_number;
@@ -25,13 +25,8 @@ public class PaymentDetailActivity extends BaseActivity implements UI.ConnectDev
             mTotalAmount = total_amount;
         }
 
-        String mFirstName;
-        String mPayor;
-        String mPaymentFor;
-        String mTransactionNumber;
-        String mTransactionAmount;
-        String mTransactionFee;
-        String mTotalAmount;
+        String mFirstName, mPayor, mPaymentFor, mTransactionNumber, mTransactionAmount,
+                mTransactionFee, mTotalAmount;
 
         String getFirstName() {
             return mFirstName;
@@ -73,30 +68,24 @@ public class PaymentDetailActivity extends BaseActivity implements UI.ConnectDev
         if (content != null) {
             content.addView(LayoutInflater.from(this).inflate(R.layout.payment_detail, null));
             Button btnCon = (Button) content.findViewById(R.id.btn_proceed);
-            if (btnCon != null) {
-                btnCon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showBluetoothDeviceOptions();
-                    }
-                });
-            }
+            if (btnCon != null)
+                btnCon.setOnClickListener(this);
         }
         loadDetails();
     }
 
     @Override
-    public void onDeviceItemSelected(AdapterView<?> parent, final View view, int position, long id) {
-        Intent i = new Intent(getBaseContext(), ConnectDeviceActivity.class);
-        i.putExtra("title", getString(R.string.payment_label));
-        i.putExtra("deviceName", (String) parent.getItemAtPosition(position));
-        i.putExtra("listener", this);
-        startActivity(i);
+    public void onClick(View v) {
+        showBluetoothDeviceOptions();
     }
 
     @Override
-    public void onConnectDeviceFinish(Context context) {
-        // TODO
+    public void onDeviceItemSelected(AdapterView<?> parent, final View view, int position,
+                                     long id) {
+        Intent i = new Intent(getBaseContext(), ConnectDeviceActivity.class);
+        i.putExtra("title", getString(R.string.payment_label));
+        i.putExtra("deviceName", (String) parent.getItemAtPosition(position));
+        startActivity(i);
     }
 
     void loadDetails() {

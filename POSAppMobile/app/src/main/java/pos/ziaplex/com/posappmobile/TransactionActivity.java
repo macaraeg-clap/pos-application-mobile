@@ -698,16 +698,6 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
     int mSelectedTab = 0;
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setDefaultTitle(getString(R.string.transaction_label));

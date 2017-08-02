@@ -12,21 +12,28 @@ import android.widget.TextView;
 
 public class ConnectDeviceActivity extends BaseActivity {
 
-    UI.ConnectDeviceListener mListener;
-    String mDeviceName;
+    UI.TitleCallBackListener mTitleListener;
+    UI.LogoCallBackListener mLogoListener;
+    UI.FeeCallBackListener mFeeListener;
+    TextView mTxtMessage;
     int progressStatus = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Intent i = getIntent();
-        String title = null;
-        if (i != null) {
-            title = i.getStringExtra("title");
-            mDeviceName = i.getStringExtra("deviceName");
-            mListener = (UI.ConnectDeviceListener) i.getSerializableExtra("listener");
-        }
         super.onCreate(savedInstanceState);
-        setDefaultTitle(title);
+        Intent i = getIntent();
+        if (i != null) {
+            setDefaultTitle(i.getStringExtra("title"));
+            updateConnectionMessage(i.getStringExtra("deviceName"));
+            mTitleListener = (UI.TitleCallBackListener) i.getSerializableExtra("titleListener");
+            mLogoListener = (UI.LogoCallBackListener) i.getSerializableExtra("logoListener");
+            mFeeListener = (UI.FeeCallBackListener) i.getSerializableExtra("feeListener");
+        }
+    }
+
+    void updateConnectionMessage(String device_name) {
+        if (mTxtMessage != null)
+            mTxtMessage.setText(mTxtMessage.getText() + " " + device_name);
     }
 
     @Override
@@ -39,9 +46,7 @@ public class ConnectDeviceActivity extends BaseActivity {
     public void onCreateContent(LinearLayout content) {
         if (content != null) {
             content.addView(LayoutInflater.from(this).inflate(R.layout.connect_device, null));
-            TextView tv = (TextView) content.findViewById(R.id.txt_connect);
-            if (tv != null)
-                tv.setText(tv.getText() + " " + mDeviceName);
+            mTxtMessage = (TextView) content.findViewById(R.id.txt_connect);
             setProgressValue((ProgressBar) content.findViewById(R.id.bar_connect));
         }
     }
@@ -61,22 +66,28 @@ public class ConnectDeviceActivity extends BaseActivity {
                             }
                         });
                         try {
-                            Thread.sleep(1000);
-                            if (progressStatus >= 100) {
-                                /*if (mListener != null) {
-                                    mListener.onConnectDeviceFinish(getBaseContext());
-                                    // FIXME:
-                                    Intent i = new Intent(getBaseContext(), TransactionFeeActivity.class);
-                                    i.putExtra("title", getString(R.string.balance_label));
-                                    i.putExtra("iconID", R.drawable.ic_balance_round);
-                                    startActivity(i);
-                                    finish();
-                                }*/
-                            }
-                        } catch (InterruptedException e) {
+                            Thread.sleep(150);
+                            if (progressStatus >= 100)
+                                break;
+                        }
+                        catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
+                    int idTitle = -1, idLogo = -1;
+                    long fee = 0;
+                    if (mTitleListener != null)
+                        idTitle = mTitleListener.getTransactionTitleId();
+                    if (mLogoListener != null)
+                        idLogo = mLogoListener.getTransactionLogoId();
+                    if (mFeeListener != null)
+                        fee = mFeeListener.getFeeAmount();
+                    Intent i = new Intent(getBaseContext(), TransactionFeeActivity.class);
+                    i.putExtra("title", idTitle);
+                    i.putExtra("iconID", idLogo);
+                    i.putExtra("amountFee", fee);
+                    startActivity(i);
+                    finish();
                 }
             });
             thread.start();

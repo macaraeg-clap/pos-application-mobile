@@ -26,9 +26,19 @@ import java.io.Serializable;
 
 public class UI {
 
-    interface ConnectDeviceListener extends Serializable {
+    interface TitleCallBackListener extends Serializable {
 
-        void onConnectDeviceFinish(Context context);
+        int getTransactionTitleId();
+    }
+
+    interface LogoCallBackListener extends Serializable {
+
+        int getTransactionLogoId();
+    }
+
+    interface FeeCallBackListener extends Serializable {
+
+        long getFeeAmount();
     }
 
     interface ButtonCallbackListener {

@@ -81,6 +81,8 @@
     <string name="trans_statistics_payment">Payment</string>
     <!-- Balance Inquiry labels -->
     <string name="balance_label">Balance Inquiry</string>
+    <string name="transaction_fee_message_first">An operational amount fee of</string>
+    <string name="transaction_fee_message_last">will be charged for this Transaction. Do you wish to continue</string>
     <!-- Withdrawal / Cash Advance labels -->
     <string name="withdrawal_label">Withdrawal</string>
     <!-- Government Payment labels -->
