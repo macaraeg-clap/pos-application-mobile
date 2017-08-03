@@ -7,8 +7,7 @@ class Transaction {
     Transaction(long amount, String account_number, boolean card_holder,
                        Util.Date expiry_date, String status, Util.Date date_time, String method,
                        String mode, String transaction_type, String transaction_reference,
-                       String payment_for, String operator_name, String operator_number,
-                       BitmapDrawable offline_validation) {
+                       String payment_for, String operator_name, String operator_number) {
         mAmount = amount;
         mAccountNumber = account_number;
         mCardHolder = card_holder;
@@ -22,7 +21,6 @@ class Transaction {
         mPaymentFor = payment_for;
         mOperatorName = operator_name;
         mOperatorNumber = operator_number;
-        mOfflineValidation = offline_validation;
     }
 
     Util.Date mExpiryDate, mDateTime;
@@ -82,9 +80,5 @@ class Transaction {
 
     String getOperatorNumber() {
         return mOperatorNumber;
-    }
-
-    BitmapDrawable getOfflineValidation() {
-        return mOfflineValidation;
     }
 }

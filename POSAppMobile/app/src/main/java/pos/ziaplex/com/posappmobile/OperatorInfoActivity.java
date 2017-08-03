@@ -544,6 +544,8 @@ public class OperatorInfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setDefaultTitle(getString(R.string.operator_info_label));
         createOperatorListData();
+        if (BaseActivity.mHome != null)
+            BaseActivity.mHome.hideProgressDisplay();
     }
 
     @Override

@@ -9,7 +9,6 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BaseActivity.mHome = HomeActivity.class;
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

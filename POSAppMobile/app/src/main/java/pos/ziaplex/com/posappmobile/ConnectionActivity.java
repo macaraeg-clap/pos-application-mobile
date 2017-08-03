@@ -174,6 +174,8 @@ public class ConnectionActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setDefaultTitle(getString(R.string.connections_label));
+        if (BaseActivity.mHome != null)
+            BaseActivity.mHome.hideProgressDisplay();
     }
 
     @Override

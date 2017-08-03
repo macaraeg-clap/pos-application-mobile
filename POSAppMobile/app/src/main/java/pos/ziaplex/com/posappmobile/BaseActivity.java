@@ -25,13 +25,15 @@ import java.util.ArrayList;
 
 public class BaseActivity extends AppCompatActivity {
 
-    public static Class mHome;
+    public static BaseActivity mHome;
     ActionBar mBar;
+    LinearLayout mProgressContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mProgressContainer = (LinearLayout) findViewById(R.id.progress_container);
         onSetBackgroundImage((ImageView) findViewById(R.id.image_background));
         onCreateContent((LinearLayout) findViewById(R.id.view_content));
         onCreateContent((ScrollView) findViewById(R.id.view_content_scroll));
@@ -41,6 +43,16 @@ public class BaseActivity extends AppCompatActivity {
             if (p != null)
                 onHomeClickedEvent((ImageButton) p.findViewById(R.id.btn_home));
         }
+    }
+
+    public void showProgressDisplay() {
+        if (mProgressContainer != null)
+            mProgressContainer.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressDisplay() {
+        if (mProgressContainer != null)
+            mProgressContainer.setVisibility(View.GONE);
     }
 
     public void onSetBackgroundImage(ImageView background) {
@@ -63,8 +75,11 @@ public class BaseActivity extends AppCompatActivity {
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     if (mHome != null) {
-                        startActivity(new Intent(v.getContext(), mHome));
-                        finish();
+                        Class hClass = mHome.getClass();
+                        if (hClass != null) {
+                            startActivity(new Intent(v.getContext(), hClass));
+                            finish();
+                        }
                     }
                 }
             });

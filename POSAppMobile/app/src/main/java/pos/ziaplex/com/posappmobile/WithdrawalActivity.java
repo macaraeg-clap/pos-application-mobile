@@ -20,6 +20,8 @@ public class WithdrawalActivity extends BaseActivity implements UI.TitleCallBack
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setDefaultTitle(getString(R.string.withdrawal_label));
+        if (BaseActivity.mHome != null)
+            BaseActivity.mHome.hideProgressDisplay();
     }
 
     @Override

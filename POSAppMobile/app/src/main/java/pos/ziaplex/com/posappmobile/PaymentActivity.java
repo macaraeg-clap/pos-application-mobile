@@ -13,6 +13,8 @@ public class PaymentActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setDefaultTitle(getString(R.string.payment_label));
+        if (BaseActivity.mHome != null)
+            BaseActivity.mHome.hideProgressDisplay();
     }
 
     @Override

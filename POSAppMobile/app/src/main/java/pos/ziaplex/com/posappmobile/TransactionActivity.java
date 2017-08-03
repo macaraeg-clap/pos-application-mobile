@@ -1,8 +1,8 @@
 package pos.ziaplex.com.posappmobile;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -19,6 +19,11 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TextView;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -616,6 +621,33 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     if (txtStatus != null)
                         txtStatus.setTextColor(ContextCompat.getColor(getBaseContext(),
                                 R.color.colorRed));
+                    ImageView imgOnline = (ImageView) findViewById(R.id.img_online_validation);
+                    if (imgOnline != null)
+                        imgOnline.setVisibility(View.GONE);
+                    LinearLayout p = (LinearLayout) findViewById(R.id.offline_validation_container);
+                    if (p != null)
+                        p.setVisibility(View.VISIBLE);
+                    ImageView imgQRCode = (ImageView) findViewById(R.id.img_offline_validation);
+                    if (imgQRCode != null) {
+                        QRCodeWriter writer = new QRCodeWriter();
+                        try {
+                            String content = trans.getAccountNumber() + " " + trans.getAmount();
+                            int sz = (int) getResources().getDimension(R.dimen._110sdp);
+                            BitMatrix bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE,
+                                    sz, sz);
+                            int w = bitMatrix.getWidth(), h = bitMatrix.getHeight();
+                            Bitmap bmp = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565);
+                            for (int x = 0; x < w; x++) {
+                                for (int y = 0; y < h; y++) {
+                                    bmp.setPixel(x, y, bitMatrix.get(x, y) ? Color.BLACK : Color.WHITE);
+                                }
+                            }
+                            imgQRCode.setImageBitmap(bmp);
+                        }
+                        catch (WriterException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
                 else {
                     if (bgCard != null)
@@ -623,6 +655,12 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     if (txtStatus != null)
                         txtStatus.setTextColor(ContextCompat.getColor(getBaseContext(),
                                 R.color.colorGreen));
+                    ImageView imgOnline = (ImageView) findViewById(R.id.img_online_validation);
+                    if (imgOnline != null)
+                        imgOnline.setVisibility(View.VISIBLE);
+                    LinearLayout p = (LinearLayout) findViewById(R.id.offline_validation_container);
+                    if (p != null)
+                        p.setVisibility(View.GONE);
                 }
                 if (txtStatus != null)
                     txtStatus.setText(status.toUpperCase());
@@ -682,12 +720,6 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                 TextView txtOperatorNumber = (TextView) findViewById(R.id.txt_operator_number);
                 if (txtOperatorNumber != null)
                     txtOperatorNumber.setText(trans.getOperatorNumber());
-                ImageView v = (ImageView) findViewById(R.id.img_offline_validation);
-                if (v != null) {
-                    BitmapDrawable img = trans.getOfflineValidation();
-                    if (img != null)
-                        v.setImageDrawable(img);
-                }
             }
         }
     }
@@ -701,6 +733,8 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setDefaultTitle(getString(R.string.transaction_label));
+        if (BaseActivity.mHome != null)
+            BaseActivity.mHome.hideProgressDisplay();
     }
 
     @Override

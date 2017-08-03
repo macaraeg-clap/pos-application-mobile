@@ -16,6 +16,8 @@ public class BalanceActivity extends BaseActivity implements UI.TitleCallBackLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setDefaultTitle(getString(R.string.balance_label));
+        if (BaseActivity.mHome != null)
+            BaseActivity.mHome.hideProgressDisplay();
     }
 
     @Override
