@@ -33,7 +33,12 @@
                 <ScrollView
                     android:id="@+id/view_content_scroll"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent" />
+
+                <FrameLayout
+                    android:id="@+id/view_content_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
                 <LinearLayout
                     android:id="@+id/view_content"
@@ -57,9 +62,24 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/loading_label"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@android:color/white" />
+            </FrameLayout>
 
             <View
                 android:layout_width="match_parent"

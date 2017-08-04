@@ -24,9 +24,11 @@
         <activity android:name=".PaymentActivity" android:theme="@style/CustomTheme" />
         <activity android:name=".ConnectionActivity" android:theme="@style/CustomTheme" />
         <activity android:name=".OperatorInfoActivity" android:theme="@style/CustomTheme" />
-        <!-- Extrass -->
         <activity android:name=".ConnectDeviceActivity" android:theme="@style/CustomTheme" />
         <activity android:name=".TransactionFeeActivity" android:theme="@style/CustomTheme" />
+        <activity android:name=".TransactionSwipeCardActivity" android:theme="@style/CustomTheme" />
+        <activity android:name=".TransactionEnterPinActivity" android:theme="@style/CustomTheme" />
+        <activity android:name=".TransactionResultActivity" android:theme="@style/CustomTheme" />
         <activity android:name=".PaymentDetailActivity" android:theme="@style/CustomTheme" />
         <activity android:name=".PaymentModeActivity" android:theme="@style/CustomTheme" />
     </application>

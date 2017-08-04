@@ -11,6 +11,50 @@ import java.util.HashMap;
 
 class Util {
 
+    static class MaskedNumberFormat {
+
+        static MaskedNumberFormat instance(String value) {
+            MaskedNumberFormat v = new MaskedNumberFormat();
+            v.setValue(value);
+            return v;
+        }
+
+        String mValue = "0000000000000000";
+        String mMaskFormat = "xxxx xxxx xxxx ####";
+
+        String getValue() {
+            return mValue;
+        }
+
+        void setValue(String value) {
+            mValue = value;
+        }
+
+        void updateMaskFormat(String format) {
+            mMaskFormat = format;
+        }
+
+        String toStringFormat() {
+            int idx = 0;
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < mMaskFormat.length(); i++) {
+                char c = mMaskFormat.charAt(i);
+                if (c == '#') {
+                    sb.append(mValue.charAt(idx));
+                    idx++;
+                }
+                else if (c == 'x') {
+                    sb.append(c);
+                    idx++;
+                }
+                else {
+                    sb.append(c);
+                }
+            }
+            return sb.toString();
+        }
+    }
+
     static class Date {
 
         static Date forTime(String time) {
@@ -307,6 +351,8 @@ class Util {
     }
 
     static String convertToCurrency(String sign, long value) {
+        if (value < 1)
+            return sign + " " + NumberFormat.getCurrencyInstance().format(0).substring(1);
         return sign + " " + NumberFormat.getCurrencyInstance().format(value).substring(1);
     }
 }

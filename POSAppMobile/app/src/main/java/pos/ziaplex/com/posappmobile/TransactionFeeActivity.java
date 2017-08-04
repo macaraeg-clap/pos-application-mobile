@@ -13,18 +13,22 @@ public class TransactionFeeActivity extends BaseActivity implements View.OnClick
 
     ImageView mLogo;
     TextView mTxtMessage;
-    String mTransactionTitle;
+    String mTransactionTitle, mAccountNumber, mAmountFee;
+    int mIconId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         Intent i = getIntent();
         if (i != null) {
-            mTransactionTitle = getString(i.getIntExtra("title", -1));
-            setDefaultTitle(mTransactionTitle);
-            updateLogo(i.getIntExtra("iconID", -1));
-            updateFeeMessage(i.getLongExtra("amountFee", 0));
+            mTransactionTitle = i.getStringExtra("title");
+            mAccountNumber = i.getStringExtra("accountNumber");
+            mIconId = i.getIntExtra("iconID", -1);
+            mAmountFee = i.getStringExtra("amountFee");
         }
+        super.onCreate(savedInstanceState);
+        setDefaultTitle(mTransactionTitle);
+        updateLogo(mIconId);
+        updateFeeMessage(Long.valueOf(mAmountFee));
     }
 
     void updateLogo(int logo_id) {
@@ -49,6 +53,9 @@ public class TransactionFeeActivity extends BaseActivity implements View.OnClick
                     .inflate(R.layout.transaction_fee_view, null));
             mLogo = (ImageView) content.findViewById(R.id.img_icon);
             mTxtMessage = (TextView) content.findViewById(R.id.txt_fee_message);
+            Button btnYes = (Button) content.findViewById(R.id.btn_yes);
+            if (btnYes != null)
+                btnYes.setOnClickListener(this);
             Button btnNo = (Button) content.findViewById(R.id.btn_no);
             if (btnNo != null)
                 btnNo.setOnClickListener(this);
@@ -60,10 +67,13 @@ public class TransactionFeeActivity extends BaseActivity implements View.OnClick
         if (v instanceof Button) {
             Button btn = (Button) v;
             if (btn != null) {
-                if (btn.getId() == R.id.btn_no) {
-                    finish();
-                    return;
+                if (btn.getId() == R.id.btn_yes) {
+                    Intent i = new Intent(getBaseContext(), TransactionSwipeCardActivity.class);
+                    i.putExtra("title", mTransactionTitle);
+                    i.putExtra("accountNumber", mAccountNumber);
+                    startActivity(i);
                 }
+                finish();
             }
         }
     }

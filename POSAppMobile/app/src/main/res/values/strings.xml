@@ -4,12 +4,16 @@
     <string name="login_error_title">LOGIN ERROR</string>
     <string name="login_field_empty">Required field/s empty!</string>
     <string name="login_not_matched">Incorrect credentials!</string>
+    <string name="merchant_code_placeholder">Merchant Code</string>
+    <string name="operator_code_placeholder">Operator Code</string>
+    <string name="operator_pin_placeholder">Operator Pin</string>
     <string name="action_ok">OK</string>
     <string name="menu_label">Menu</string>
     <string name="send_label">Send</string>
     <string name="print_label">Print</string>
     <string name="action_print_label">Print</string>
     <string name="action_cancel_label">Cancel</string>
+    <string name="action_close_label">CLOSE</string>
     <string name="about_label">About</string>
     <string name="action_about_label">ABOUT</string>
     <string name="action_logout_label">LOGOUT</string>
@@ -23,11 +27,15 @@
     <string name="action_continue_label">CONTINUE</string>
     <string name="connect_label">Connecting to</string>
     <string name="swipe_card_label">Please ask customer to insert or swipe card now.</string>
+    <string name="enter_pin_label">Please ask customer to enter PIN Code.</string>
+    <string name="processing_card_label">Processing Magnetic Card</string>
     <string name="select_account_label">Select the Account</string>
     <string name="select_device_title">SELECT BLUETOOTH DEVICE</string>
     <string name="preferred_device_label">Set as preferred device</string>
     <string name="action_proceed_payment_label">Proceed with Payment</string>
     <string name="no_found_label">No transactions found ..</string>
+    <string name="please_wait_label">Please wait ..</string>
+    <string name="loading_label">Loading ..</string>
     <string-array name="date_range_array">
         <item>Last Month</item>
         <item>Last Week</item>

@@ -63,8 +63,11 @@ class TransactionAdapter extends BaseAdapter {
             if (tvTransRef != null)
                 tvTransRef.setText(trans.getTransactionReference());
             TextView tvAccountNo = (TextView) rv.findViewById(R.id.txt_account_no);
-            if (tvAccountNo != null)
-                tvAccountNo.setText(trans.getAccountNumber());
+            if (tvAccountNo != null) {
+                Util.MaskedNumberFormat f = trans.getAccountNumber();
+                if (f != null)
+                    tvAccountNo.setText(f.toStringFormat());
+            }
             TextView tvTime = (TextView) rv.findViewById(R.id.txt_time);
             if (tvTime != null)
                 tvTime.setText(trans.getDateTime().getTime());

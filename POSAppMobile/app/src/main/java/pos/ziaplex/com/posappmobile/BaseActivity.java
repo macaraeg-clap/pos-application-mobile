@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,6 +38,7 @@ public class BaseActivity extends AppCompatActivity {
         onSetBackgroundImage((ImageView) findViewById(R.id.image_background));
         onCreateContent((LinearLayout) findViewById(R.id.view_content));
         onCreateContent((ScrollView) findViewById(R.id.view_content_scroll));
+        onCreateContent((FrameLayout) findViewById(R.id.view_content_frame));
         onCreateHeader(mBar = getSupportActionBar());
         if (mBar != null) {
             View p = mBar.getCustomView();
@@ -166,6 +168,9 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void onCreateContent(LinearLayout content) {
+    }
+
+    public void onCreateContent(FrameLayout content) {
     }
 
     ArrayList<String> getBluetoothDeviceOptions() {

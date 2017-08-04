@@ -20,26 +20,10 @@ import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.io.Serializable;
-
 public class UI {
-
-    interface TitleCallBackListener extends Serializable {
-
-        int getTransactionTitleId();
-    }
-
-    interface LogoCallBackListener extends Serializable {
-
-        int getTransactionLogoId();
-    }
-
-    interface FeeCallBackListener extends Serializable {
-
-        long getFeeAmount();
-    }
 
     interface ButtonCallbackListener {
 
@@ -191,8 +175,10 @@ public class UI {
             super(context);
         }
 
-        public void onCreate(int icon_id, String placeholder, int input_type, int data_type, int max_length) {
-            LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        public void onCreate(int icon_id, String placeholder, int input_type,
+                             int data_type, int max_length) {
+            LayoutInflater li = (LayoutInflater) getContext()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             li.inflate(R.layout.custom_edit_text_with_icon, this, true);
             ImageView iv = (ImageView) findViewById(R.id.cetwi_icon);
             if (iv != null)
@@ -205,12 +191,11 @@ public class UI {
                 filters[0] = new InputFilter.LengthFilter(max_length);
                 if (data_type == ALPHA_NUMERIC) {
                     filters[1] = new InputFilter() {
-                        public CharSequence filter(CharSequence source, int start, int end, Spanned dest,
-                                                   int dstart, int dend) {
+                        public CharSequence filter(CharSequence source, int start,
+                                                   int end, Spanned dest, int dstart, int dend) {
                             for (int i = start; i < end; i++) {
-                                if (!Character.isLetterOrDigit(source.charAt(i))) {
+                                if (!Character.isLetterOrDigit(source.charAt(i)))
                                     return "";
-                                }
                             }
                             return null;
                         }
@@ -351,7 +336,8 @@ public class UI {
             v.setDialogTitle(title);
             Window w = v.getWindow();
             if (w != null)
-                w.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                w.setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
             return v;
         }
 
@@ -396,7 +382,8 @@ public class UI {
     static View createCustomVerticalSeparator(Context context) {
         View v = LayoutInflater.from(context).inflate(R.layout.custom_vertical_separator, null);
         v.setLayoutParams(getLinearLayoutParams((int) context.getResources()
-                        .getDimension(R.dimen._1sdp), LinearLayout.LayoutParams.MATCH_PARENT));
+                        .getDimension(R.dimen._1sdp),
+                LinearLayout.LayoutParams.MATCH_PARENT));
         return v;
     }
 
@@ -493,6 +480,10 @@ public class UI {
         LinearLayout.LayoutParams v = getLinearLayoutParams(w, h);
         v.setMargins(lm, tm, rm, bm);
         return v;
+    }
+
+    static RelativeLayout.LayoutParams getRelativeLayoutParams(int w, int h) {
+        return new RelativeLayout.LayoutParams(w, h);
     }
 
     static GridLayout.LayoutParams getGridLayoutParams(int w, int h) {

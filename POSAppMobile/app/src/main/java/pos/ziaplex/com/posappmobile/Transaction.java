@@ -4,7 +4,7 @@ import android.graphics.drawable.BitmapDrawable;
 
 class Transaction {
 
-    Transaction(long amount, String account_number, boolean card_holder,
+    Transaction(long amount, Util.MaskedNumberFormat account_number, boolean card_holder,
                        Util.Date expiry_date, String status, Util.Date date_time, String method,
                        String mode, String transaction_type, String transaction_reference,
                        String payment_for, String operator_name, String operator_number) {
@@ -24,7 +24,8 @@ class Transaction {
     }
 
     Util.Date mExpiryDate, mDateTime;
-    String mAccountNumber, mStatus, mMethod, mMode, mTransactionType, mTransactionReference,
+    Util.MaskedNumberFormat mAccountNumber;
+    String mStatus, mMethod, mMode, mTransactionType, mTransactionReference,
         mPaymentFor, mOperatorName, mOperatorNumber;
     BitmapDrawable mOfflineValidation;
     boolean mCardHolder;
@@ -34,7 +35,7 @@ class Transaction {
         return mAmount;
     }
 
-    String getAccountNumber() {
+    Util.MaskedNumberFormat getAccountNumber() {
         return mAccountNumber;
     }
 

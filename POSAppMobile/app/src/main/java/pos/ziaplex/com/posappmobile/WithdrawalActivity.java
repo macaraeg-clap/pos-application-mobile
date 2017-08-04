@@ -13,8 +13,7 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 
-public class WithdrawalActivity extends BaseActivity implements UI.TitleCallBackListener,
-        UI.LogoCallBackListener, UI.FeeCallBackListener, View.OnClickListener {
+public class WithdrawalActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +49,9 @@ public class WithdrawalActivity extends BaseActivity implements UI.TitleCallBack
         if (v != null) {
             Spinner spinAccount = (Spinner) v.findViewById(R.id.spin_account);
             if (spinAccount != null) {
-                String[] s = getResources().getStringArray(R.array.account_array);
                 ArrayList<String> l = new ArrayList<>();
-                for (int i = 0; i < s.length; i++)
-                    l.add(s[i]);
+                for (String s : getResources().getStringArray(R.array.account_array))
+                    l.add(s);
                 l.add("Cash Advance");
                 ArrayAdapter<String> aA = new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_item, l);
@@ -68,25 +66,9 @@ public class WithdrawalActivity extends BaseActivity implements UI.TitleCallBack
                                      long id) {
         Intent i = new Intent(getBaseContext(), ConnectDeviceActivity.class);
         i.putExtra("title", getString(R.string.withdrawal_label));
-        i.putExtra("deviceName", (String) parent.getItemAtPosition(position));
-        i.putExtra("titleListener", this);
-        i.putExtra("logoListener", this);
-        i.putExtra("feeListener", this);
+        i.putExtra("deviceName", parent.getItemAtPosition(position).toString());
+        i.putExtra("logoID", R.drawable.ic_withdrawal_round);
+        i.putExtra("amountFee", 15100);
         startActivity(i);
-    }
-
-    @Override
-    public long getFeeAmount() {
-        return 15100; // FIXME: dummy value
-    }
-
-    @Override
-    public int getTransactionTitleId() {
-        return R.string.withdrawal_label;
-    }
-
-    @Override
-    public int getTransactionLogoId() {
-        return R.drawable.ic_withdrawal_round;
     }
 }

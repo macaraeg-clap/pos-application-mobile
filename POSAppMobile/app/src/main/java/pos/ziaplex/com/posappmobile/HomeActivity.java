@@ -87,96 +87,96 @@ public class HomeActivity extends BaseActivity implements UI.ButtonCallbackListe
         // FIXME: Dummy Values
         ArrayList<Transaction> list = new ArrayList<>();
         // Today
-        list.add(new Transaction(1000, "09xx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "offline",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "offline",
                 Util.getDateTimeToday(), "Contactless", "eWallet", "Payment", "123456789",
                 "BIR", "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.getDateTimeToday(), "Magnetic", "Credit Card - VISA", "Cash Advance",
                 "123456789", null, "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(1000, "09xx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.getDateTimeToday(), "Contactless", "eWallet", "Withdrawal",
                 "123456789", null, "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.getDateTimeToday(), "Contact", "Debit Card - RCBC", "Withdrawal",
                 "123456789", null, "Juan Dela Cruz", "11111111"));
         list.add(new Transaction(1000, null, false,
                 Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.getDateTimeToday(), null, "Cash", "Payment", "123456789", "BIR",
                 "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.getDateTimeToday(), "Contactless", "eWallet", "Payment", "123456789",
                 "BIR", "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.getDateTimeToday(), "Contact", "Debit Card - RCBC", "Payment",
                 "123456789", "BIR", "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.getDateTimeToday(), "Magnetic", "Credit Card - VISA", "Payment",
                 "123456789", "BIR", "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(0, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(0, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.getDateTimeToday(), "Contactless", "e-Wallet", "Balance Inquiry",
                 "123456789", "BIR", "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(0, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(0, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.getDateTimeToday(), "Magnetic", "Debit Card - RCBC", "Balance Inquiry",
                 "123456789", "BIR", "Juan Dela Cruz", "11111111"));
         // Last Week
         HashMap<String, Util.Date> date = Util.getDateLastWeek();
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.Date.forPlusDay(date.get("from"), 4), "Contact", "Debit Card - RCBC",
                 "Withdrawal", "123456789", null, "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.Date.forPlusDay(date.get("from"), 2), "Contactless", "eWallet", "Payment",
                 "123456789", "BIR", "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(0, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(0, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.Date.forPlusDay(date.get("from"), 2), "Magnetic", "Debit Card - RCBC",
                 "Balance Inquiry", "123456789", "BIR", "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.Date.forPlusDay(date.get("from"), 1), "Magnetic", "Credit Card - VISA",
                 "Cash Advance", "123456789", null, "Juan Dela Cruz", "11111111"));
         // Last Month
         date = Util.getDateLastMonth();
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.Date.forPlusDay(date.get("from"), 4), "Contact", "Debit Card - RCBC",
                 "Withdrawal", "123456789", null, "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.Date.forPlusDay(date.get("from"), 4), "Contact", "Debit Card - RCBC",
                 "Withdrawal", "123456789", null, "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.Date.forPlusDay(date.get("from"), 2), "Contactless", "eWallet", "Payment",
                 "123456789", "BIR", "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.Date.forPlusDay(date.get("from"), 2), "Contactless", "eWallet", "Payment",
                 "123456789", "BIR", "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(0, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(0, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.Date.forPlusDay(date.get("from"), 2), "Magnetic", "Debit Card - RCBC",
                 "Balance Inquiry", "123456789", "BIR", "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(0, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(0, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.Date.forPlusDay(date.get("from"), 2), "Magnetic", "Debit Card - RCBC",
                 "Balance Inquiry", "123456789", "BIR", "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.Date.forPlusDay(date.get("from"), 1), "Magnetic", "Credit Card - VISA",
                 "Cash Advance", "123456789", null, "Juan Dela Cruz", "11111111"));
-        list.add(new Transaction(1000, "xxxx xxxx xxxx 0000", true,
-                Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
+        list.add(new Transaction(1000, Util.MaskedNumberFormat.instance("1234123412340000"),
+                true, Util.Date.forPlusYear(Util.getDateMonthYear("MM", "yy"), 5), "approved",
                 Util.Date.forPlusDay(date.get("from"), 1), "Magnetic", "Credit Card - VISA",
                 "Cash Advance", "123456789", null, "Juan Dela Cruz", "11111111"));
         TransactionListData.create(list);

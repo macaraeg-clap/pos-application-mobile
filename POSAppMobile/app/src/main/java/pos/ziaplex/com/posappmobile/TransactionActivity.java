@@ -631,7 +631,8 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                     if (imgQRCode != null) {
                         QRCodeWriter writer = new QRCodeWriter();
                         try {
-                            String content = trans.getAccountNumber() + " " + trans.getAmount();
+                            String content = trans.getAccountNumber().getValue() + " " +
+                                    trans.getAmount();
                             int sz = (int) getResources().getDimension(R.dimen._110sdp);
                             BitMatrix bitMatrix = writer.encode(content, BarcodeFormat.QR_CODE,
                                     sz, sz);
@@ -670,8 +671,11 @@ public class TransactionActivity extends BaseActivity implements TabHost.OnTabCh
                             trans.getAmount()));
                 TextView txtAccountNo = (TextView) findViewById(R.id.txt_account_no);
                 if (trans.getCardHolder()) {
-                    if (txtAccountNo != null)
-                        txtAccountNo.setText(trans.getAccountNumber());
+                    if (txtAccountNo != null) {
+                        Util.MaskedNumberFormat f = trans.getAccountNumber();
+                        if (f != null)
+                            txtAccountNo.setText(f.toStringFormat());
+                    }
                     TextView txtExpiryDate = (TextView) findViewById(R.id.txt_expiry_date);
                     if (txtExpiryDate != null) {
                         Util.Date d = trans.getExpiryDate();

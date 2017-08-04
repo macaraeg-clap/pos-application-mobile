@@ -38,7 +38,8 @@ public class LoginActivity extends BaseActivity {
             bar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             bar.setDisplayShowCustomEnabled(true);
             bar.setCustomView(R.layout.header_login);
-            bar.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.header_background_green));
+            bar.setBackgroundDrawable(ContextCompat.getDrawable(this,
+                    R.drawable.header_background_green));
         }
     }
 
@@ -57,23 +58,26 @@ public class LoginActivity extends BaseActivity {
             int p = (int) getResources().getDimension(R.dimen._25sdp);
             int pp = (int) getResources().getDimension(R.dimen._80sdp);
             v.setPadding(p, pp, p, p);
-            mCode = UI.createCustomTextEditWithIcon(this, R.drawable.ic_merchant_code, "Merchant Code",
+            mCode = UI.createCustomTextEditWithIcon(this, R.drawable.ic_merchant_code,
+                    getString(R.string.merchant_code_placeholder),
                     InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
                     UI.CustomTextEditWithIcon.ALPHA_NUMERIC, 25);
             int m = (int) getResources().getDimension(R.dimen._15sdp);
             mCode.setMargins(0, 0, 0, m);
             v.addView(mCode);
-            oCode = UI.createCustomTextEditWithIcon(this, R.drawable.ic_operator_code, "Operator Code",
+            oCode = UI.createCustomTextEditWithIcon(this, R.drawable.ic_operator_code,
+                    getString(R.string.operator_code_placeholder),
                     InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
                     UI.CustomTextEditWithIcon.ALPHA_NUMERIC, 25);
             oCode.setMargins(0, 0, 0, m);
             v.addView(oCode);
-            oPin = UI.createCustomTextEditWithIcon(this, R.drawable.ic_operator_pin, "Operator Pin",
+            oPin = UI.createCustomTextEditWithIcon(this, R.drawable.ic_operator_pin,
+                    getString(R.string.operator_pin_placeholder),
                     InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD,
                     UI.CustomTextEditWithIcon.ALPHA_NUMERIC, 25);
             oPin.setMargins(0, 0, 0, m);
             v.addView(oPin);
-            Button b = UI.createCustomButton(this, "LOGIN");
+            Button b = UI.createCustomButton(this, getString(R.string.login_label).toUpperCase());
             b.setLayoutParams(UI.getLinearLayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 0,
                     (int) getResources().getDimension(R.dimen._150sdp), 0, 0));
@@ -83,7 +87,8 @@ public class LoginActivity extends BaseActivity {
                     String merchant_code = mCode.getValue();
                     String operator_code = oCode.getValue();
                     String operator_pin = oPin.getValue();
-                    if (merchant_code.isEmpty() || operator_code.isEmpty() || operator_pin.isEmpty()) {
+                    if (merchant_code.isEmpty() || operator_code.isEmpty() ||
+                            operator_pin.isEmpty()) {
                         showErrorMessage(getString(R.string.login_error_title), EMPTY);
                     }
                     /*else if() {
@@ -118,7 +123,8 @@ public class LoginActivity extends BaseActivity {
             else {
                 msg = getString(R.string.login_not_matched);
             }
-            LinearLayout p = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.custom_icon_with_text, null);
+            LinearLayout p = (LinearLayout) LayoutInflater.from(this)
+                    .inflate(R.layout.custom_icon_with_text, null);
             if (p != null) {
                 ImageView iv = (ImageView) p.findViewById(R.id.img_icon);
                 if (iv != null)
